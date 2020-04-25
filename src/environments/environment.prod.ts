@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  GENEALOGY_API:'https://genealogy-api.herokuapp.com/'
 };
