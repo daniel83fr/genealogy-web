@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { ok } from 'assert';
 
-const endpoint = "http://localhost:3000/api/v1/";
+const endpoint =`${process.env.GENEALOGY_API}/api/v1/`;
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json'

@@ -186,7 +186,7 @@ export class TreeDraw{
     
     g.append("title")
     .text(person.FirstName )
-    var baseUrl = "http://localhost:4200/person/"
+    var baseUrl = "person/"
 
     if(person._id != currentPersonId){
       g = g.append("a")
