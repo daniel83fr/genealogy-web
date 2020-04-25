@@ -14,28 +14,29 @@ export class MainComponent implements OnInit {
   query = ''
 
   personEditForm: FormGroup = null;
-  constructor(public rest:RestService,
+  constructor(public rest: RestService,
     private fb: FormBuilder) {
-      this.personEditForm = this.fb.group({
-        'query': this.query,
-        items: this.fb.array([]),
+    this.personEditForm = this.fb.group({
+      'query': this.query,
+      items: this.fb.array([]),
 
-     })}
+    })
+  }
 
-     get items(): FormArray {
-      return this.personEditForm.get("items") as FormArray
-    }
+  get items(): FormArray {
+    return this.personEditForm.get("items") as FormArray
+  }
 
 
-    newSkill(): FormGroup {
-      return this.fb.group({
-        id: '',
-        firstName: '',
-        lastName: '',
-      })
-    }
-  
-    
+  newSkill(): FormGroup {
+    return this.fb.group({
+      id: '',
+      firstName: '',
+      lastName: '',
+    })
+  }
+
+
   data = []
 
 
@@ -50,8 +51,9 @@ export class MainComponent implements OnInit {
   search() {
 
     var query = this.personEditForm.get("query").value
-    this.rest.searchPersons(query).subscribe((data) => {
-     
+    this.rest.getApiEndpoint()((endpoint) => {
+    this.rest.searchPersons(endpoint, query).subscribe((data) => {
+
       let myData = Object.assign(data)
       let childrenArray = this.personEditForm.get("items") as FormArray
       childrenArray.clear()
@@ -62,13 +64,14 @@ export class MainComponent implements OnInit {
           'lastName': element.LastName
         }))
       });
-     
-      
-      
+
+
+
     });
+  })
   }
 
-  
+
 
 
 }

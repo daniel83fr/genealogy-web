@@ -8,7 +8,7 @@ import { RestService } from '../rest.service';
 })
 export class AdminComponent implements OnInit {
 
-  constructor(public rest:RestService) { }
+  constructor(public rest: RestService) { }
   data = {}
 
   ngOnInit(): void {
@@ -19,15 +19,19 @@ export class AdminComponent implements OnInit {
   }
 
   GetUnusedPersons() {
-    this.rest.getUnusedPersons().subscribe((data) => {
-      this.data = Object.assign(data)
-    });
+    this.rest.getApiEndpoint()((endpoint) => {
+      this.rest.getUnusedPersons(endpoint).subscribe((data) => {
+        this.data = Object.assign(data)
+      });
+    })
   }
 
-  removePerson(id:string){
-    this.rest.removePerson(id)
-    .subscribe(res=>{
-      location.reload();
+  removePerson(id: string) {
+    this.rest.getApiEndpoint()((endpoint) => {
+      this.rest.removePerson(endpoint, id)
+        .subscribe(res => {
+          location.reload();
+        })
     })
   }
 

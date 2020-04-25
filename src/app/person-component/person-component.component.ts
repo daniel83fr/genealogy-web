@@ -38,14 +38,17 @@ export class PersonComponentComponent implements OnInit {
 
   
   getProducts(id:string) {
-      this.rest.getPersonFull(id).subscribe((data) => {
+    this.rest.getApiEndpoint()((endpoint)=>{
+      this.rest.getPersonFull(endpoint, id).subscribe((data) => {
 
         data= new DataAdapter().adapt(data)
         this.data = data
         var svg = d3.select(".familyTree")
         new TreeDraw().draw(svg, data)
-
-      });
+        
+      })
+    })
+      
   }
 
 

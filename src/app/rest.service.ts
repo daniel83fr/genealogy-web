@@ -5,7 +5,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { ok } from 'assert';
 import { environment } from 'src/environments/environment';
 
-var endpoint =``;
+var endpoint ='';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json'
@@ -18,24 +18,34 @@ const httpOptions = {
 
 export class RestService {
 
+
   constructor(private http: HttpClient) { 
+   
+
+  }
+
+  getApiEndpoint():any{
+    if(endpoint != ''){
+      return endpoint;
+    }
+
     this.http.get(window.location.origin + '/API_URL').subscribe(
       res=>{
         var url =  res["GENEALOGY_API"];
-        endpoint = `/api/v1/${url}`
+        return endpoint = `/api/v1/${url}`
       }
     )
- 
   }
 
-  getUnusedPersons() {
+  getUnusedPersons(endpoint:string) {
     return this.http.get(endpoint + 'admin/person/unused').pipe(
       map(this.extractData));
   }
 
-  searchPersons(query:string) {
-    return this.http.get(endpoint + 'search?query='+ query).pipe(
-      map(this.extractData));
+  searchPersons(endpoint:string, query:string) {
+    
+        return this.http.get(endpoint + 'search?query='+ query).pipe(
+          map(this.extractData));
   }
  
 
@@ -44,19 +54,19 @@ export class RestService {
     return body || { };
   }
   
-  getPersonFull(id:string): Observable<any> {
+  getPersonFull(endpoint:string, id:string): Observable<any> {
     return this.http.get(endpoint + 'person/'+id+'/full').pipe(
       map(this.extractData));
   }
 
 
-  removePerson(id:string):any {
+  removePerson(endpoint:string,id:string):any {
 
     var url = endpoint + "person" + "/" + id;
     return this.http.delete(decodeURIComponent(url) )
 
   }
-  removeParentLink(idChild:string, idParent:string) {
+  removeParentLink(endpoint:string,idChild:string, idParent:string) {
 
     var url = endpoint + "person" + "/" + idChild + '/' + "relation"+ '/' +idParent;
     this.http.delete(decodeURIComponent(url) )
@@ -70,7 +80,7 @@ export class RestService {
 
   }
 
-  removeSpouseLink(idPerson1:string, idPerson2:string) {
+  removeSpouseLink(endpoint:string,idPerson1:string, idPerson2:string) {
 
     var url = endpoint + "person" + "/" + idPerson1 + '/' + "relation"+ '/' +idPerson2;
     this.http.delete(decodeURIComponent(url) )
@@ -84,7 +94,7 @@ export class RestService {
 
   }
 
-  addParentLink(idChild:string, idParent:string): void {
+  addParentLink(endpoint:string, idChild:string, idParent:string): void {
     var url = endpoint + "person" + "/" + idParent + '/' + "parent"+ '/' +idChild;
     this.http.put(url , {})
     .toPromise()
@@ -97,7 +107,7 @@ export class RestService {
   }
 
 
-  createPerson(lastName:string, firstName:string, gender:string): any {
+  createPerson(endpoint:string, lastName:string, firstName:string, gender:string): any {
     var url = endpoint + "person" ;
     var body = {
       "FirstName" : firstName,
@@ -115,7 +125,7 @@ export class RestService {
     // });
   }
 
-  addSpouseLink(idPerson1:string, idPerson2:string): void {
+  addSpouseLink(endpoint:string, idPerson1:string, idPerson2:string): void {
     var url = endpoint + "person" + "/" + idPerson1 + '/' + "spouse"+ '/' +idPerson2;
     this.http.put(url , {})
     .toPromise()
@@ -127,7 +137,7 @@ export class RestService {
     });
   }
 
-  updatePerson(id:string, data:object): void {
+  updatePerson(endpoint:string, id:string, data:object): void {
     this.http.patch(endpoint + 'person/'+id, data) .toPromise()
     .then(res =>{
       console.log("Done")
@@ -135,7 +145,7 @@ export class RestService {
     .catch(this.handleError);
   }
 
-  getPersonDetail(id:string): Observable<any> {
+  getPersonDetail(endpoint:string, id:string): Observable<any> {
     return this.http.get(endpoint + 'person/'+id).pipe(
       map(this.extractData));
   }
