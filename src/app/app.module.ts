@@ -11,7 +11,7 @@ import { PersonEditComponent } from './person-edit/person-edit.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminComponent } from './admin-component/admin.component';
-import {DemoMaterialModule} from './material-module';
+//import {DemoMaterialModule} from './material-module';
 
 
 @NgModule({
@@ -30,7 +30,7 @@ import {DemoMaterialModule} from './material-module';
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    DemoMaterialModule,
+  //  DemoMaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

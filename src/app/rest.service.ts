@@ -24,17 +24,20 @@ export class RestService {
 
   }
 
+  
+
   getApiEndpoint():any{
     // if(endpoint != ''){
     //   return new Promise(resolve => {
     //     return endpoint
     //   }).then(r=> {return endpoint});
     // }
+ 
 
     this.http.get(window.location.origin + '/API_URL').subscribe(
       res=>{
         var url =  res["GENEALOGY_API"];
-        return endpoint = `/api/v1/${url}`
+        return endpoint = `${url}/api/v1/`
       }
     )
   }
