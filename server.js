@@ -6,12 +6,16 @@ require('dotenv').config()
 // Serve static files....
 app.use(express.static(__dirname + '/dist/GenealogyFrontEnd'));
 
+app.get('/API_URL', (req, res) => {
+  res.send({"GENEALOGY_API" : process.env.GENEALOGY_API})
+});
+
 // Send all requests to index.html
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname + '/dist/GenealogyFrontEnd/index.html'));
 });
 
-let PORT = process.env.PORT || 3000
+let PORT = process.env.PORT 
 app.listen(PORT, () =>
 {
   console.log(`Server is running on port ${PORT}...`);

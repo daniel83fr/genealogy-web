@@ -4,9 +4,8 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { ok } from 'assert';
 import { environment } from 'src/environments/environment';
-const api = environment.GENEALOGY_API;
 
-const endpoint =`${api}/api/v1/`;
+var endpoint =``;
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json'
@@ -18,6 +17,17 @@ const httpOptions = {
 })
 
 export class RestService {
+
+  constructor(private http: HttpClient) { 
+    this.http.get(window.location.origin + '/API_URL').subscribe(
+      res=>{
+        var url =  res["GENEALOGY_API"];
+        endpoint = `/api/v1/${url}`
+      }
+    )
+ 
+  }
+
   getUnusedPersons() {
     return this.http.get(endpoint + 'admin/person/unused').pipe(
       map(this.extractData));
@@ -27,8 +37,7 @@ export class RestService {
     return this.http.get(endpoint + 'search?query='+ query).pipe(
       map(this.extractData));
   }
-  constructor(private http: HttpClient) { 
-  }
+ 
 
   private extractData(res: Response) {
     let body = res;
