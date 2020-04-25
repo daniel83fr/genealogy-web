@@ -35,7 +35,8 @@ export class RestService {
     this.http.get(window.location.origin + '/API_URL').subscribe(
       res=>{
         var url =  res["GENEALOGY_API"];
-        return endpoint = `/api/v1/`
+        endpoint = `${url}/api/v1/`
+        return endpoint 
       }
     )
   }
