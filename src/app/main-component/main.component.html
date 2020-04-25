@@ -1,0 +1,50 @@
+
+
+
+
+    <!-- <div *ngFor="let x of data; let i=index">
+           
+
+      </div> -->
+
+      <form [formGroup]="personEditForm" >
+
+        <input matInput aria-label="Search" formControlName="query" >  <button (click)="search()">Search</button>
+    
+    <br/>
+        <b>Children </b><br/>
+        <div formArrayName="items">
+          <div *ngFor="let x of items.controls; let i=index">
+            <div [formGroupName]="i">
+              Id :
+              <input type="text" formControlName="id">
+              FirstName:
+              <input type="text" formControlName="firstName">
+              LastName:
+              <input type="text" formControlName="lastName">
+       
+              <a [href]="'person/'+x.id" >  {{x.FirstName}} {{x.LastName}}aaa</a> 
+            </div>
+          </div>
+        </div>
+    
+    </form>
+    
+      
+      <hr>
+      
+      
+      <p>
+        Form Value: {{ personEditForm.value | json }}
+      </p>
+      
+      
+      <p>
+        Form Status: {{ personEditForm.status }}
+      </p>
+      
+    
+    
+    
+  
+
