@@ -19,7 +19,7 @@ export class AdminComponent implements OnInit {
   }
 
   GetUnusedPersons() {
-    this.rest.getApiEndpoint()((endpoint) => {
+    this.rest.getApiEndpoint().then((endpoint) => {
       this.rest.getUnusedPersons(endpoint).subscribe((data) => {
         this.data = Object.assign(data)
       });
@@ -27,7 +27,7 @@ export class AdminComponent implements OnInit {
   }
 
   removePerson(id: string) {
-    this.rest.getApiEndpoint()((endpoint) => {
+    this.rest.getApiEndpoint().then((endpoint) => {
       this.rest.removePerson(endpoint, id)
         .subscribe(res => {
           location.reload();

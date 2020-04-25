@@ -38,7 +38,7 @@ export class PersonComponentComponent implements OnInit {
 
   
   getProducts(id:string) {
-    this.rest.getApiEndpoint()((endpoint)=>{
+    this.rest.getApiEndpoint().then((endpoint)=>{
       this.rest.getPersonFull(endpoint, id).subscribe((data) => {
 
         data= new DataAdapter().adapt(data)

@@ -51,7 +51,7 @@ export class MainComponent implements OnInit {
   search() {
 
     var query = this.personEditForm.get("query").value
-    this.rest.getApiEndpoint()((endpoint) => {
+    this.rest.getApiEndpoint().then((endpoint) => {
     this.rest.searchPersons(endpoint, query).subscribe((data) => {
 
       let myData = Object.assign(data)
