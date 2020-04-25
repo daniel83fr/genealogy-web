@@ -5,7 +5,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { ok } from 'assert';
 import { environment } from 'src/environments/environment';
 
-var endpoint ='';
+var endpoint ='https://genealogy-web-staging.herokuapp.com/api/v1/';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json'
@@ -25,9 +25,11 @@ export class RestService {
   }
 
   getApiEndpoint():any{
-    if(endpoint != ''){
-      return endpoint;
-    }
+    // if(endpoint != ''){
+    //   return new Promise(resolve => {
+    //     return endpoint
+    //   }).then(r=> {return endpoint});
+    // }
 
     this.http.get(window.location.origin + '/API_URL').subscribe(
       res=>{
@@ -54,10 +56,7 @@ export class RestService {
     return body || { };
   }
   
-  getPersonFull(endpoint:string, id:string): Observable<any> {
-    return this.http.get(endpoint + 'person/'+id+'/full').pipe(
-      map(this.extractData));
-  }
+ 
 
 
   removePerson(endpoint:string,id:string):any {
@@ -150,6 +149,10 @@ export class RestService {
       map(this.extractData));
   }
   
+  getPersonFull(endpoint:string, id:string): Observable<any> {
+    return this.http.get(endpoint + 'person/'+id+'/full').pipe(
+      map(this.extractData));
+  }
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
   
