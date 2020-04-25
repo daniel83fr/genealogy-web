@@ -5,7 +5,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { ok } from 'assert';
 import { environment } from 'src/environments/environment';
 
-var endpoint ='https://genealogy-web-staging.herokuapp.com/api/v1/';
+var endpoint ='';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json'
@@ -26,18 +26,16 @@ export class RestService {
 
   
 
-  getApiEndpoint():any{
-    // if(endpoint != ''){
-    //   return new Promise(resolve => {
-    //     return endpoint
-    //   }).then(r=> {return endpoint});
-    // }
+  async getApiEndpoint(){
+     if(endpoint != ''){
+      return endpoint
+     }
  
 
     this.http.get(window.location.origin + '/API_URL').subscribe(
       res=>{
         var url =  res["GENEALOGY_API"];
-        return endpoint = `${url}/api/v1/`
+        return endpoint = `/api/v1/`
       }
     )
   }
