@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RestService } from '../rest.service';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-main',
@@ -15,7 +15,8 @@ export class MainComponent implements OnInit {
 
   personEditForm: FormGroup = null;
   constructor(public rest: RestService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private http: HttpClient) {
     this.personEditForm = this.fb.group({
       'query': this.query,
       items: this.fb.array([]),
@@ -44,31 +45,27 @@ export class MainComponent implements OnInit {
   }
 
   ngAfterContentInit() {
-
     this.search()
   }
 
   search() {
 
-    var query = this.personEditForm.get("query").value
-    this.rest.getApiEndpoint().then((endpoint) => {
-    this.rest.searchPersons(endpoint, query).subscribe((data) => {
+    this.rest.getApiEndpoint().subscribe(endpoint => {
+      var query = this.personEditForm.get("query").value
+      this.rest.searchPersons(endpoint, query).subscribe((data) => {
 
-      let myData = Object.assign(data)
-      let childrenArray = this.personEditForm.get("items") as FormArray
-      childrenArray.clear()
-      myData.forEach(element => {
-        childrenArray.push(this.fb.group({
-          'id': element._id,
-          'firstName': element.FirstName,
-          'lastName': element.LastName
-        }))
+        let myData = Object.assign(data)
+        let childrenArray = this.personEditForm.get("items") as FormArray
+        childrenArray.clear()
+        myData.forEach(element => {
+          childrenArray.push(this.fb.group({
+            'id': element._id,
+            'firstName': element.FirstName,
+            'lastName': element.LastName
+          }))
+        });
       });
-
-
-
-    });
-  })
+    })
   }
 
 

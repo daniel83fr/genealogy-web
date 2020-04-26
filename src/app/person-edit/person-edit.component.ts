@@ -46,9 +46,10 @@ export class PersonEditComponent implements OnInit {
     });
   }
 
+   
   ngAfterContentInit() {
     this.id = this.route.snapshot.paramMap.get('id')
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.getPersonFull(endpoint, this.id).subscribe((data) => {
 
         data = new DataAdapter().adapt(data)
@@ -129,26 +130,25 @@ export class PersonEditComponent implements OnInit {
       lastName: '',
     })
   }
-
   addChild() {
     this.children.push(this.newSkill());
   }
   removeFather() {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
     this.rest.removeParentLink(endpoint, this.father.get("id").value, this.id)
     location.reload();
     })
   }
 
   linkFather() {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
     this.rest.addParentLink(endpoint, this.id, this.father.get("id").value)
     location.reload();
     })
   }
 
   createFather() {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
     this.rest.createPerson(endpoint, this.father.get("lastName").value, this.father.get("firstName").value, "Male")
       .subscribe(res => {
         this.rest.addParentLink(endpoint, this.id, res)
@@ -158,7 +158,7 @@ export class PersonEditComponent implements OnInit {
   }
 
   createMother() {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.createPerson(endpoint, this.mother.get("lastName").value, this.mother.get("firstName").value, "Female")
         .subscribe(res => {
           this.rest.addParentLink(endpoint, this.id, res)
@@ -171,14 +171,14 @@ export class PersonEditComponent implements OnInit {
   }
 
   removeMother() {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.removeParentLink(endpoint, this.mother.get("id").value, this.id)
       location.reload();
     })
   }
 
   linkMother() {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.addParentLink(endpoint, this.id, this.mother.get("id").value)
       location.reload();
     })
@@ -186,7 +186,7 @@ export class PersonEditComponent implements OnInit {
 
   }
   removeChild(i: number) {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.removeParentLink(endpoint, this.id, this.children.value[i].id)
       location.reload();
     })
@@ -195,14 +195,14 @@ export class PersonEditComponent implements OnInit {
   }
 
   linkChild(i: number) {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.addParentLink(endpoint, this.children.value[i].id, this.id)
       location.reload();
     })
   }
 
   createChild(i: number) {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.createPerson(endpoint, this.children.value[i].lastName, this.children.value[i].firstName, "")
         .subscribe(res => {
           this.rest.addParentLink(endpoint, res, this.id)
@@ -220,7 +220,7 @@ export class PersonEditComponent implements OnInit {
   }
 
   removeSpouse(i: number) {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.removeSpouseLink(endpoint, this.id, this.spouses.value[i].id)
       this.rest.removeSpouseLink(endpoint, this.spouses.value[i].id, this.id)
       location.reload();
@@ -228,14 +228,14 @@ export class PersonEditComponent implements OnInit {
   }
 
   linkSpouse(i: number) {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.addSpouseLink(endpoint, this.spouses.value[i].id, this.id)
       location.reload();
     })
   }
 
   createSpouse(i: number) {
-    this.rest.getApiEndpoint().then((endpoint) => {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       this.rest.createPerson(endpoint, this.spouses.value[i].lastName, this.spouses.value[i].firstName, "")
         .subscribe(res => {
           this.rest.addSpouseLink(endpoint, res, this.id)
@@ -265,7 +265,7 @@ export class PersonEditComponent implements OnInit {
 
     }
     else {
-      this.rest.getApiEndpoint().then((endpoint) => {
+      this.rest.getApiEndpoint().subscribe((endpoint) => {
         this.rest.updatePerson(endpoint, this.id, changes)
         alert("Updated")
       })

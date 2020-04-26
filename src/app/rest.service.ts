@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
-import { ok } from 'assert';
-import { environment } from 'src/environments/environment';
-
-var endpoint ='';
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json'
-  })
-};
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,28 +9,25 @@ const httpOptions = {
 
 export class RestService {
 
+  endpoint = ""
 
   constructor(private http: HttpClient) { 
-   
-
   }
 
   
+  getApiEndpoint(): Observable<any> {
 
-  async getApiEndpoint(){
-     if(endpoint != ''){
-      return endpoint
+     if(this.endpoint != ''){
+      return of(this.endpoint)
      }
- 
 
-    this.http.get(window.location.origin + '/API_URL').subscribe(
-      res=>{
-        var url =  res["GENEALOGY_API"];
-        endpoint = `${url}/api/v1/`
-        return endpoint 
-      }
-    )
+    return this.http.get(window.location.origin + '/API_URL').pipe(
+      map(res =>{
+        this.endpoint =  res["GENEALOGY_API"]+'/api/v1/'
+        return this.endpoint;
+      }));
   }
+
 
   getUnusedPersons(endpoint:string) {
     return this.http.get(endpoint + 'admin/person/unused').pipe(
