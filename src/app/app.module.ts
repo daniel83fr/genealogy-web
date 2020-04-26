@@ -11,6 +11,7 @@ import { PersonEditComponent } from './person-edit/person-edit.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminComponent } from './admin-component/admin.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 //import {DemoMaterialModule} from './material-module';
 
 
@@ -30,7 +31,7 @@ import { AdminComponent } from './admin-component/admin.component';
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-  //  DemoMaterialModule,
+    MatExpansionModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
