@@ -12,7 +12,9 @@ import { PersonEditComponent } from './person-edit/person-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminComponent } from './admin-component/admin.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-//import {DemoMaterialModule} from './material-module';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {CdkTableModule} from '@angular/cdk/table';
 
 
 @NgModule({
@@ -32,6 +34,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
     HttpClientModule,
     ReactiveFormsModule,
     MatExpansionModule,
+    MatButtonModule,
+    MatIconModule,
+    CdkTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

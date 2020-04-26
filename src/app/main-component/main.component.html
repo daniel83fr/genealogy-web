@@ -8,7 +8,28 @@
     <img mat-card-image src="../../assets/img/genealogy.jpg" alt="Photo of Genealogy">
     <mat-card-content>
       
-        
+        <form [formGroup]="personEditForm">
+
+          <input matInput aria-label="Search" formControlName="query"> <button (click)="search()">Search</button>
+
+          <br />
+          <b>Persons: </b><br />
+          <div formArrayName="items">
+            <div *ngFor="let x of items.controls; let i=index">
+              <div [formGroupName]="i">
+                Id :
+                <input type="text" formControlName="id">
+                FirstName:
+                <input type="text" formControlName="firstName">
+                LastName:
+                <input type="text" formControlName="lastName">
+
+                <a [href]="'person/'+x.id"> {{x.FirstName}} {{x.LastName}}aaa</a>
+              </div>
+            </div>
+          </div>
+
+        </form>
 
 
 
@@ -20,28 +41,6 @@
   </mat-card>
 </div>
 
-<form [formGroup]="personEditForm">
-
-  <input matInput aria-label="Search" formControlName="query"> <button (click)="search()">Search</button>
-
-  <br />
-  <b>Children </b><br />
-  <div formArrayName="items">
-    <div *ngFor="let x of items.controls; let i=index">
-      <div [formGroupName]="i">
-        Id :
-        <input type="text" formControlName="id">
-        FirstName:
-        <input type="text" formControlName="firstName">
-        LastName:
-        <input type="text" formControlName="lastName">
-
-        <a [href]="'person/'+x.id"> {{x.FirstName}} {{x.LastName}}aaa</a>
-      </div>
-    </div>
-  </div>
-
-</form>
 
 <mat-accordion class="example-headers-align">
   <mat-expansion-panel>

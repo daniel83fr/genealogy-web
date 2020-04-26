@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RestService } from '../rest.service';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
+import {CdkTableModule} from '@angular/cdk/table';
 
 @Component({
   selector: 'app-main',
@@ -10,10 +11,10 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./main.component.css']
 })
 
+
 export class MainComponent implements OnInit {
-
   query = ''
-
+  
   personEditForm: FormGroup = null;
   constructor(public rest: RestService,
     private fb: FormBuilder,

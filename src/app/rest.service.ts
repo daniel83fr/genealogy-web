@@ -21,9 +21,9 @@ export class RestService {
       return of(this.endpoint)
      }
 
-    return this.http.get(window.location.origin + '/API_URL').pipe(
+    return this.http.get(window.location.origin + '/info/api').pipe(
       map(res =>{
-        this.endpoint =  res["GENEALOGY_API"]+'/api/v1/'
+        this.endpoint =  res["GENEALOGY_API"]
         return this.endpoint;
       }));
   }

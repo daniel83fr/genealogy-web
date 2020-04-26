@@ -2,7 +2,7 @@
 <!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
 <!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -
 <!-- * * * * * * * * * Delete the template below * * * * * * * * * * -->
 <!-- * * * * * * * to get started with your project! * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
@@ -300,13 +300,20 @@
 
 <!-- Toolbar -->
 <div class="toolbar" role="banner">
+  <button *ngIf="env!='production'" mat-flat-button>{{env}}</button>
+  <a href="/">
   <img
     width="40"
     alt="Angular Logo"
     src="../assets/img/logo.png"
-  />
+  /></a>
   <span>Genealogy App</span>
     <div class="spacer"></div>
+
+      <button mat-mini-fab color="Warn">
+        <mat-icon>menu</mat-icon>
+      </button>
+   
 
 </div>
 
