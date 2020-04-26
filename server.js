@@ -6,8 +6,12 @@ require('dotenv').config()
 // Serve static files....
 app.use(express.static(__dirname + '/dist/GenealogyFrontEnd'));
 
-app.get('/API_URL', (req, res) => {
+app.get('/info/api', (req, res) => {
   res.send({"GENEALOGY_API" : process.env.GENEALOGY_API})
+});
+
+app.get('/info/env', (req, res) => {
+  res.send({"Environnement" : process.env.NODE_ENV})
 });
 
 // Send all requests to index.html
