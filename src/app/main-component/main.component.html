@@ -14,17 +14,19 @@
 
           <br />
           <b>Persons: </b><br />
+      
           <div formArrayName="items">
+            <div>
+              <input type="text" readonly="true" value="FirstName">
+              <input type="text" readonly="true" value="LastName">
+         
+            </div>
             <div *ngFor="let x of items.controls; let i=index">
               <div [formGroupName]="i">
-                Id :
-                <input type="text" formControlName="id">
-                FirstName:
+                
                 <input type="text" formControlName="firstName">
-                LastName:
                 <input type="text" formControlName="lastName">
-
-                <a [href]="'person/'+x.id"> {{x.FirstName}} {{x.LastName}}aaa</a>
+                <a [href]="'person/'+x.value.id"> view </a>
               </div>
             </div>
           </div>
