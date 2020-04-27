@@ -1,17 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import {MatIconModule} from '@angular/material/icon';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-nav',
+  templateUrl: './nav.component.html',
+  styleUrls: ['./nav.component.css']
 })
-export class AppComponent {
-  title = 'GenealogyFrontEnd';
-  env = 'Staging...'
 
+export class NavComponent implements OnInit {
+  env = ''
   constructor(private http: HttpClient) { 
     this.http.get(window.location.origin + '/info/env').pipe(
       map(res =>{
@@ -20,6 +18,13 @@ export class AppComponent {
         this.env = res
       });
   }
-  
+ 
 
+  ngOnInit(): void {
+  }
+
+
+  ngAfterContentInit() {
+
+  }
 }

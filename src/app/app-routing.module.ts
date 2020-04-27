@@ -3,12 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { PersonComponentComponent } from './person-component/person-component.component';
 import { MainComponent } from './main-component/main.component';
 import { PersonEditComponent } from './person-edit/person-edit.component';
-import { AdminComponent } from './admin-component/admin.component';
+import { AdminComponent } from './components/admin-component/admin.component';
+import { HelpComponent } from './components/help-component/help.component';
 
 
 const routes: Routes = [
   {
     path: 'admin',      component: AdminComponent 
+  },
+  {
+    path: 'help',      component: HelpComponent 
   },
   {
     path: 'person/:id/edit',      component: PersonEditComponent 

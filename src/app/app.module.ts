@@ -9,14 +9,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from './main-component/main.component';
 import { PersonEditComponent } from './person-edit/person-edit.component';
 
-import { ReactiveFormsModule } from '@angular/forms';
-import { AdminComponent } from './admin-component/admin.component';
+import {NavComponent} from './components/nav-component/nav.component'
+import {HelpComponent} from './components/help-component/help.component'
+
+import { ReactiveFormsModule} from '@angular/forms';
+import { AdminComponent } from './components/admin-component/admin.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {CdkTableModule} from '@angular/cdk/table';
-
-
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatFormFieldModule} from '@angular/material/form-field';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,9 +28,12 @@ import {CdkTableModule} from '@angular/cdk/table';
     MainComponent,
     PersonEditComponent,
     AdminComponent,
+    NavComponent,
+    HelpComponent
 
   ],
   imports: [
+    MatToolbarModule,
     BrowserModule,
     MatCardModule,
     AppRoutingModule,
@@ -37,6 +44,8 @@ import {CdkTableModule} from '@angular/cdk/table';
     MatButtonModule,
     MatIconModule,
     CdkTableModule,
+    MatMenuModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]

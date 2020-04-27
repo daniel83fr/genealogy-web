@@ -1,0 +1,28 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+
+    <button mat-raised-button color="primary" routerLink="/">
+      <img width="40" alt="Angular Logo" src="../../../assets/img/logo.png" />
+      <span>Genealogy</span>
+    </button>
+
+    <span style="flex: auto;"></span>
+    <button mat-raised-button color="primary" routerLink="/">Login</button>
+
+    <button mat-icon-button aria-label="my profile" [matMenuTriggerFor]="menu">
+      <mat-icon>person</mat-icon>
+    </button>
+    
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item routerLink="/person/5e6556427af677179baf2e5a" >Profile</button>
+      <button mat-menu-item routerLink="/admin" >Admin</button>
+      <button mat-menu-item>Logout</button>
+    </mat-menu>
+
+    <button mat-icon-button routerLink="/help">
+      <mat-icon>help_outline</mat-icon>
+    </button>
+
+    <button *ngIf="env!='production'" mat-raised-button color="warn">{{env}}</button>
+  </mat-toolbar-row>
+</mat-toolbar>
