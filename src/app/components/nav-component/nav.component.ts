@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
+
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -19,12 +20,20 @@ export class NavComponent implements OnInit {
       });
   }
  
-
+  isConnected = false;
+  connectedUser = "";
   ngOnInit(): void {
   }
 
+  logout(){
+    localStorage.removeItem("token")
+    localStorage.removeItem("login")
+    window.location.reload();
+  }
 
   ngAfterContentInit() {
-
+    this.isConnected = localStorage.getItem("token") != null
+    this.connectedUser = localStorage.getItem("login")
+    
   }
 }

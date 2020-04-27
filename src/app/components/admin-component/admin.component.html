@@ -1,13 +1,31 @@
-<h1>admin area!</h1>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Admin area</mat-card-title>
+  </mat-card-header>
+</mat-card>
 
+<mat-tab-group>
+  <mat-tab label="Info"> 
+    <pre>
+      Env: Staging
+      Api: https://genealogy-api-staging.herokuapp.com/api/v1/
+      API Status : OK
+    </pre>
+  </mat-tab>
 
-<div *ngFor="let x of data; let i=index">
-    <div>
-      <input type="text" [value]=x._id readonly=true>
-      <input type="text" [value]=x.FirstName readonly=true>
-      <input type="text" [value]=x.LastName readonly=true>
-
-      <button (click)="removePerson(x._id)">Remove</button>
-
+  <mat-tab label="Unused Persons"> 
+    <div *ngFor="let x of data; let i=index">
+      <div>
+        <input type="text" [value]=x._id readonly=true>
+        <input type="text" [value]=x.FirstName readonly=true>
+        <input type="text" [value]=x.LastName readonly=true>
+  
+        <button (click)="removePerson(x._id)">Remove</button>
+  
+      </div>
     </div>
-  </div>
+  </mat-tab>
+</mat-tab-group>
+
+
+

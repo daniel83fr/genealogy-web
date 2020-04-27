@@ -4,7 +4,7 @@ import {MatCardModule} from '@angular/material/card';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PersonComponentComponent } from './person-component/person-component.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from './main-component/main.component';
 import { PersonEditComponent } from './person-edit/person-edit.component';
@@ -21,6 +21,11 @@ import {CdkTableModule} from '@angular/cdk/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTabsModule} from '@angular/material/tabs';
+import { LoginComponent } from './components/login-component/login.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatInputModule} from '@angular/material/input';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,15 +34,17 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     PersonEditComponent,
     AdminComponent,
     NavComponent,
-    HelpComponent
+    HelpComponent,
+    LoginComponent
 
   ],
   imports: [
+    MatInputModule,
     MatToolbarModule,
     BrowserModule,
     MatCardModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
+    NoopAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
     MatExpansionModule,
@@ -45,7 +52,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatIconModule,
     CdkTableModule,
     MatMenuModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTabsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
