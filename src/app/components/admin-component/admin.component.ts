@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { RestService } from '../rest.service';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { RestService } from '../../rest.service';
 
 @Component({
   selector: 'app-admin',
@@ -7,7 +7,11 @@ import { RestService } from '../rest.service';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-
+  @Output() onSetTitle = new EventEmitter<string>();
+  setTitle(){
+     this.onSetTitle.emit('Admin Area');
+  }
+  
   constructor(public rest: RestService) { }
   data = {}
 
