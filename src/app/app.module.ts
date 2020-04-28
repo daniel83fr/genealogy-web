@@ -21,12 +21,15 @@ import {CdkTableModule} from '@angular/cdk/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
 import { LoginComponent } from './components/login-component/login.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatInputModule} from '@angular/material/input';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { FooterComponent } from './components/footer-component/footer.component';
+import { BottomSheetOverviewExampleSheet } from './components/share-component/share.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +39,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     AdminComponent,
     NavComponent,
     HelpComponent,
-    LoginComponent
+    LoginComponent,
+    FooterComponent,
+    
 
   ],
   imports: [
@@ -58,9 +63,16 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatSnackBarModule,
     MatTableModule,
    MatSortModule,
-   MatPaginatorModule
+   MatPaginatorModule,
+   MatListModule
   ],
-  providers: [],
+  entryComponents: [
+    BottomSheetOverviewExampleSheet
+  ],
+
+  providers: [
+    
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

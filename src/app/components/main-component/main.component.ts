@@ -16,8 +16,6 @@ import {MatPaginator} from '@angular/material/paginator';
 export class MainComponent implements OnInit {
   query = ''
   
-  personEditForm: FormGroup = null;
-
   
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -25,24 +23,6 @@ export class MainComponent implements OnInit {
   constructor(public rest: RestService,
     private fb: FormBuilder,
     private http: HttpClient) {
-    this.personEditForm = this.fb.group({
-      'query': this.query,
-      items: this.fb.array([]),
-
-    })
-  }
-
-  get items(): FormArray {
-    return this.personEditForm.get("items") as FormArray
-  }
-
-
-  newSkill(): FormGroup {
-    return this.fb.group({
-      id: '',
-      firstName: '',
-      lastName: '',
-    })
   }
 
 
@@ -56,33 +36,21 @@ export class MainComponent implements OnInit {
     this.search()
   }
 
-  onShare(){
-    alert("Not implemented yet.")
-  }
-
   dataSource :any;
   displayedColumns=[];
   search() {
 
     this.rest.getApiEndpoint().subscribe(endpoint => {
-      var query = this.personEditForm.get("query").value
-      this.rest.searchPersons(endpoint, query).subscribe((data) => {
+     
+      this.rest.searchPersons(endpoint).subscribe((data) => {
 
         let myData = Object.assign(data)
-        let childrenArray = this.personEditForm.get("items") as FormArray
-        childrenArray.clear()
-        
+      
         this.dataSource = new MatTableDataSource(myData);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.displayedColumns = ['position', 'FirstName', 'LastName', 'Link']
-        myData.forEach(element => {
-          childrenArray.push(this.fb.group({
-            'id': element._id,
-            'firstName': element.FirstName,
-            'lastName': element.LastName
-          }))
-        });
+        this.displayedColumns = [ 'FirstName', 'LastName', 'Link']
+       
       });
     })
   }

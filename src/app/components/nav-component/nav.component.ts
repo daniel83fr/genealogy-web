@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 
 @Component({
@@ -10,16 +11,28 @@ import { map } from 'rxjs/operators';
 })
 
 export class NavComponent implements OnInit {
-  env = ''
+ env = ""
   constructor(private http: HttpClient) { 
-    this.http.get(window.location.origin + '/info/env').pipe(
-      map(res =>{
-        return  res["Environnement"]
-      })).subscribe(res=>{
+    this.getEnvironnementt().subscribe(res=>{
         this.env = res
       });
   }
  
+
+  getEnvironnementt(): Observable<any> {
+    const cachedEnv = sessionStorage.getItem('Environnement');
+    if(cachedEnv!= null){
+      return of(cachedEnv)
+     }
+  
+    return this.http.get('/info/env').pipe(
+      map(res =>{
+        let env =  res["Environnement"]
+        sessionStorage.setItem('Environnement', env);
+        return env;
+      }));
+  }
+  
   isConnected = false;
   connectedUser = "";
   ngOnInit(): void {
