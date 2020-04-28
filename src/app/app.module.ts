@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PersonComponentComponent } from './person-component/person-component.component';
+import { PersonComponentComponent } from './components/person-component/person.component';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from './components/main-component/main.component';

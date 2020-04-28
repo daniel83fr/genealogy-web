@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PersonComponentComponent } from './person-component/person-component.component';
+import { PersonComponentComponent } from './components/person-component/person.component';
 import { MainComponent } from './components/main-component/main.component';
 import { PersonEditComponent } from './person-edit/person-edit.component';
 import { AdminComponent } from './components/admin-component/admin.component';

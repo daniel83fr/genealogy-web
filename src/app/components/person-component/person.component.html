@@ -1,0 +1,97 @@
+<!-- <mat-divider></mat-divider> -->
+<mat-card>
+  <mat-card-header>
+    <mat-card-title> {{getDisplayName(data.currentPerson)}}</mat-card-title>
+    <mat-card-subtitle>{{data.currentPerson?._id}}</mat-card-subtitle>
+
+    <mat-card-subtitle *ngIf="data.currentPerson?.Gender=='Male'"><img src="../../../assets/img/profile_male.JPG" />
+    </mat-card-subtitle>
+    <mat-card-subtitle *ngIf="data.currentPerson?.Gender=='Female'"><img src="../../../assets/img/profile_female.JPG" />
+    </mat-card-subtitle>
+    <mat-divider [vertical]="true"></mat-divider>
+
+    <p>
+      <mat-form-field appearance="standard">
+        <mat-label>FirstName</mat-label>
+        <input matInput placeholder="firstName" [value]="data?.currentPerson?.FirstName" readonly>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label>LastName</mat-label>
+        <input matInput placeholder="lastName" [value]="data?.currentPerson?.LastName" readonly>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="data?.currentPerson?.MaidenName!=''" appearance="standard">
+        <mat-label>MaidenName</mat-label>
+        <input matInput placeholder="maidenName" [value]="data?.currentPerson?.MaidenName" readonly>
+      </mat-form-field>
+
+      <br>
+
+      <mat-form-field appearance="standard">
+        <mat-label>Gender</mat-label>
+        <input matInput placeholder="maidenName" [value]="data?.currentPerson?.Gender" readonly>
+      </mat-form-field>
+
+      <br>
+
+      <mat-form-field appearance="standard">
+        <mat-label>Year</mat-label>
+        <input matInput placeholder="birthDate" [value]="data?.currentPerson?.BirthDate" readonly>
+      </mat-form-field>
+
+    </p>
+    <br>
+  </mat-card-header>
+  <mat-card-content>
+
+    <b>Father</b>: <a mat-flat-button [href]="'person/' + data?.father?._id"> {{data?.father?.FirstName}}
+      {{data?.father?.LastName | uppercase }} </a><br />
+
+    <b>Mother:</b> <a mat-flat-button [href]="'person/' + data?.mother?._id"> {{data?.mother?.FirstName}}
+      {{data?.mother?.LastName | uppercase }} </a><br />
+
+    <br>
+    <b>Children:</b><br />
+    <a *ngFor="let x of data?.children" mat-flat-button [href]="'person/' + x._id"> {{x.FirstName}}
+      {{x.LastName | uppercase }} <br /> </a>
+
+    <br>
+    <b>Siblings:</b><br />
+    <a *ngFor="let x of data?. siblings" mat-flat-button [href]="'person/' + x._id"> {{x.FirstName}}
+      {{x.LastName | uppercase }} <br /> </a>
+
+    <br>
+    <b>Spouses:</b><br />
+    <a *ngFor="let x of data?.spouses" mat-flat-button [href]="'person/' + x._id"> {{x.FirstName}}
+      {{x.LastName | uppercase }} <br /> </a>
+
+
+
+
+  </mat-card-content>
+  <mat-card-actions>
+    <a mat-button [href]="'person/'+ data.currentPerson?._id +'/edit'">Edit Profile</a>
+    <a mat-button [href]="'person/'+ data.currentPerson?._id +'/register'">Claim profile</a>
+    (This is your profile? Please claim the profile.)
+  </mat-card-actions>
+</mat-card>
+<br>
+<h1>Family Tree</h1>
+<span style="margin-left:20px">(Click on family members to view details.)</span>
+<br>
+<br>
+<div class="familyTree"></div>
+
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Debug
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <pre> {{ data.currentPerson | json }}</pre>
+
+  </mat-expansion-panel>
+</mat-accordion>

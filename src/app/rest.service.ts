@@ -38,6 +38,9 @@ export class RestService {
 
       const cachedSearch: any = sessionStorage.getItem("search");
       if (cachedSearch != null) {
+
+        // Todo:
+        // Check if update available and update
         let json = JSON.parse(cachedSearch);
         return of(json.data)
       }
