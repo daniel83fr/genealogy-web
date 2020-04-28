@@ -4,7 +4,7 @@
   }
   
   .example-header-image {
-    background-image: url('../../assets/img/logo.png');
+    background-image: url('../../../assets/img/logo.png');
     background-size: cover;
   }
 

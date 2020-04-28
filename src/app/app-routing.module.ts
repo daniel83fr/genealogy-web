@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PersonComponentComponent } from './person-component/person-component.component';
-import { MainComponent } from './main-component/main.component';
+import { MainComponent } from './components/main-component/main.component';
 import { PersonEditComponent } from './person-edit/person-edit.component';
 import { AdminComponent } from './components/admin-component/admin.component';
 import { HelpComponent } from './components/help-component/help.component';
