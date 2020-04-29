@@ -8,7 +8,7 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from './components/main-component/main.component';
 import { PersonEditComponent } from './person-edit/person-edit.component';
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {NavComponent} from './components/nav-component/nav.component'
 import {HelpComponent} from './components/help-component/help.component'
 import {MatTableModule} from '@angular/material/table';
@@ -22,6 +22,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatListModule} from '@angular/material/list';
+import {MatSelectModule} from '@angular/material/select';
 import {MatTabsModule} from '@angular/material/tabs';
 import { LoginComponent } from './components/login-component/login.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -64,7 +65,9 @@ import { BottomSheetOverviewExampleSheet } from './components/share-component/sh
     MatTableModule,
    MatSortModule,
    MatPaginatorModule,
-   MatListModule
+   MatListModule,
+   MatSlideToggleModule,
+   MatSelectModule
   ],
   entryComponents: [
     BottomSheetOverviewExampleSheet

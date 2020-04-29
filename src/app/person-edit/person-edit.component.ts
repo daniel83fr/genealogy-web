@@ -266,6 +266,7 @@ export class PersonEditComponent implements OnInit {
     }
     else {
       this.rest.getApiEndpoint().subscribe((endpoint) => {
+   
         this.rest.updatePerson(endpoint, this.id, changes)
         alert("Updated")
       })
