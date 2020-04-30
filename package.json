@@ -27,6 +27,7 @@
     "@angular/router": "~9.0.6",
     "@types/dotenv": "^8.2.0",
     "@types/node": "^13.13.2",
+    "apollo-fetch": "^0.7.0",
     "d3-dtree": "^2.2.2",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",

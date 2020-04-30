@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import {MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import { createApolloFetch } from 'apollo-fetch';
 
 @Component({
   selector: 'app-main',
@@ -12,11 +13,13 @@ import {MatPaginator} from '@angular/material/paginator';
   styleUrls: ['./main.component.css']
 })
 
-
 export class MainComponent implements OnInit {
+  
   query = ''
-  
-  
+  data = []
+  dataSource :any;
+  displayedColumns=[];
+
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
@@ -25,10 +28,6 @@ export class MainComponent implements OnInit {
     private http: HttpClient) {
   }
 
-
-  data = []
-
-
   ngOnInit(): void {
   }
 
@@ -36,21 +35,32 @@ export class MainComponent implements OnInit {
     this.search()
   }
 
-  dataSource :any;
-  displayedColumns=[];
   search() {
 
     this.rest.getApiEndpoint().subscribe(endpoint => {
-     
-      this.rest.searchPersons(endpoint).subscribe((data) => {
+      const fetch = createApolloFetch({
+        uri: endpoint+"graphql",
+      });
 
-        let myData = Object.assign(data)
+      fetch({
+        query: `query SearchAllPersons {
+          persons:getPersons {
+            _id
+            FirstName
+            LastName
+          }
+        }
+        `,
+      }).then(res => {
+        console.log(res.data);
+
+        let myData = Object.assign(res.data.persons)
       
         this.dataSource = new MatTableDataSource(myData);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.displayedColumns = [ 'FirstName', 'LastName', 'Link']
-       
+
       });
     })
   }
@@ -59,8 +69,5 @@ export class MainComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
-
-
 
 }
