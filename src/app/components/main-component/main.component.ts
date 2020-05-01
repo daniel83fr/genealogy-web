@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { RestService } from '../../rest.service';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import {MatSort} from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { createApolloFetch } from 'apollo-fetch';
 
 @Component({
@@ -14,14 +14,14 @@ import { createApolloFetch } from 'apollo-fetch';
 })
 
 export class MainComponent implements OnInit {
-  
+
   query = ''
   data = []
-  dataSource :any;
-  displayedColumns=[];
+  dataSource: any;
+  displayedColumns = [];
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(public rest: RestService,
     private fb: FormBuilder,
@@ -38,31 +38,41 @@ export class MainComponent implements OnInit {
   search() {
 
     this.rest.getApiEndpoint().subscribe(endpoint => {
-      const fetch = createApolloFetch({
-        uri: endpoint+"graphql",
-      });
 
-      fetch({
-        query: `query SearchAllPersons {
-          persons:getPersons {
-            _id
-            FirstName
-            LastName
+      const cachedSearch: any = sessionStorage.getItem("personList");
+      if (cachedSearch != null) {
+        let json = JSON.parse(cachedSearch);
+        this.fillGrid(json);
+      }
+      else {
+        const fetch = createApolloFetch({
+          uri: endpoint + "graphql",
+        });
+
+        fetch({
+          query: `query SearchAllPersons {
+            persons:getPersons {
+              _id
+              FirstName
+              LastName
+            }
           }
-        }
-        `,
-      }).then(res => {
-        console.log(res.data);
-
-        let myData = Object.assign(res.data.persons)
-      
-        this.dataSource = new MatTableDataSource(myData);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.displayedColumns = [ 'FirstName', 'LastName', 'Link']
-
-      });
+          `,
+        }).then(res => {
+          console.log(res.data);
+          sessionStorage.setItem("personList", JSON.stringify(res));
+          this.fillGrid(res);
+        });
+      }
     })
+  }
+
+  private fillGrid(json: any) {
+    let myData = Object.assign(json.data.persons);
+    this.dataSource = new MatTableDataSource(myData);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.displayedColumns = ['FirstName', 'LastName', 'Link'];
   }
 
   applyFilter(event: Event) {
