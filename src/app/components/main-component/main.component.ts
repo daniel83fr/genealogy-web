@@ -38,7 +38,7 @@ export class MainComponent implements OnInit {
   search() {
 
     this.rest.getApiEndpoint().subscribe(endpoint => {
-
+   
       const cachedSearch: any = sessionStorage.getItem("personList");
       if (cachedSearch != null) {
         let json = JSON.parse(cachedSearch);
@@ -46,7 +46,7 @@ export class MainComponent implements OnInit {
       }
       else {
         const fetch = createApolloFetch({
-          uri: endpoint + "graphql",
+          uri: endpoint.replace('api/v1/','') + "graphql",
         });
 
         fetch({
