@@ -10,21 +10,22 @@
     <mat-card-subtitle *ngIf="data.currentPerson?.Gender=='Female'"><img src="../../../assets/img/profile_female.jpg" />
     </mat-card-subtitle>
     <mat-divider [vertical]="true"></mat-divider>
-<div>
-
-      <mat-slide-toggle  *ngIf="isConnected"  [checked]="editMode" (change)="onChange($event)">Edit</mat-slide-toggle>
+    <div>
+      <mat-slide-toggle *ngIf="isConnected" [checked]="editMode" (change)="onChange($event)">Edit</mat-slide-toggle>
 
       <br>
 
       <form [formGroup]="personEditForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="standard">
           <mat-label>FirstName</mat-label>
-          <input matInput placeholder="firstName" [value]="data?.currentPerson?.FirstName" [readonly]="!canEdit()" formControlName="firstName">
+          <input matInput placeholder="firstName" [value]="data?.currentPerson?.FirstName" [readonly]="!canEdit()"
+            formControlName="firstName">
         </mat-form-field>
 
         <mat-form-field appearance="standard">
           <mat-label>LastName</mat-label>
-          <input matInput placeholder="lastName" [value]="data?.currentPerson?.LastName" [readonly]="!canEdit()" formControlName="lastName">
+          <input matInput placeholder="lastName" [value]="data?.currentPerson?.LastName" [readonly]="!canEdit()"
+            formControlName="lastName">
         </mat-form-field>
 
         <mat-form-field *ngIf="data?.currentPerson?.MaidenName!=''" appearance="standard">
@@ -57,60 +58,46 @@
         <br>
         <button *ngIf="canEdit()" mat-stroked-button color="primary" [disabled]="!personEditForm.valid">Save</button>
       </form>
-     
-    </div>
-     
 
- 
+    </div>
+
+
+
 
     <br>
   </mat-card-header>
   <mat-card-content>
 
-    <b>Father</b>: 
-      <mat-slide-toggle  *ngIf="isConnected"  [checked]="editFather" (change)="onChange($event)">Edit</mat-slide-toggle>
-<br>
-<a mat-flat-button [href]="'person/' + data?.father?._id"> {{data?.father?.FirstName}}
-  {{data?.father?.LastName | uppercase }} </a>
-      <br />
+    <b>Father</b>:
+    <app-person-link [id]="id" [person]="data.father" type="parent" [editable]="isConnected"></app-person-link>
 
-    <b>Mother:</b> <mat-slide-toggle  *ngIf="isConnected"  [checked]="editFather" (change)="onChange($event)">Edit</mat-slide-toggle>
+    <br>
+    <b>Mother:</b>
+    <app-person-link [id]="id" [person]="data.mother" type="parent" [editable]="isConnected"></app-person-link>
 
-    <br /> <a mat-flat-button [href]="'person/' + data?.mother?._id"> {{data?.mother?.FirstName}}
-      {{data?.mother?.LastName | uppercase }} </a>
-     
-
-      <br />
-    <b>Children:</b><mat-slide-toggle  *ngIf="isConnected"  [checked]="editFather" (change)="onChange($event)">Edit</mat-slide-toggle>
     <br />
-    
+    <b>Children:</b>
+  
+    <div *ngFor="let x of data?. children">
+      <app-person-link [id]="id" [person]="x"  type="child" [editable]="isConnected"></app-person-link>
 
-      <div *ngFor="let x of data?. children">
-        <a  mat-flat-button [href]="'person/' + x._id"> {{x.FirstName}}
-          {{x.LastName | uppercase }}  </a>
-          <br />
-      </div>
-
-
-    <b>Siblings:</b><mat-slide-toggle  *ngIf="isConnected"  [checked]="editFather" (change)="onChange($event)">Edit</mat-slide-toggle>
-    <br />
-    <div *ngFor="let x of data?. siblings">
-      <a  mat-flat-button [href]="'person/' + x._id"> {{x.FirstName}}
-        {{x.LastName | uppercase }}  </a>
-        <br />
     </div>
-   
+
+    <b>Spouses:</b>
+
+    <div *ngFor="let x of data?. spouses">
+      <app-person-link [id]="id" [person]="x" type="child" [editable]="isConnected"></app-person-link>
+    </div>
+
+    <b>Siblings:</b> 
+     <br /> 
+    <div *ngFor="let x of data?. siblings">
+      <app-person-link [id]="id" [person]="x" type="child" ></app-person-link>
+    </div>
 
 
-    <b>Spouses:</b><mat-slide-toggle  *ngIf="isConnected"  [checked]="editFather" (change)="onChange($event)">Edit</mat-slide-toggle>
-    <br />
-   
 
-      <div *ngFor="let x of data?. spouses">
-        <a  mat-flat-button [href]="'person/' + x._id"> {{x.FirstName}}
-          {{x.LastName | uppercase }}  </a>
-          <br />
-      </div>
+
 
 
   </mat-card-content>

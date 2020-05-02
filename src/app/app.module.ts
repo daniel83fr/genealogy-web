@@ -31,6 +31,7 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { FooterComponent } from './components/footer-component/footer.component';
 import { BottomSheetOverviewExampleSheet } from './components/share-component/share.component';
+import { PersonLinkComponent } from './components/person-link-component/person-link.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +43,7 @@ import { BottomSheetOverviewExampleSheet } from './components/share-component/sh
     HelpComponent,
     LoginComponent,
     FooterComponent,
-    
+    PersonLinkComponent,
 
   ],
   imports: [

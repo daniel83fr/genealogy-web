@@ -31,13 +31,23 @@ export class PersonComponentComponent implements OnInit {
       'birthDate': ''
     })
 
+    this.fatherEditForm = this.fb.group({
+      'id': '',
+      'firstName': '',
+      'lastName': '',
+      'gender': '',
+      'birthDate': '',
+    })
+
   }
-  id:any =  {}
+  id: any = {}
   data: any = {}
   changes = []
   editMode = false;
   editFather = false;
+  editMother = false;
   personEditForm: FormGroup = null;
+  fatherEditForm: FormGroup = null;
   isConnected = false;
 
   onSubmit() {
@@ -69,9 +79,19 @@ export class PersonComponentComponent implements OnInit {
   canEdit() {
     return this.editMode && this.isConnected
   }
+
   onChange(value: MatSlideToggleChange) {
     this.editMode = value.checked
   }
+
+  onChangeFather(value: MatSlideToggleChange) {
+    this.editFather = value.checked
+  }
+
+  onChangeMother(value: MatSlideToggleChange) {
+    this.editMother = value.checked
+  }
+
   ngAfterContentInit() {
     var a = this.route.snapshot.paramMap.get('id')
     this.getProfileById(a)
@@ -99,17 +119,17 @@ export class PersonComponentComponent implements OnInit {
     this.rest.getApiEndpoint().subscribe(endpoint => {
 
       this.rest.getApiEndpoint().subscribe(endpoint => {
-   
+
         const cachedSearch: any = sessionStorage.getItem("profile");
         if (cachedSearch != null) {
           let json = JSON.parse(cachedSearch);
-         
+
         }
         else {
           const fetch = createApolloFetch({
-            uri: endpoint.replace('api/v1/','') + "graphql",
+            uri: endpoint.replace('api/v1/', '') + "graphql",
           });
-  
+
           fetch({
             query: `query GetProfile($id: String!) {
               currentPerson: getPersonById(_id: $id) {
@@ -145,15 +165,27 @@ export class PersonComponentComponent implements OnInit {
             variables: { "id": id }
           }).then(res => {
             console.log(res.data);
-            //sessionStorage.setItem("personList", JSON.stringify(res));
-            //this.fillGrid(res);
-            
+
             this.personEditForm = this.fb.group({
               'id': res.data.currentPerson._id,
               'firstName': res.data.currentPerson.FirstName,
               'lastName': res.data.currentPerson.LastName,
               'gender': res.data.currentPerson.Gender,
-              'birthDate': res.data.currentPerson.BirthDate})
+              'birthDate': res.data.currentPerson.BirthDate
+            })
+
+            if(res.data.father != null)
+            {
+              this.fatherEditForm = this.fb.group({
+                'id': res.data.father._id,
+                'firstName': res.data.father.FirstName,
+                'lastName':res.data.father.LastName,
+                'gender': res.data.father.Gender,
+                'birthDate': res.data.father.BirthDate,
+              })
+            }
+           
+
             this.id = res.data.currentPerson._id
             this.data = res.data
             var svg = d3.select(".familyTree")
@@ -162,22 +194,46 @@ export class PersonComponentComponent implements OnInit {
           });
         }
       })
-
-      // this.rest.getPersonFull(endpoint, id).subscribe((data) => {
-
-      //   data = new DataAdapter().adapt(data)
-
-
-      // })
     }
     );
-
-
-
-
-
   }
 
+  //Father
+  
+
+  linkFather() {
+    this.rest.getApiEndpoint().subscribe((endpoint) => { 
+      const fetch = createApolloFetch({
+        uri: endpoint.replace('api/v1/', '') + "graphql",
+      });
+
+      fetch({
+        query: `mutation addParentLink($id: String!, $id2: String!) {
+          addParentLink(_id: $id, _parentId: $id2)
+        }        
+        `,
+        variables: {
+          "id": this.id,
+          "id2": this.fatherEditForm.get("id").value
+        }
+      }).then(res => {
+        console.log(res.data);
+        alert(res.data.addParentLink)
+        location.reload();
+      });
+    }
+    )
+  }
+
+  createFather() {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
+      this.rest.createPerson(endpoint+"api/v1/", this.fatherEditForm.get("lastName").value, this.fatherEditForm.get("firstName").value, "Male")
+        .subscribe(res => {
+          this.rest.addParentLink(endpoint+"api/v1/", this.id, res)
+        //  location.reload();
+        })
+    })
+  }
 
 
 }
