@@ -6,6 +6,7 @@ import { DataAdapter } from '../../dataAdapter';
 import { TreeDraw } from '../../treeDraw';
 import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { createApolloFetch } from 'apollo-fetch';
 
 @Component({
   selector: 'app-person-component',
@@ -73,7 +74,7 @@ export class PersonComponentComponent implements OnInit {
   }
   ngAfterContentInit() {
     var a = this.route.snapshot.paramMap.get('id')
-    this.getProducts(a)
+    this.getProfileById(a)
 
   }
 
@@ -94,23 +95,80 @@ export class PersonComponentComponent implements OnInit {
   }
 
 
-  getProducts(id: string) {
+  getProfileById(id: string) {
     this.rest.getApiEndpoint().subscribe(endpoint => {
-      this.rest.getPersonFull(endpoint, id).subscribe((data) => {
 
-        data = new DataAdapter().adapt(data)
-        this.personEditForm = this.fb.group({
-          'id': data.currentPerson._id,
-          'firstName': data.currentPerson.FirstName,
-          'lastName': data.currentPerson.LastName,
-          'gender': data.currentPerson.Gender,
-          'birthDate': data.currentPerson.BirthDate})
-        this.id = data.currentPerson._id
-        this.data = data
-        var svg = d3.select(".familyTree")
-        new TreeDraw().draw(svg, data)
+      this.rest.getApiEndpoint().subscribe(endpoint => {
+   
+        const cachedSearch: any = sessionStorage.getItem("profile");
+        if (cachedSearch != null) {
+          let json = JSON.parse(cachedSearch);
+         
+        }
+        else {
+          const fetch = createApolloFetch({
+            uri: endpoint.replace('api/v1/','') + "graphql",
+          });
+  
+          fetch({
+            query: `query GetProfile($id: String!) {
+              currentPerson: getPersonById(_id: $id) {
+                ...PersonInfo
+              }
+              mother: getMotherById(_id: $id) {
+                ...PersonInfo
+              }
+              father: getFatherById(_id: $id) {
+                ...PersonInfo
+              },
+              children: getChildrenById(_id: $id) {
+                ...PersonInfo
+              },
+              spouses: getSpousesById(_id: $id) {
+                ...PersonInfo
+              },
+              siblings: getSiblingsById(_id: $id) {
+                ...PersonInfo
+              },
+            }
+            
+            fragment PersonInfo on User {
+              _id
+              FirstName
+              LastName
+              MaidenName
+              Gender
+              BirthDate
+            }
+            
+            `,
+            variables: { "id": id }
+          }).then(res => {
+            console.log(res.data);
+            //sessionStorage.setItem("personList", JSON.stringify(res));
+            //this.fillGrid(res);
+            
+            this.personEditForm = this.fb.group({
+              'id': res.data.currentPerson._id,
+              'firstName': res.data.currentPerson.FirstName,
+              'lastName': res.data.currentPerson.LastName,
+              'gender': res.data.currentPerson.Gender,
+              'birthDate': res.data.currentPerson.BirthDate})
+            this.id = res.data.currentPerson._id
+            this.data = res.data
+            var svg = d3.select(".familyTree")
+            new TreeDraw().draw(svg, res.data)
 
+          });
+        }
       })
+
+      // this.rest.getPersonFull(endpoint, id).subscribe((data) => {
+
+      //   data = new DataAdapter().adapt(data)
+
+
+      // })
     }
     );
 

@@ -29,7 +29,7 @@
 
         <mat-form-field *ngIf="data?.currentPerson?.MaidenName!=''" appearance="standard">
           <mat-label>MaidenName</mat-label>
-          <input matInput placeholder="maidenName" [value]="data?.currentPerson?.MaidenName" [readonly]="">!canEdit()
+          <input matInput placeholder="maidenName" [value]="data?.currentPerson?.MaidenName" [readonly]="!canEdit()">
         </mat-form-field>
 
         <br>
@@ -135,7 +135,7 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <pre> {{ data.currentPerson | json }}</pre>
+    <pre> {{ data | json }}</pre>
 
   </mat-expansion-panel>
 </mat-accordion>
