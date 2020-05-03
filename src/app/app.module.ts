@@ -12,7 +12,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {NavComponent} from './components/nav-component/nav.component'
 import {HelpComponent} from './components/help-component/help.component'
 import {MatTableModule} from '@angular/material/table';
-import { ReactiveFormsModule} from '@angular/forms';
+import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { AdminComponent } from './components/admin-component/admin.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatButtonModule} from '@angular/material/button';
@@ -32,9 +32,12 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { FooterComponent } from './components/footer-component/footer.component';
 import { BottomSheetOverviewExampleSheet } from './components/share-component/share.component';
 import { PersonLinkComponent } from './components/person-link-component/person-link.component';
+import { PersonLinksComponent } from './components/person-links-component/person-links.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     AppComponent,
+    
     PersonComponentComponent,
     MainComponent,
     PersonEditComponent,
@@ -43,6 +46,7 @@ import { PersonLinkComponent } from './components/person-link-component/person-l
     HelpComponent,
     LoginComponent,
     FooterComponent,
+    PersonLinksComponent,
     PersonLinkComponent,
 
   ],
@@ -55,6 +59,7 @@ import { PersonLinkComponent } from './components/person-link-component/person-l
     NoopAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
     MatExpansionModule,
     MatButtonModule,
     MatIconModule,
@@ -68,7 +73,8 @@ import { PersonLinkComponent } from './components/person-link-component/person-l
    MatPaginatorModule,
    MatListModule,
    MatSlideToggleModule,
-   MatSelectModule
+   MatSelectModule,
+   MatTooltipModule,
   ],
   entryComponents: [
     BottomSheetOverviewExampleSheet

@@ -70,7 +70,7 @@ export class PersonComponentComponent implements OnInit {
     }
     else {
       this.rest.getApiEndpoint().subscribe((endpoint) => {
-        this.rest.updatePerson(endpoint, this.id, changes)
+        this.updateProfile(this.id, changes)
         alert("Updated")
       })
     }
@@ -198,6 +198,51 @@ export class PersonComponentComponent implements OnInit {
     );
   }
 
+  updateProfile(id:string, changes:any){
+    this.rest.getApiEndpoint().subscribe((endpoint) => { 
+      const fetch = createApolloFetch({
+        uri: endpoint.replace('api/v1/', '') + "graphql",
+      });
+
+      var objectKeys = Object.keys(changes);
+      let patchString = "{"
+      objectKeys.forEach(i =>
+        {
+          patchString+= i
+          patchString+= ":"
+          patchString+= "\""+ changes[i]+"\""
+          patchString+= ","
+        }
+        
+      )
+      patchString +="}"
+
+      alert(patchString)
+   
+
+      fetch({
+        query: `mutation UpdatePerson($_id:String!) {
+          updatePerson(_id: $_id, patch: ${patchString} ) {
+            _id
+            FirstName
+            LastName
+            MaidenName
+            Gender
+            BirthDate
+          }
+        }        
+        `,
+        variables: {
+          "_id": this.id,
+        }
+      }).then(res => {
+        console.log(res.data);
+        alert(res.data.updatePerson)
+        location.reload();
+      });
+    }
+    )
+  }
   //Father
   
 

@@ -1,26 +1,8 @@
 <div>
 <a mat-flat-button [href]="'person/' + person?._id"> {{person?.FirstName}}
     {{person?.LastName | uppercase }} </a>
-    <span *ngIf="editable && edit && person != null">({{person._id }})</span> 
-    <mat-slide-toggle *ngIf="editable" [checked]="edit" (change)="onChange($event)">Edit
-    </mat-slide-toggle>
-
-    <form *ngIf="editable && edit" [formGroup]="personEditForm">
-      <!-- <input type="text" formControlName="id" readonly> -->
-     <!--<br>
-     FirstName:
-     <input type="text" formControlName="firstName" [readonly]="data.father._id != ''">
-     LastName:
-     <input type="text" formControlName="lastName"  [readonly]="data.father._id != ''"> -->
-     <br>
-     
-     <button mat-stroked-button color="primary" *ngIf="person!=null" (click)="removeLink()" >Remove</button>
-
-     <button mat-stroked-button color="primary" *ngIf="person==null" (click)="createPersonAndLink()" >Create and link</button>
-     
-     <br>
-     <input *ngIf="person==null" type="text" formControlName="id">
-
-     <button mat-stroked-button color="primary" *ngIf="person==null" (click)="addLink()" >Link existing person</button>
-   </form>
+    <span *ngIf="editable && person != null">({{person._id }})</span> 
+    <button mat-icon-button color="warn" matTooltip="Remove link"  *ngIf="editable && person != null" (click)="removeLink()">
+      <mat-icon>link_off</mat-icon>
+    </button>
 </div>

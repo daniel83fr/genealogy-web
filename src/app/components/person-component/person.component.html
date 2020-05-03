@@ -68,41 +68,35 @@
   </mat-card-header>
   <mat-card-content>
 
-    <b>Father</b>:
-    <app-person-link [id]="id" [person]="data.father" type="parent" [editable]="isConnected"></app-person-link>
-
+    <app-person-links title="Father" [id]="id" [person]="data.father" type="parent" [editable]="isConnected">
+    </app-person-links>
     <br>
-    <b>Mother:</b>
-    <app-person-link [id]="id" [person]="data.mother" type="parent" [editable]="isConnected"></app-person-link>
+
+    <app-person-links title="Mother" [id]="id" [person]="data.mother" type="parent" [editable]="isConnected">
+    </app-person-links>
+
+
+
 
     <br />
-    <b>Children:</b>
-  
-    <div *ngFor="let x of data?. children">
-      <app-person-link [id]="id" [person]="x"  type="child" [editable]="isConnected"></app-person-link>
-
-    </div>
-
-    <b>Spouses:</b>
-
-    <div *ngFor="let x of data?. spouses">
-      <app-person-link [id]="id" [person]="x" type="child" [editable]="isConnected"></app-person-link>
-    </div>
-
-    <b>Siblings:</b> 
-     <br /> 
-    <div *ngFor="let x of data?. siblings">
-      <app-person-link [id]="id" [person]="x" type="child" ></app-person-link>
-    </div>
 
 
+    <app-person-links title="Children" [id]="id" [persons]="data.children" type="child" [editable]="isConnected">
+    </app-person-links>
 
+    <br />
 
+    <app-person-links title="Spouses" [id]="id" [persons]="data.spouses" type="spouse" [editable]="isConnected">
+    </app-person-links>
 
+    <br />
+
+    <app-person-links title="Siblings" [id]="id" [persons]="data.siblings" type="siblings" [editable]="isConnected">
+    </app-person-links>
 
   </mat-card-content>
   <mat-card-actions>
-    <a *ngIf="isConnected" mat-button [href]="'person/'+ data.currentPerson?._id +'/edit'">Edit Profile</a>
+    
     <a *ngIf="!isConnected" mat-button [href]="'person/'+ data.currentPerson?._id +'/register'">Claim profile</a>
     <span *ngIf="!isConnected">(This is your profile? Please claim the profile.)</span>
   </mat-card-actions>

@@ -4,22 +4,32 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { RestService } from 'src/app/rest.service';
 import { createApolloFetch } from 'apollo-fetch';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-
+import { FormsModule } from '@angular/forms'; 
 
 
 @Component({
-  selector: 'app-person-link',
-  templateUrl: './person-link.component.html',
-  styleUrls: ['./person-link.component.css']
+  selector: 'app-person-links',
+  templateUrl: './person-links.component.html',
+  styleUrls: ['./person-links.component.css']
 })
 
-export class PersonLinkComponent implements OnInit {
+export class PersonLinksComponent implements OnInit {
   
+  @Input('title')
+  title: string = "";
+
+
+
+
+
   @Input('id')
   id: string = "";
 
   @Input('person')
   person: any = {};
+
+  @Input('persons')
+  persons: any =[];
 
   @Input('editable')
   editable: boolean = false;
@@ -28,6 +38,8 @@ export class PersonLinkComponent implements OnInit {
 
   @Input('type')
   type: string = "";
+
+  linkId:string = ""
 
   personEditForm: FormGroup = null;
   
@@ -52,8 +64,20 @@ export class PersonLinkComponent implements OnInit {
    
   }
 
+  createPersonAndLink(){
+    
+  }
 
-  
+  addLink(){
+    switch(this.type){
+      case "parent":
+        this.linkFather()
+        break
+      default:
+        alert(this.type + " not supported")
+    }
+  }
+
   removeLink() {
     this.rest.getApiEndpoint().subscribe((endpoint) => { 
       const fetch = createApolloFetch({
@@ -92,9 +116,10 @@ export class PersonLinkComponent implements OnInit {
         `,
         variables: {
           "id": this.id,
-          "id2": this.personEditForm.get("id").value
+          "id2": this.linkId
         }
-      }).then(res => {
+      })
+      .then(res => {
         console.log(res.data);
         alert(res.data.addParentLink)
         location.reload();
@@ -106,4 +131,6 @@ export class PersonLinkComponent implements OnInit {
   onChange(value: MatSlideToggleChange) {
     this.edit = value.checked
   }
+
+  
 }

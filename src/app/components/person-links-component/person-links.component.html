@@ -1,0 +1,42 @@
+<div>
+  <b>{{title}}</b>:
+  <mat-slide-toggle *ngIf="editable" [checked]="edit" (change)="onChange($event)">Edit
+  </mat-slide-toggle>
+
+  <app-person-link *ngIf="type=='parent'" [id]="id" [person]="person" [type]="type" [editable]="editable && edit"></app-person-link>
+  
+  <div *ngFor="let x of persons">
+    <app-person-link [id]="id" [person]="x" [type]="type" [editable]="editable && edit"></app-person-link>
+  </div>
+
+  <div *ngIf="editable && edit && person?._id == null">
+
+    <mat-form-field appearance="standard">
+      <mat-label>FirstName</mat-label>
+      <input matInput  >
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>LastName</mat-label>
+      <input matInput>
+    </mat-form-field>
+    
+    <button mat-icon-button color="primary" matTooltip="create Person and Link"   (click)="createPersonAndLink()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  
+  <div *ngIf="editable && edit && person?._id == null">
+    
+    <mat-form-field appearance="standard" >
+      <mat-label>Id</mat-label>
+      <input matInput  [(ngModel)]= "linkId"  >
+    </mat-form-field>
+
+    <button mat-icon-button color="primary" matTooltip="add link"  *ngIf="editable && edit && person?._id == null" (click)="addLink()">
+      <mat-icon>link</mat-icon>
+    </button>
+  </div>
+
+  
+</div>
