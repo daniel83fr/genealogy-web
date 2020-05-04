@@ -54,7 +54,42 @@ export class PersonLinkComponent implements OnInit {
 
 
   
+
   removeLink() {
+    if(this.type == 'sibling'){
+      this.removeSiblingLink()
+    }
+    else{
+      this.removeDirectLink()
+    }
+    
+  }
+  removeSiblingLink(){
+    this.rest.getApiEndpoint().subscribe((endpoint) => { 
+      const fetch = createApolloFetch({
+        uri: endpoint.replace('api/v1/', '') + "graphql",
+      });
+
+      fetch({
+        query: `mutation RemoveSiblingLink($id: String!, $id2: String!) {
+          removeSiblingLink(_id1: $id, _id2: $id2)
+        }
+        `,
+        variables: {
+          "id": this.id,
+          "id2": this.person._id
+        }
+      }).then(res => {
+        console.log(res.data);
+        alert(res.data.removeSiblingLink)
+        location.reload();
+      });
+    }
+    )
+  }
+
+
+  removeDirectLink(){
     this.rest.getApiEndpoint().subscribe((endpoint) => { 
       const fetch = createApolloFetch({
         uri: endpoint.replace('api/v1/', '') + "graphql",
@@ -77,7 +112,6 @@ export class PersonLinkComponent implements OnInit {
     }
     )
   }
-
 
   linkFather() {
     this.rest.getApiEndpoint().subscribe((endpoint) => { 

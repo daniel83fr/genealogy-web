@@ -13,12 +13,12 @@
 
     <mat-form-field appearance="standard">
       <mat-label>FirstName</mat-label>
-      <input matInput  >
+      <input matInput  [(ngModel)]= "firstName" >
     </mat-form-field>
 
     <mat-form-field appearance="standard">
       <mat-label>LastName</mat-label>
-      <input matInput>
+      <input matInput  [(ngModel)]= "lastName">
     </mat-form-field>
     
     <button mat-icon-button color="primary" matTooltip="create Person and Link"   (click)="createPersonAndLink()">

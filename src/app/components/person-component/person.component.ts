@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { RestService } from '../../rest.service';
 import * as d3 from "d3";
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { DataAdapter } from '../../dataAdapter';
 import { TreeDraw } from '../../treeDraw';
 import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
@@ -102,6 +101,8 @@ export class PersonComponentComponent implements OnInit {
 
   ngOnInit(): void {
     this.isConnected = localStorage.getItem("token") != null
+
+    
   }
 
   getDisplayName(person: any) {
