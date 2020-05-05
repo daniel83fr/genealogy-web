@@ -67,7 +67,7 @@ export class PersonLinkComponent implements OnInit {
   removeSiblingLink(){
     this.rest.getApiEndpoint().subscribe((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint,
       });
 
       fetch({
@@ -92,7 +92,7 @@ export class PersonLinkComponent implements OnInit {
   removeDirectLink(){
     this.rest.getApiEndpoint().subscribe((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint,
       });
 
       fetch({
@@ -116,7 +116,7 @@ export class PersonLinkComponent implements OnInit {
   linkFather() {
     this.rest.getApiEndpoint().subscribe((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint,
       });
 
       fetch({

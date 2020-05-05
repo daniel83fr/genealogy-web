@@ -128,7 +128,7 @@ export class PersonComponentComponent implements OnInit {
         }
         else {
           const fetch = createApolloFetch({
-            uri: endpoint.replace('api/v1/', '') + "graphql",
+            uri: endpoint,
           });
 
           fetch({
@@ -202,7 +202,7 @@ export class PersonComponentComponent implements OnInit {
   updateProfile(id:string, changes:any){
     this.rest.getApiEndpoint().subscribe((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint,
       });
 
       var objectKeys = Object.keys(changes);
@@ -250,7 +250,7 @@ export class PersonComponentComponent implements OnInit {
   linkFather() {
     this.rest.getApiEndpoint().subscribe((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint,
       });
 
       fetch({
@@ -271,15 +271,5 @@ export class PersonComponentComponent implements OnInit {
     )
   }
 
-  createFather() {
-    this.rest.getApiEndpoint().subscribe((endpoint) => {
-      this.rest.createPerson(endpoint+"api/v1/", this.fatherEditForm.get("lastName").value, this.fatherEditForm.get("firstName").value, "Male")
-        .subscribe(res => {
-          this.rest.addParentLink(endpoint+"api/v1/", this.id, res)
-        //  location.reload();
-        })
-    })
-  }
-
-
+ 
 }

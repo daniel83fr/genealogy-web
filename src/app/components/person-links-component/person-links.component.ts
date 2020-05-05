@@ -70,7 +70,7 @@ export class PersonLinksComponent implements OnInit {
     changes["LastName"] = this.lastName;
     this.rest.getApiEndpoint().subscribe((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint,
       });
 
       var objectKeys = Object.keys(changes);
@@ -161,7 +161,7 @@ export class PersonLinksComponent implements OnInit {
   linkParent() {
     this.rest.getApiEndpoint().subscribe((endpoint) => {
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint,
       });
 
       fetch({
@@ -213,7 +213,7 @@ export class PersonLinksComponent implements OnInit {
     alert(this.linkId)
     this.rest.getApiEndpoint().subscribe((endpoint) => {
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint,
       });
 
       fetch({
@@ -239,7 +239,7 @@ export class PersonLinksComponent implements OnInit {
     alert(this.linkId)
     this.rest.getApiEndpoint().subscribe((endpoint) => {
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint,
       });
 
       fetch({

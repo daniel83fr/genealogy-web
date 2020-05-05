@@ -46,7 +46,7 @@ export class MainComponent implements OnInit {
       }
       else {
         const fetch = createApolloFetch({
-          uri: endpoint.replace('api/v1/','') + "graphql",
+          uri: endpoint,
         });
 
         fetch({
