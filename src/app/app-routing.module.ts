@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PersonComponentComponent } from './components/person-component/person.component';
 import { MainComponent } from './components/main-component/main.component';
-import { PersonEditComponent } from './person-edit/person-edit.component';
 import { AdminComponent } from './components/admin-component/admin.component';
 import { HelpComponent } from './components/help-component/help.component';
 import { LoginComponent } from './components/login-component/login.component';
@@ -16,9 +15,6 @@ const routes: Routes = [
   },
   {
     path: 'login',      component: LoginComponent 
-  },
-  {
-    path: 'person/:id/edit',      component: PersonEditComponent 
   },
   {
     path: 'person/:id',      component: PersonComponentComponent 

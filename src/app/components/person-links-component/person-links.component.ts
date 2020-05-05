@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { RestService } from 'src/app/rest.service';
 import { createApolloFetch } from 'apollo-fetch';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import Logger from '../../utils/logger'
 import { stringify } from 'querystring';
+import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 
 @Component({
   selector: 'app-person-links',
@@ -44,14 +44,14 @@ export class PersonLinksComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
-    public rest: RestService,
+    public rest: ConfigurationService,
   ) {
     this.personEditForm = this.fb.group({
       'id': this.person._id,
       'firstName': this.person.FirstName,
       'lastName': this.person.LastName,
       'gender': this.person.Gender,
-      'birthDate': this.person.BirthDate,
+      'birthDate': this.person.YearOfBirth,
     })
   }
 

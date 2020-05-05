@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { RestService } from '../../rest.service';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { createApolloFetch } from 'apollo-fetch';
+import { ConfigurationService } from 'src/app/_services/ConfigurationService';
+import { GraphQLService } from 'src/app/_services/GraphQLService';
 
 @Component({
   selector: 'app-main',
@@ -14,18 +12,15 @@ import { createApolloFetch } from 'apollo-fetch';
 })
 
 export class MainComponent implements OnInit {
-
-  query = ''
-  data = []
-  dataSource: any;
-  displayedColumns = [];
+   dataSource: any;
+   displayedColumns = [];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  constructor(public rest: RestService,
-    private fb: FormBuilder,
-    private http: HttpClient) {
+  constructor(
+    private configurationService: ConfigurationService,
+    private graphQLService: GraphQLService) {
   }
 
   ngOnInit(): void {
@@ -36,35 +31,13 @@ export class MainComponent implements OnInit {
   }
 
   search() {
-
-    this.rest.getApiEndpoint().subscribe(endpoint => {
-   
-      const cachedSearch: any = sessionStorage.getItem("personList");
-      if (cachedSearch != null) {
-        let json = JSON.parse(cachedSearch);
-        this.fillGrid(json);
-      }
-      else {
-        const fetch = createApolloFetch({
-          uri: endpoint,
-        });
-
-        fetch({
-          query: `query SearchAllPersons {
-            persons:getPersons {
-              _id
-              FirstName
-              LastName
-            }
-          }
-          `,
-        }).then(res => {
-          console.log(res.data);
-          sessionStorage.setItem("personList", JSON.stringify(res));
-          this.fillGrid(res);
-        });
-      }
-    })
+    this.configurationService.getApiEndpoint()
+      .subscribe(endpoint => {
+        this.graphQLService.getPersonList(endpoint)
+          .subscribe(res => {
+            this.fillGrid(res);
+          })
+      })
   }
 
   private fillGrid(json: any) {
@@ -72,12 +45,11 @@ export class MainComponent implements OnInit {
     this.dataSource = new MatTableDataSource(myData);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.displayedColumns = ['FirstName', 'LastName', 'Link'];
+    this.displayedColumns = ['FirstName', 'LastName', 'Gender', 'Year', 'Link'];
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
 }

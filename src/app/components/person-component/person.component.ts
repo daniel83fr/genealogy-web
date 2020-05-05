@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { RestService } from '../../rest.service';
 import * as d3 from "d3";
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TreeDraw } from '../../treeDraw';
 import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { createApolloFetch } from 'apollo-fetch';
+import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 
 @Component({
   selector: 'app-person-component',
@@ -18,7 +18,7 @@ export class PersonComponentComponent implements OnInit {
 
 
   constructor(
-    public rest: RestService,
+    public rest: ConfigurationService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder) {
@@ -102,7 +102,7 @@ export class PersonComponentComponent implements OnInit {
   ngOnInit(): void {
     this.isConnected = localStorage.getItem("token") != null
 
-    
+
   }
 
   getDisplayName(person: any) {
@@ -117,7 +117,7 @@ export class PersonComponentComponent implements OnInit {
 
 
   getProfileById(id: string) {
-    this.rest.getApiEndpoint().subscribe(endpoint => {
+   
 
       this.rest.getApiEndpoint().subscribe(endpoint => {
 
@@ -159,7 +159,8 @@ export class PersonComponentComponent implements OnInit {
               LastName
               MaidenName
               Gender
-              BirthDate
+              YearOfBirth
+              YearOfDeath
             }
             
             `,
@@ -172,20 +173,19 @@ export class PersonComponentComponent implements OnInit {
               'firstName': res.data.currentPerson.FirstName,
               'lastName': res.data.currentPerson.LastName,
               'gender': res.data.currentPerson.Gender,
-              'birthDate': res.data.currentPerson.BirthDate
+              'birthDate': res.data.currentPerson.YearOfBirth
             })
 
-            if(res.data.father != null)
-            {
-              this.fatherEditForm = this.fb.group({
-                'id': res.data.father._id,
-                'firstName': res.data.father.FirstName,
-                'lastName':res.data.father.LastName,
-                'gender': res.data.father.Gender,
-                'birthDate': res.data.father.BirthDate,
-              })
-            }
-           
+            // if (res.data.father != null) {
+            //   this.fatherEditForm = this.fb.group({
+            //     'id': res.data.father._id,
+            //     'firstName': res.data.father.FirstName,
+            //     'lastName': res.data.father.LastName,
+            //     'gender': res.data.father.Gender,
+            //     'birthDate': res.data.father.YearOfBirth,
+            //   })
+            // }
+
 
             this.id = res.data.currentPerson._id
             this.data = res.data
@@ -195,31 +195,57 @@ export class PersonComponentComponent implements OnInit {
           });
         }
       })
-    }
-    );
+   
   }
 
-  updateProfile(id:string, changes:any){
-    this.rest.getApiEndpoint().subscribe((endpoint) => { 
+  deleteProfile() {
+    var r = confirm(`Delete ${this.data.currentPerson._id}?`);
+    if (r == true) {
+      //OK
+      this.rest.getApiEndpoint().subscribe((endpoint) => {
+        const fetch = createApolloFetch({
+          uri: endpoint,
+        });
+
+        fetch({
+          query: `mutation RemoveProfile($id: String!) {
+            removeProfile(_id: $id)
+          }
+          `,
+          variables: {
+            "id": this.id,
+          }
+        }).then(res => {
+          console.log(res.data);
+          alert(res.data.removeProfile)
+          window.location.href = "/"
+        });
+      }
+      )
+    }
+  }
+
+
+  updateProfile(id: string, changes: any) {
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       const fetch = createApolloFetch({
         uri: endpoint,
       });
 
       var objectKeys = Object.keys(changes);
       let patchString = "{"
-      objectKeys.forEach(i =>
-        {
-          patchString+= i
-          patchString+= ":"
-          patchString+= "\""+ changes[i]+"\""
-          patchString+= ","
-        }
-        
+      objectKeys.forEach(i => {
+        patchString += i
+        patchString += ":"
+        patchString += "\"" + changes[i] + "\""
+        patchString += ","
+      }
+
       )
-      patchString +="}"
+      patchString += "}"
 
       alert(patchString)
-   
+
 
       fetch({
         query: `mutation UpdatePerson($_id:String!) {
@@ -245,10 +271,10 @@ export class PersonComponentComponent implements OnInit {
     )
   }
   //Father
-  
+
 
   linkFather() {
-    this.rest.getApiEndpoint().subscribe((endpoint) => { 
+    this.rest.getApiEndpoint().subscribe((endpoint) => {
       const fetch = createApolloFetch({
         uri: endpoint,
       });
@@ -271,5 +297,5 @@ export class PersonComponentComponent implements OnInit {
     )
   }
 
- 
+
 }
