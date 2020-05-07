@@ -1,111 +1,36 @@
+<app-person-profile [id]="id" [editable]="isConnected" [data]="data.currentPerson">
+</app-person-profile>
+
+<br>
 <mat-card>
-  <mat-card-header>
-    <mat-card-title> {{getDisplayName(data.currentPerson)}}</mat-card-title>
-    <mat-card-subtitle>{{data.currentPerson?._id}}</mat-card-subtitle>
-
-    <mat-card-subtitle *ngIf="data.currentPerson?.Gender=='Male'"><img src="../../../assets/img/profile_male.jpg" />
-    </mat-card-subtitle>
-    <mat-card-subtitle *ngIf="data.currentPerson?.Gender=='Female'"><img src="../../../assets/img/profile_female.jpg" />
-    </mat-card-subtitle>
-    <mat-divider [vertical]="true"></mat-divider>
-    <div>
-      <mat-slide-toggle *ngIf="isConnected" [checked]="editMode" (change)="onChange($event)">Edit</mat-slide-toggle>
-
-      <br>
-
-      <form [formGroup]="personEditForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="standard">
-          <mat-label>FirstName</mat-label>
-          <input matInput placeholder="firstName" [value]="data?.currentPerson?.FirstName" [readonly]="!canEdit()"
-            formControlName="firstName">
-        </mat-form-field>
-
-        <mat-form-field appearance="standard">
-          <mat-label>LastName</mat-label>
-          <input matInput placeholder="lastName" [value]="data?.currentPerson?.LastName" [readonly]="!canEdit()"
-            formControlName="lastName">
-        </mat-form-field>
-
-        <mat-form-field *ngIf="data?.currentPerson?.MaidenName!=''" appearance="standard">
-          <mat-label>MaidenName</mat-label>
-          <input matInput placeholder="maidenName" [value]="data?.currentPerson?.MaidenName" [readonly]="!canEdit()">
-        </mat-form-field>
-
-        <br>
-
-        <mat-form-field appearance="standard">
-          <mat-label>Gender</mat-label>
-          <input *ngIf="!canEdit()" matInput type="gender" placeholder="gender" [value]="data?.currentPerson?.Gender"
-            readonly>
-          <mat-select *ngIf="canEdit()" placeholder="gender" [value]="data?.currentPerson?.Gender"
-            [disabled]="!canEdit()">
-            <mat-option value="Female">Female</mat-option>
-            <mat-option value="Male">Male</mat-option>
-          </mat-select>
-
-        </mat-form-field>
-
-        <br>
-
-        <mat-form-field appearance="standard">
-          <mat-label>Year</mat-label>
-          <input matInput type="date" placeholder="birthDate" [value]="data?.currentPerson?.BirthDate"
-            [readonly]="!canEdit()" formControlName="birthDate">
-        </mat-form-field>
-
-        <br>
-        <button *ngIf="canEdit()" mat-stroked-button color="primary" [disabled]="!personEditForm.valid">Save</button>
-      </form>
-<br>
-      <button *ngIf="canEdit()" mat-button color="warn" (click)="deleteProfile()">Delete Profile</button>
-    </div>
-
-
-
-
-    <br>
-  </mat-card-header>
-  <mat-card-content>
-
-    <app-person-links title="Father" [id]="id" [person]="data.father" type="parent" [editable]="isConnected">
-    </app-person-links>
-    <br>
-
-    <app-person-links title="Mother" [id]="id" [person]="data.mother" type="parent" [editable]="isConnected">
-    </app-person-links>
-
-
-
-
-    <br />
-
-
-    <app-person-links title="Children" [id]="id" [persons]="data.children" type="child" [editable]="isConnected">
-    </app-person-links>
-
-    <br />
-
-    <app-person-links title="Spouses" [id]="id" [persons]="data.spouses" type="spouse" [editable]="isConnected">
-    </app-person-links>
-
-    <br />
-
-    <app-person-links title="Siblings" [id]="id" [persons]="data.siblings" type="sibling" [editable]="isConnected">
-    </app-person-links>
-
-  </mat-card-content>
-  <mat-card-actions>
-
-    <a *ngIf="!isConnected" mat-button [href]="'person/'+ data.currentPerson?._id +'/register'">Claim profile</a>
-    <span *ngIf="!isConnected">(This is your profile? Please claim the profile.)</span>
-  </mat-card-actions>
+  <app-person-links title="Father" [id]="id" [person]="data.father" type="parent" [editable]="isConnected">
+  </app-person-links>
+  
+  <br>
+  
+  <app-person-links title="Mother" [id]="id" [person]="data.mother" type="parent" [editable]="isConnected">
+  </app-person-links>
+  
+  <br />
+  
+  <app-person-links title="Children" [id]="id" [persons]="data.children" type="child" [editable]="isConnected">
+  </app-person-links>
+  
+  <br />
+  
+  <app-person-links title="Spouses" [id]="id" [persons]="data.spouses" type="spouse" [editable]="isConnected">
+  </app-person-links>
+  
+  <br />
+  
+  <app-person-links title="Siblings" [id]="id" [persons]="data.siblings" type="sibling" [editable]="isConnected">
+  </app-person-links>
 </mat-card>
-<br>
-<h1>Family Tree</h1>
-<span style="margin-left:20px">(Click on family members to view details.)</span>
-<br>
-<br>
-<div class="familyTree"></div>
+
+
+
+
+<app-tree [data]="data"></app-tree>
 
 <mat-accordion>
   <mat-expansion-panel>
@@ -114,8 +39,6 @@
         Debug
       </mat-panel-title>
     </mat-expansion-panel-header>
-
     <pre> {{ data | json }}</pre>
-
   </mat-expansion-panel>
 </mat-accordion>

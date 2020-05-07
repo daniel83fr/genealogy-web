@@ -6,11 +6,6 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {CdkTableModule} from '@angular/cdk/table';
-
-
-
-
-
 import materialModules from "./app.module.material"
 import customModules from "./app.module.custom"
 import { BottomSheetOverviewExampleSheet } from './components/share-component/share.component';
@@ -20,6 +15,7 @@ import { BottomSheetOverviewExampleSheet } from './components/share-component/sh
     AppComponent,
     ...customModules,
   ],
+
   imports: [
     ...materialModules,
     BrowserModule,
@@ -38,6 +34,8 @@ import { BottomSheetOverviewExampleSheet } from './components/share-component/sh
   providers: [
     
   ],
+
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

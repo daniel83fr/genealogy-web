@@ -1,0 +1,69 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title> {{getDisplayName(data)}}</mat-card-title>
+    <mat-card-subtitle>{{data?._id}}</mat-card-subtitle>
+    <mat-card-subtitle *ngIf="data?.Gender=='Male'"><img src="../../../assets/img/profile_male.jpg" />
+    </mat-card-subtitle>
+    <mat-card-subtitle *ngIf="data?.Gender=='Female'"><img src="../../../assets/img/profile_female.jpg" />
+    </mat-card-subtitle>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div>
+      <mat-slide-toggle *ngIf="editable" [checked]="editMode" (change)="onChange($event)">Edit</mat-slide-toggle>
+      <br>
+
+      <form [formGroup]="personEditForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="standard">
+          <mat-label>FirstName</mat-label>
+          <input matInput placeholder="firstName" [value]="data?.FirstName" [readonly]="!canEdit()"
+            formControlName="firstName">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>LastName</mat-label>
+          <input matInput placeholder="lastName" [value]="data?.LastName" [readonly]="!canEdit()"
+            formControlName="lastName">
+        </mat-form-field>
+
+        <mat-form-field *ngIf="data?.MaidenName!=''" appearance="standard">
+          <mat-label>MaidenName</mat-label>
+          <input matInput placeholder="maidenName" [value]="data?.MaidenName" [readonly]="!canEdit()">
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Gender</mat-label>
+          <input *ngIf="!canEdit()" matInput type="gender" placeholder="gender" [value]="data?.Gender"
+            readonly>
+          <mat-select *ngIf="canEdit()" placeholder="gender" [value]="data?.Gender"
+            [disabled]="!canEdit()">
+            <mat-option value="Female">Female</mat-option>
+            <mat-option value="Male">Male</mat-option>
+          </mat-select>
+
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Year</mat-label>
+          <input matInput type="date" placeholder="birthDate" [value]="data?.BirthDate"
+            [readonly]="!canEdit()" formControlName="birthDate">
+        </mat-form-field>
+
+        <br>
+        <button *ngIf="canEdit()" mat-stroked-button color="primary" [disabled]="!personEditForm.valid">Save</button>
+      </form>
+      <br>
+      <button *ngIf="canEdit()" mat-button color="warn" (click)="deleteProfile()">Delete Profile</button>
+    </div>
+    <br>
+  </mat-card-header>
+  <mat-card-content>
+
+  </mat-card-content>
+  <mat-card-actions>
+    <a *ngIf="!editable" mat-button [href]="'person/'+ data?._id +'/register'">Claim profile</a>
+    <span *ngIf="!editable">(This is your profile? Please claim the profile.)</span>
+  </mat-card-actions>
+</mat-card>
