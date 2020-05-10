@@ -32,20 +32,20 @@ export class MainComponent implements OnInit {
 
   search() {
     this.configurationService.getApiEndpoint()
-      .subscribe(endpoint => {
-        this.graphQLService.getPersonList(endpoint)
-          .subscribe(res => {
-            this.fillGrid(res);
-          })
+      .then(endpoint => {
+        return this.graphQLService.getPersonList(endpoint.toString())
+         
+      }).then( res => {
+        this.fillGrid(res);
       })
   }
 
   private fillGrid(json: any) {
-    let myData = Object.assign(json.data.persons);
+    let myData = Object.assign(json);
     this.dataSource = new MatTableDataSource(myData);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.displayedColumns = ['FirstName', 'LastName', 'Gender', 'Year', 'Link'];
+    this.displayedColumns = ['firstName', 'lastName', 'gender', 'year', 'link'];
   }
 
   applyFilter(event: Event) {

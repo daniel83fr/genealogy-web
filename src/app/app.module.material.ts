@@ -15,8 +15,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 export default [
+    MatGridListModule,
     MatInputModule,
     MatToolbarModule,
     MatMenuModule,

@@ -13,8 +13,8 @@ export class NavComponent implements OnInit {
     private configurationService: ConfigurationService) {
 
     this.configurationService.getEnvironnement()
-      .subscribe(res => {
-        this.env = res
+      .then(env => {
+        this.env = env
       });
   }
 

@@ -9,6 +9,7 @@ import {HelpComponent} from './components/help-component/help.component'
 import { PersonComponentComponent } from './components/person-component/person.component';
 import { TreeComponent } from './components/tree-component/tree.component';
 import { PersonProfileComponent } from './components/person-profile-component/person-profile.component';
+import { LoginRegisterComponent } from './components/login-register-component/login-register.component';
 
 export default [
     PersonComponentComponent,
@@ -17,6 +18,7 @@ export default [
     NavComponent,
     HelpComponent,
     LoginComponent,
+    LoginRegisterComponent,
     FooterComponent,
     PersonLinksComponent,
     PersonLinkComponent,

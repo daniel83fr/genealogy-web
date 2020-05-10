@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , AfterContentInit} from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
-import * as d3 from "d3";
+import * as d3 from 'd3';
+
 import { TreeDraw } from '../../treeDraw';
+import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 
 @Component({
@@ -13,7 +12,7 @@ import { GraphQLService } from 'src/app/_services/GraphQLService';
   styleUrls: ['./person.component.css']
 })
 
-export class PersonComponentComponent implements OnInit {
+export class PersonComponentComponent implements OnInit, AfterContentInit {
 
   constructor(
     public rest: ConfigurationService,
@@ -23,33 +22,32 @@ export class PersonComponentComponent implements OnInit {
 
   }
 
-  id: any = {}
-  data: any = {}
+  id: any = {};
+  data: any = {};
   isConnected = false;
 
 
   getProfileById(id: string) {
-
-    this.rest.getApiEndpoint().subscribe(endpoint => {
-
-      this.api.getProfile(endpoint, id)
-        .subscribe(res => {
-          console.log(res.data);
-
-          this.id = res.data.currentPerson?._id
-          this.data = res.data
-          var svg = d3.select(".familyTree")
-          new TreeDraw().draw(svg, this.data)
-        });
-    })
+    this.rest.getApiEndpoint()
+      .then(endpoint => {
+        return this.api.getProfile(endpoint, id);
+      })
+      .then(res => res.data)
+      .then(data => {
+        console.log(data);
+        this.id = data.currentPerson?._id;
+        this.data = data;
+        const svg = d3.select('.familyTree');
+        new TreeDraw().draw(svg, data);
+      });
   }
 
   ngAfterContentInit() {
-    var a = this.route.snapshot.paramMap.get('id')
-    this.getProfileById(a)
+    const a = this.route.snapshot.paramMap.get('id');
+    this.getProfileById(a);
   }
 
   ngOnInit(): void {
-    this.isConnected = localStorage.getItem("token") != null
+    this.isConnected = localStorage.getItem('token') != null;
   }
 }

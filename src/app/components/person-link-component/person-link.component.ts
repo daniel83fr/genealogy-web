@@ -38,10 +38,10 @@ export class PersonLinkComponent implements OnInit {
     ){ 
       this.personEditForm = this.fb.group({
         'id': this.person._id,
-        'firstName': this.person.FirstName,
-        'lastName': this.person.LastName,
-        'gender': this.person.Gender,
-        'birthDate': this.person.YearOfBirth,
+        'firstName': this.person.firstName,
+        'lastName': this.person.lastName,
+        'gender': this.person.gender,
+        'birthDate': this.person.yearOfBirth,
       })
   }
 
@@ -65,9 +65,9 @@ export class PersonLinkComponent implements OnInit {
     
   }
   removeSiblingLink(){
-    this.rest.getApiEndpoint().subscribe((endpoint) => { 
+    this.rest.getApiEndpoint().then((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint,
+        uri: endpoint.toString(),
       });
 
       fetch({
@@ -90,9 +90,9 @@ export class PersonLinkComponent implements OnInit {
 
 
   removeDirectLink(){
-    this.rest.getApiEndpoint().subscribe((endpoint) => { 
+    this.rest.getApiEndpoint().then((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint,
+        uri: endpoint.toString(),
       });
 
       fetch({
@@ -114,9 +114,9 @@ export class PersonLinkComponent implements OnInit {
   }
 
   linkFather() {
-    this.rest.getApiEndpoint().subscribe((endpoint) => { 
+    this.rest.getApiEndpoint().then((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint,
+        uri: endpoint.toString(),
       });
 
       fetch({

@@ -1,7 +1,6 @@
 <app-person-profile [id]="id" [editable]="isConnected" [data]="data.currentPerson">
 </app-person-profile>
 
-<br>
 <mat-card>
   <app-person-links title="Father" [id]="id" [person]="data.father" type="parent" [editable]="isConnected">
   </app-person-links>
@@ -26,9 +25,6 @@
   <app-person-links title="Siblings" [id]="id" [persons]="data.siblings" type="sibling" [editable]="isConnected">
   </app-person-links>
 </mat-card>
-
-
-
 
 <app-tree [data]="data"></app-tree>
 

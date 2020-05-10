@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import * as d3 from "d3";
+import * as d3 from 'd3';
 import { TreeDraw } from '../../treeDraw';
 
 
@@ -11,27 +11,27 @@ import { TreeDraw } from '../../treeDraw';
 
 export class TreeComponent implements OnInit {
 
-  
+
 @Input('data')
 data: any = {};
 
-  constructor() { 
-    
+  constructor() {
+
   }
- 
+
   ngOnInit(): void {
 
-    
+
   }
 
   ngAfterContentInit() {
-    var svg = d3.select(".familyTree")
-    new TreeDraw().draw(svg, this.data)
+    let svg = d3.select('.familyTree');
+    new TreeDraw().draw(svg, this.data);
   }
 
-  openShareSheet(){
-  
- 
+  openShareSheet() {
+
+
   }
 }
 

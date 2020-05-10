@@ -68,9 +68,9 @@ export class PersonLinksComponent implements OnInit {
     let changes = {}
     changes["FirstName"] = this.firstName;
     changes["LastName"] = this.lastName;
-    this.rest.getApiEndpoint().subscribe((endpoint) => { 
+    this.rest.getApiEndpoint().then((endpoint) => { 
       const fetch = createApolloFetch({
-        uri: endpoint,
+        uri: endpoint.toString(),
       });
 
       var objectKeys = Object.keys(changes);
@@ -134,9 +134,9 @@ export class PersonLinksComponent implements OnInit {
   }
 
   removeLink() {
-    this.rest.getApiEndpoint().subscribe((endpoint) => {
+    this.rest.getApiEndpoint().then((endpoint) => {
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint.toString().replace('api/v1/', '') + "graphql",
       });
 
       fetch({
@@ -159,9 +159,9 @@ export class PersonLinksComponent implements OnInit {
 
 
   linkParent() {
-    this.rest.getApiEndpoint().subscribe((endpoint) => {
+    this.rest.getApiEndpoint().then((endpoint) => {
       const fetch = createApolloFetch({
-        uri: endpoint,
+        uri: endpoint.toString(),
       });
 
       fetch({
@@ -185,9 +185,9 @@ export class PersonLinksComponent implements OnInit {
 
   linkChild() {
     alert(this.linkId)
-    this.rest.getApiEndpoint().subscribe((endpoint) => {
+    this.rest.getApiEndpoint().then((endpoint) => {
       const fetch = createApolloFetch({
-        uri: endpoint.replace('api/v1/', '') + "graphql",
+        uri: endpoint.toString().replace('api/v1/', '') + "graphql",
       });
 
       fetch({
@@ -211,9 +211,9 @@ export class PersonLinksComponent implements OnInit {
 
   linkSpouse() {
     alert(this.linkId)
-    this.rest.getApiEndpoint().subscribe((endpoint) => {
+    this.rest.getApiEndpoint().then((endpoint) => {
       const fetch = createApolloFetch({
-        uri: endpoint,
+        uri: endpoint.toString(),
       });
 
       fetch({
@@ -237,9 +237,9 @@ export class PersonLinksComponent implements OnInit {
 
   linkSibling() {
     alert(this.linkId)
-    this.rest.getApiEndpoint().subscribe((endpoint) => {
+    this.rest.getApiEndpoint().then((endpoint) => {
       const fetch = createApolloFetch({
-        uri: endpoint,
+        uri: endpoint.toString(),
       });
 
       fetch({

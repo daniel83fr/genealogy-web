@@ -1,6 +1,6 @@
 <div>
-<a mat-flat-button [href]="'person/' + person?._id"> {{person?.FirstName}}
-    {{person?.LastName | uppercase }}</a>
+<a mat-flat-button [href]="'person/' + person?._id"> {{person?.firstName}}
+    {{person?.lastName | uppercase }}</a>
     <span *ngIf="editable && person != null">({{person._id }})</span> 
     <button mat-icon-button color="warn" matTooltip="Remove link"  *ngIf="editable && person != null" (click)="removeLink()">
       <mat-icon>link_off</mat-icon>

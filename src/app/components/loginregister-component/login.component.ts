@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthenticationService } from 'src/app/_services/AuthenticationService';
+import { AuthenticationService } from './node_modules/src/app/_services/AuthenticationService';
 
 @Component({
   selector: 'app-login',
@@ -29,15 +29,15 @@ export class LoginComponent implements OnInit {
     let password = this.loginForm.controls.password.value
     if (login && password) {
       this.authService.login(login, password)
-        .then(
+        .subscribe(
           res => {
             console.log("User is logged in");
-            localStorage.setItem("token", res.toString());
+            localStorage.setItem("token", res);
             localStorage.setItem("login", login)
             window.location.href = "/";
-          }).catch(
+          },
           err => {
-            this._snackBar.open("Login failed", 'close', { duration: 2000 })
+            this._snackBar.open("Login failed", 'close', { duration: 500 })
           }
         );
     }

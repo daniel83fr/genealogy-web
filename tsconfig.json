@@ -15,7 +15,16 @@
       "es2018",
       "dom"
     ],
-    "types" : ["node", "express"]
+    "types" : ["node", "express"],
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "alwaysShowRuleFailuresAsWarnings": false,
+        "ignoreDefinitionFiles": true,
+        "configFile": "../tslint.json",
+        "suppressWhileTypeErrorsPresent": false
+      }
+    ]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

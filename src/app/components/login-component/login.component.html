@@ -7,7 +7,7 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" style="margin: 10px;" >
   <mat-form-field>
     <mat-label>Login</mat-label>
-    <input matInput placeholder="Login"  formControlName="login">
+    <input matInput placeholder="Login"  formControlName="login" type="email">
   </mat-form-field>
 
   <mat-form-field>
@@ -17,5 +17,6 @@
 
   <button>Login</button>
 
-  (login: daniel / password : 123 for test purpose)
+  To create an account, find your profile <br>
+  then choose claim profile.
 </form>

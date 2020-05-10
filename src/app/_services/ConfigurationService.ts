@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, of } from 'rxjs';
 import { ClientCacheService } from './ClientCacheService';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -16,34 +14,52 @@ export class ConfigurationService {
 
     }
 
-    getApiEndpoint(): Observable<any> {
+    getApiEndpoint(): Promise<string> {
 
-        var cachedEndpoint = this.cacheService.endpoint
-        if (cachedEndpoint != null) {
-            return of(cachedEndpoint)
-        }
+        return new Promise((resolve, reject) => {
 
-        return this.http.get(window.location.origin + '/info/api').pipe(
-            map(res => {
-                let endpoint = res["GENEALOGY_API"]
-                this.cacheService.endpoint = endpoint
-                console.debug(`Endpoint: ${endpoint}`)
-                return endpoint;
-            }));
+            const cachedEndpoint = this.cacheService.endpoint;
+            if (cachedEndpoint != null) {
+                resolve(cachedEndpoint);
+            }
+
+            const url = window.location.origin + '/env';
+            console.log(url);
+            fetch(url)
+                .then((resp) => resp.json())
+                .then(res => {
+                    const endpoint: string = res.GENEALOGY_API;
+                    this.cacheService.endpoint = endpoint;
+                    console.log(`Endpoint: ${endpoint}`);
+                    resolve(endpoint);
+                    return endpoint;
+                }).catch(err => {
+                    reject(Error(err));
+                });
+        });
     }
 
-    getEnvironnement(): Observable<any> {
-        const cachedEnv = this.cacheService.environnement
-        if (cachedEnv != null) {
-            return of(cachedEnv)
-        }
+    getEnvironnement(): Promise<string> {
 
-        return this.http.get('/info/env').pipe(
-            map(res => {
-                let env = res["Environnement"]
-                this.cacheService.environnement = env;
-                console.debug(`Env: ${env}`)
-                return env;
-            }));
+        return new Promise((resolve, reject) => {
+
+            const cachedEndpoint = this.cacheService.endpoint;
+            if (cachedEndpoint != null) {
+                resolve(cachedEndpoint);
+            }
+
+            const url = window.location.origin + '/env';
+            fetch(url)
+                .then((resp) => resp.json())
+                .then(res => {
+                    const env: string = res.Environnement;
+                    this.cacheService.environnement = env;
+                    console.log(`Env: ${env}`);
+                    resolve(env);
+                    return env;
+                }).catch(err => {
+                    reject(Error(err));
+                });
+        });
     }
 }

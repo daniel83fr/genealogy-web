@@ -1,0 +1,32 @@
+
+
+<button mat-stroked-button color="primary" (click)="click()">Claim profile</button>
+(This is your profile? Please claim the profile.)
+      <br>
+
+
+<form *ngIf="edit" [formGroup]="registerForm" (ngSubmit)="onSubmit()" style="margin: 10px;" >
+
+  <mat-form-field>
+    <mat-label>Profile Id</mat-label>
+    <input matInput placeholder="ProfileId"  formControlName="id" readonly>
+  </mat-form-field>
+<br>
+  <mat-form-field>
+    <mat-label>Login</mat-label>
+    <input matInput placeholder="Login"  formControlName="login">
+  </mat-form-field>
+<br>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Password" type="password"  formControlName="password">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Confirm</mat-label>
+    <input matInput placeholder="Confirm" type="password"  formControlName="confirm">
+  </mat-form-field>
+
+  <button>Claim</button>
+
+</form>

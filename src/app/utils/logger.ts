@@ -1,9 +1,9 @@
-class LoggerClass{
+class LoggerClass {
 
-    Debug(msg: string){
-        console.debug(msg)
+    Debug(msg: string) {
+        console.log(msg);
     }
 }
 
-let Logger = new LoggerClass()
-export default Logger
+const Logger = new LoggerClass();
+export default Logger;
