@@ -34,20 +34,25 @@
 
       <mat-form-field appearance="standard">
         <mat-label>Gender</mat-label>
-        <input *ngIf="!canEdit()" matInput type="gender" placeholder="gender" [value]="data?.gender" readonly>
-        <mat-select *ngIf="canEdit()" placeholder="gender" [value]="data?.gender" [disabled]="!canEdit()">
-          <mat-option value="Female">Female</mat-option>
-          <mat-option value="Male">Male</mat-option>
-        </mat-select>
-
+          <mat-select formControlName="gender"  placeholder="gender" [value]="data?.gender" [disabled]="!canEdit()"> 
+            <mat-option value="Female">Female</mat-option>
+            <mat-option value="Male">Male</mat-option>
+          </mat-select>
+  
       </mat-form-field>
 
       <br>
 
-      <mat-form-field appearance="standard">
+      <mat-form-field  *ngIf="!editable" appearance="standard">
         <mat-label>Year</mat-label>
         <input matInput type="string" placeholder="yearOfBirth" [value]="data?.yearOfBirth" readonly
           formControlName="yearOfBirth">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="editable" appearance="standard">
+        <mat-label>BirthDate</mat-label>
+        <input matInput type="date" placeholder="birthDate" [value]="privateData?.birthDate" [readonly]="!canEdit()"
+          formControlName="birthDate">
       </mat-form-field>
 
       <br>

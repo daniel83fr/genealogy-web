@@ -15,7 +15,7 @@
     <mat-label *ngIf="isConnected" style="font-size:10px">Connected as {{connectedUser}}</mat-label>
 
     <mat-menu  #menu="matMenu">
-      <button mat-menu-item routerLink="/person/5e6556427af677179baf2e5a" >Profile</button>
+      <button mat-menu-item [routerLink]="profileLink"(click)="reload()" >Profile</button>
       <button mat-menu-item routerLink="/admin" >Admin</button>
       <button mat-menu-item (click)="logout()">Logout</button>
     </mat-menu>
@@ -24,6 +24,6 @@
       <mat-icon>help_outline</mat-icon>
     </button>
 
-    <button *ngIf="env!='production'" mat-raised-button color="warn">{{env}}</button>
+    <button *ngIf="environnement!='production'" mat-raised-button color="warn">{{environnement}}</button>
   </mat-toolbar-row>
 </mat-toolbar>

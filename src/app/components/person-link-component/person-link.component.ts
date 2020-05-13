@@ -1,11 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { createApolloFetch } from 'apollo-fetch';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
-
-
+import { GraphQLService } from 'src/app/_services/GraphQLService';
 
 @Component({
   selector: 'app-person-link',
@@ -13,131 +11,66 @@ import { ConfigurationService } from 'src/app/_services/ConfigurationService';
   styleUrls: ['./person-link.component.css']
 })
 
-export class PersonLinkComponent implements OnInit {
-  
-  @Input('id')
-  id: string = "";
+export class PersonLinkComponent implements OnInit, AfterContentInit {
 
-  @Input('person')
-  person: any = {};
+  @Input() id = '';
 
-  @Input('editable')
-  editable: boolean = false;
+  @Input() person: any = {};
 
-  edit: boolean = false;
+  @Input() editable = false;
 
-  @Input('type')
-  type: string = "";
+  @Input() type = '';
 
+  edit = false;
   personEditForm: FormGroup = null;
-  
+
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
     public rest: ConfigurationService,
-    ){ 
-      this.personEditForm = this.fb.group({
-        'id': this.person._id,
-        'firstName': this.person.firstName,
-        'lastName': this.person.lastName,
-        'gender': this.person.gender,
-        'birthDate': this.person.yearOfBirth,
-      })
+    private graphQLService: GraphQLService
+  ) {
+    this.personEditForm = this.fb.group({
+      id: this.person._id,
+      firstName: this.person.firstName,
+      lastName: this.person.lastName,
+      gender: this.person.gender,
+      birthDate: this.person.yearOfBirth,
+    });
   }
 
   ngOnInit(): void {
   }
 
   ngAfterContentInit() {
-   
+
   }
-
-
-  
 
   removeLink() {
-    if(this.type == 'sibling'){
-      this.removeSiblingLink()
+    if (this.type === 'sibling') {
+      this.removeSiblingLink();
+    } else {
+      this.removeDirectLink();
     }
-    else{
-      this.removeDirectLink()
-    }
-    
   }
-  removeSiblingLink(){
-    this.rest.getApiEndpoint().then((endpoint) => { 
-      const fetch = createApolloFetch({
-        uri: endpoint.toString(),
-      });
 
-      fetch({
-        query: `mutation RemoveSiblingLink($id: String!, $id2: String!) {
-          removeSiblingLink(_id1: $id, _id2: $id2)
-        }
-        `,
-        variables: {
-          "id": this.id,
-          "id2": this.person._id
-        }
+  removeSiblingLink() {
+    this.rest.getApiEndpoint()
+      .then((endpoint) => {
+        return this.graphQLService.removeSiblingLink(endpoint, this.id, this.person._id);
       }).then(res => {
-        console.log(res.data);
-        alert(res.data.removeSiblingLink)
+        console.log(res);
         location.reload();
       });
-    }
-    )
   }
 
-
-  removeDirectLink(){
-    this.rest.getApiEndpoint().then((endpoint) => { 
-      const fetch = createApolloFetch({
-        uri: endpoint.toString(),
-      });
-
-      fetch({
-        query: `mutation RemoveLink($id: String!, $id2: String!) {
-          removeLink(_id1: $id, _id2: $id2)
-        }
-        `,
-        variables: {
-          "id": this.id,
-          "id2": this.person._id
-        }
+  removeDirectLink() {
+    this.rest.getApiEndpoint()
+      .then((endpoint) => {
+        return this.graphQLService.removeLink(endpoint, this.id, this.person._id);
       }).then(res => {
-        console.log(res.data);
-        alert(res.data.removeLink)
+        console.log(res);
         location.reload();
       });
-    }
-    )
-  }
-
-  linkFather() {
-    this.rest.getApiEndpoint().then((endpoint) => { 
-      const fetch = createApolloFetch({
-        uri: endpoint.toString(),
-      });
-
-      fetch({
-        query: `mutation addParentLink($id: String!, $id2: String!) {
-          addParentLink(_id: $id, _parentId: $id2)
-        }        
-        `,
-        variables: {
-          "id": this.id,
-          "id2": this.personEditForm.get("id").value
-        }
-      }).then(res => {
-        console.log(res.data);
-        alert(res.data.addParentLink)
-        location.reload();
-      });
-    }
-    )
-  }
-
-  onChange(value: MatSlideToggleChange) {
-    this.edit = value.checked
   }
 }

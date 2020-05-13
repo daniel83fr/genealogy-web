@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,7 +11,7 @@ import { GraphQLService } from 'src/app/_services/GraphQLService';
   styleUrls: ['./main.component.css']
 })
 
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, AfterContentInit {
    dataSource: any;
    displayedColumns = [];
 
@@ -27,21 +27,21 @@ export class MainComponent implements OnInit {
   }
 
   ngAfterContentInit() {
-    this.search()
+    this.search();
   }
 
   search() {
     this.configurationService.getApiEndpoint()
       .then(endpoint => {
-        return this.graphQLService.getPersonList(endpoint.toString())
-         
-      }).then( res => {
-        this.fillGrid(res);
+        return this.graphQLService.getPersonList(endpoint);
       })
+      .then( res => {
+        this.fillGrid(res);
+      });
   }
 
   private fillGrid(json: any) {
-    let myData = Object.assign(json);
+    const myData: any = Object.assign(json);
     this.dataSource = new MatTableDataSource(myData);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

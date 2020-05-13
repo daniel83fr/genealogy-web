@@ -14,47 +14,47 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 export class LoginRegisterComponent implements OnInit {
 
   @Input('id')
-  id: string = "";
-  
+  id = '';
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthenticationService,
     private _snackBar: MatSnackBar) {
     this.registerForm = this.fb.group({
-      'id': '',
-      'login': '',
-      'password': '',
-      'confirm':''
+      id: '',
+      login: '',
+      password: '',
+      confirm: ''
     });
   }
 
-  edit = false
+  edit = false;
   registerForm: FormGroup = null;
 
   onSubmit(): void {
 
-    let id = this.registerForm.controls.id.value
-    let login = this.registerForm.controls.login.value
-    let password = this.registerForm.controls.password.value
-    let confirm = this.registerForm.controls.confirm.value
+    const id = this.registerForm.controls.id.value;
+    const login = this.registerForm.controls.login.value;
+    const password = this.registerForm.controls.password.value;
+    const confirm = this.registerForm.controls.confirm.value;
 
-    if(password != confirm){
-      this._snackBar.open("Password/confirmation not matching", 'close', { duration: 2000 })
-      return
+    if (password != confirm) {
+      this._snackBar.open('Password/confirmation not matching', 'close', { duration: 2000 });
+      return;
     }
 
     if (login && password) {
       this.authService.register(id, login, password)
         .then(
           res => {
-            alert("registred")
-            window.location.reload()
+            this._snackBar.open('Registrated', 'close', { duration: 2000 });
+            window.location.reload();
           }).catch(
           err => {
-            this._snackBar.open(err, 'close', { duration: 2000 })
+            this._snackBar.open(err, 'close', { duration: 2000 });
           }
         );
-    }   
+    }
 
 
 
@@ -63,10 +63,10 @@ export class LoginRegisterComponent implements OnInit {
   ngOnInit(): void {
 
     this.registerForm = this.fb.group({
-      'id': this?.id,
-      'login': '',
-      'password': '',
-      'confirm':''
+      id: this?.id,
+      login: '',
+      password: '',
+      confirm: ''
     });
   }
 
@@ -74,10 +74,10 @@ export class LoginRegisterComponent implements OnInit {
   }
 
   onChange(value: MatSlideToggleChange) {
-    this.edit = value.checked
+    this.edit = value.checked;
   }
 
   click() {
-    this.edit = !this.edit
+    this.edit = !this.edit;
   }
 }

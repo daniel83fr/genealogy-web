@@ -2,21 +2,22 @@ import { Injectable } from '@angular/core';
 import { createApolloFetch } from 'apollo-fetch';
 
 import { ClientCacheService } from './ClientCacheService';
-import { EncryptionService} from './EncryptionService';
+import { EncryptionService } from './EncryptionService';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GraphQLService {
 
-  constructor(private cacheService: ClientCacheService, private encryptionService: EncryptionService) {
+  constructor(
+    private cacheService: ClientCacheService,
+    private encryptionService: EncryptionService) {
   }
-
   login(endpoint: string, login: string, password: string) {
     const fetch = createApolloFetch({
       uri: endpoint,
     });
-    let encrypted = this.encryptionService.encryptPassword(password);
+    const encrypted = this.encryptionService.encryptPassword(password);
 
     return fetch({
       query: `
@@ -35,14 +36,14 @@ query Login {
       uri: endpoint,
     });
 
-    let encrypted = this.encryptionService.encryptPassword(password);
+    const encrypted = this.encryptionService.encryptPassword(password);
     return fetch({
       query: `
 query Register {
   register(id: "${id}", login: "${login}", password: "${encrypted}")
 }`}).then(res => {
-  return res.data;
-});
+        return res.data;
+      });
   }
 
   shouldResetPersonCache(endpoint: string): Promise<boolean> {
@@ -106,6 +107,76 @@ query Register {
 
   }
 
+  getConnectedUser(endpoint: string) {
+    const token = localStorage.getItem('token');
+    if (token == null) {
+      return null;
+    }
+    const fetch = createApolloFetch({
+      uri: endpoint
+    });
+
+    fetch.use(({ request, options }, next) => {
+
+      if (!options.headers) {
+        options.headers = {};
+      }
+      options.headers['authorization'] = `Bearer ${token}`;
+      next();
+    });
+
+    return fetch({
+      query: `query me {
+        me{
+          id
+          login
+        }
+      }
+      `
+    })
+      .catch(err => {
+        throw Error(err);
+      })
+      .then(res => {
+        return res.data.me;
+      }
+      );
+  }
+  getPrivateInfo(endpoint: string, id: string) {
+
+    const token = localStorage.getItem('token');
+    const fetch = createApolloFetch({
+      uri: endpoint
+    });
+
+    fetch.use(({ request, options }, next) => {
+
+      if (!options.headers) {
+        options.headers = {};
+      }
+      options.headers['authorization'] = `Bearer ${token}`;
+      next();
+    });
+
+    return fetch({
+      query: `query getPrivateInfoById($_id: String!) {
+        getPrivateInfoById( _id : $_id) {
+          birthDate
+          _id
+        }
+      }
+      `,
+      variables: { _id: id }
+    })
+      .catch(err => {
+        throw Error(err);
+      })
+      .then(res => {
+        return res.data.getPrivateInfoById;
+      }
+      );
+  }
+
   getProfile(endpoint: string, id: string) {
     const fetch = createApolloFetch({
       uri: endpoint,
@@ -143,7 +214,7 @@ query Register {
             }
 
             `,
-      variables: { 'id': id }
+      variables: { id }
     });
   }
 
@@ -158,15 +229,70 @@ query Register {
             }
             `,
       variables: {
-        'id': id,
+        id,
       }
     });
   }
 
-  updateProfile(endpoint: string, id: string, changes: any) {
+  updateProfile(endpoint: string, id: string, changes: any, privateChange: any) {
+    const token = localStorage.getItem('token');
+    let patchString = this.generatePatch(changes);
+    let privatePatchString = this.generatePatch(privateChange);
 
-    let objectKeys = Object.keys(changes);
 
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    fetch.use(({ request, options }, next) => {
+
+      if (!options.headers) {
+        options.headers = {};
+      }
+      options.headers['authorization'] = `Bearer ${token}`;
+      next();
+    });
+
+    return fetch({
+      query: `mutation UpdatePerson($_id:String!) {
+              updatePerson(_id: $_id, patch: ${patchString} ) {
+                _id
+                firstName
+                lastName
+                maidenName
+                gender
+              },
+              updatePersonPrivateInfo(_id: $_id, patch: ${privatePatchString} ) {
+                _id
+                birthDate
+              },
+            }
+            `,
+      variables: {
+        _id: id,
+      }
+    });
+  }
+
+  private generatePatch(changes: any) {
+    const objectKeys = Object.keys(changes);
+    let patchString = '{';
+    objectKeys.forEach(i => {
+      patchString += i;
+      patchString += ':';
+      patchString += '"' + changes[i] + '"';
+      patchString += ',';
+    });
+    patchString += '}';
+    return patchString;
+  }
+
+  createPersonAndLink(endpoint: string, changes: any) {
+    const fetch = createApolloFetch({
+      uri: endpoint.toString(),
+    });
+
+    const objectKeys = Object.keys(changes);
     let patchString = '{';
     objectKeys.forEach(i => {
       patchString += i;
@@ -179,25 +305,149 @@ query Register {
     patchString += '}';
 
 
+    return fetch({
+      query: `mutation createPerson {
+          createPerson(person: ${patchString} ) {
+            _id
+            firstName
+            lastName
+            maidenName
+            gender
+            yearOfBirth
+          }
+        }
+        `
+    }).then(res => {
+      return res.data.createPerson._id;
+    });
+  }
+
+
+
+  removeLink(endpoint: string, person1: string, person2: string) {
 
     const fetch = createApolloFetch({
       uri: endpoint,
     });
 
     return fetch({
-      query: `mutation UpdatePerson($_id:String!) {
-              updatePerson(_id: $_id, patch: ${patchString} ) {
-                _id
-                firstName
-                lastName
-                maidenName
-                gender
-              }
-            }
-            `,
+      query: `mutation RemoveLink($id: String!, $id2: String!) {
+          removeLink(_id1: $id, _id2: $id2)
+        }
+        `,
       variables: {
-        '_id': id,
+        id: person1,
+        id2: person2
       }
+    }).then(res => {
+      return res.data.removeLink;
     });
   }
+
+  removeSiblingLink(endpoint: string, person1: string, person2: string) {
+
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `mutation RemoveSiblingLink($id: String!, $id2: String!) {
+        removeSiblingLink(_id1: $id, _id2: $id2)
+      }
+      `,
+      variables: {
+        id: person1,
+        id2: person2
+      }
+    }).then(res => {
+      return res.data.removeSiblingLink;
+    });
+  }
+  linkParent(endpoint: string, person1: string, person2: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint.toString(),
+    });
+
+    fetch({
+      query: `mutation addParentLink($id: String!, $id2: String!) {
+          addParentLink(_id: $id, _parentId: $id2)
+        }
+        `,
+      variables: {
+        id: person1,
+        id2: person2
+      }
+    })
+      .then(res => {
+        return res.data.addParentLink;
+      });
+  }
+
+
+  linkChild(endpoint: string, person1: string, person2: string) {
+
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `mutation addChildLink($id: String!, $id2: String!) {
+          addChildLink(_id: $id, _childId: $id2)
+        }
+        `,
+      variables: {
+        id: person1,
+        id2: person2
+      }
+    })
+      .then(res => {
+        return res.data.addChildLink;
+      });
+  }
+
+
+  linkSpouse(endpoint: string, person1: string, person2: string) {
+
+    const fetch = createApolloFetch({
+      uri: endpoint.toString(),
+    });
+
+    fetch({
+      query: `mutation addSpouseLink($id: String!, $id2: String!) {
+          addSpouseLink(_id1: $id, _id2: $id2)
+        }
+        `,
+      variables: {
+        id: person1,
+        id2: person2
+      }
+    })
+      .then(res => {
+        console.log(res.data);
+        alert(res.data.addSpouseLink);
+        location.reload();
+      });
+  }
+
+  linkSibling(endpoint: string, person1: string, person2: string) {
+
+    const fetch = createApolloFetch({
+      uri: endpoint.toString(),
+    });
+
+    return fetch({
+      query: `mutation addSiblingLink($id: String!, $id2: String!) {
+          addSiblingLink(_id1: $id, _id2: $id2)
+        }
+        `,
+      variables: {
+        id: person1,
+        id2: person2
+      }
+    })
+      .then(res => {
+        return res.data.addSiblingLink;
+      });
+  }
+
 }

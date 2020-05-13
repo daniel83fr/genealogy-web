@@ -176,8 +176,13 @@ export class TreeDraw {
     }
     const style1 = Object.assign(style);
 
-    const year = person.yearOfBirth;
+    const year = person.yearOfBirth ?? '';
     const year2 = person.yearOfDeath ?? '';
+    let yearText = `${year}-${year2}`;
+    if (yearText === '-') {
+      yearText = '';
+    }
+
     let g = svg.append('g');
 
     g.append('title')
@@ -219,6 +224,6 @@ export class TreeDraw {
       .attr('y', y + 55)
       .attr('x', x + 55)
       .attr('fill', style1.foreground)
-      .text(year + '-' + year2);
+      .text(yearText);
   }
 }

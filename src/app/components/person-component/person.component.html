@@ -1,4 +1,4 @@
-<app-person-profile [id]="id" [editable]="isConnected" [data]="data.currentPerson">
+<app-person-profile [id]="id" [editable]="isConnected" [data]="data.currentPerson" [privateData]="privateData">
 </app-person-profile>
 
 <mat-card>
@@ -26,7 +26,7 @@
   </app-person-links>
 </mat-card>
 
-<app-tree [data]="data"></app-tree>
+<app-tree [data]="data" ></app-tree>
 
 <mat-accordion>
   <mat-expansion-panel>
@@ -35,6 +35,10 @@
         Debug
       </mat-panel-title>
     </mat-expansion-panel-header>
+    Data:
     <pre> {{ data | json }}</pre>
+    <br>
+    Private Data:
+    <pre> {{ privateData | json }}</pre>
   </mat-expansion-panel>
 </mat-accordion>

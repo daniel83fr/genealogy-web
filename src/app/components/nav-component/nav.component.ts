@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
+import { GraphQLService } from 'src/app/_services/GraphQLService';
 
 @Component({
   selector: 'app-nav',
@@ -7,32 +8,53 @@ import { ConfigurationService } from 'src/app/_services/ConfigurationService';
   styleUrls: ['./nav.component.css']
 })
 
-export class NavComponent implements OnInit {
-  env = ""
+export class NavComponent implements OnInit, AfterContentInit {
+
+  environnement = '';
+  isConnected = false;
+  connectedUser = '';
+  profileLink = '/';
+
   constructor(
-    private configurationService: ConfigurationService) {
+    private configurationService: ConfigurationService,
+    private graphQLService: GraphQLService) {
 
     this.configurationService.getEnvironnement()
       .then(env => {
-        this.env = env
+        console.log(env);
+        this.environnement = env;
       });
-  }
 
-  isConnected = false;
-  connectedUser = "";
+    this.configurationService.getApiEndpoint()
+      .then(endpoint => {
+        return  this.graphQLService.getConnectedUser(endpoint);
+      })
+      .then(res => {
+        if (res != null) {
+          this.profileLink = `/person/${res.id}`;
+        }
+      })
+      ;
+
+
+  }
 
   ngOnInit(): void {
   }
 
   logout() {
-    localStorage.removeItem("token")
-    localStorage.removeItem("login")
-    window.location.reload();
+    localStorage.removeItem('token');
+    localStorage.removeItem('login');
+    this.reload()
+  }
+
+  reload() {
+    window.location.href = this.profileLink;
   }
 
   ngAfterContentInit() {
-    this.isConnected = localStorage.getItem("token") != null
-    this.connectedUser = localStorage.getItem("login")
+    this.isConnected = localStorage.getItem('token') != null;
+    this.connectedUser = localStorage.getItem('login');
 
   }
 }

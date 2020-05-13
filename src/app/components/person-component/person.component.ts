@@ -13,6 +13,7 @@ import { GraphQLService } from 'src/app/_services/GraphQLService';
 })
 
 export class PersonComponentComponent implements OnInit, AfterContentInit {
+  privateData: any;
 
   constructor(
     public rest: ConfigurationService,
@@ -42,9 +43,20 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
       });
   }
 
+  getProfilePrivateById(id: string){
+    this.rest.getApiEndpoint()
+      .then(endpoint => {
+        return this.api.getPrivateInfo(endpoint, id);
+      })
+      .then(data => {
+        console.log(data);
+        this.privateData = data;
+      });
+  }
   ngAfterContentInit() {
     const a = this.route.snapshot.paramMap.get('id');
     this.getProfileById(a);
+    this.getProfilePrivateById(a);
   }
 
   ngOnInit(): void {

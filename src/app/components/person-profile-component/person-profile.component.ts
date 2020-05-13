@@ -16,7 +16,7 @@ export class PersonProfileComponent implements OnInit {
   @Input() id = '';
 
   @Input() data: any = {};
-
+  @Input() privateData: any = {};
   @Input() editable = false;
 
   personEditForm: FormGroup = null;
@@ -32,8 +32,12 @@ export class PersonProfileComponent implements OnInit {
       firstName: '',
       lastName: '',
       gender: '',
-      yearOfBirth: ''
+      yearOfBirth: '',
+      birthDate: ''
     });
+
+
+
   }
 
   getImage(): string {
@@ -57,35 +61,39 @@ export class PersonProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.personEditForm = this.fb.group({
       id: this.data?._id,
       firstName: this.data?.firstName,
       lastName: this.data?.lastName,
       gender: this.data?.gender,
-      yearOfBirth: this.data?.yearOfBirth
+      yearOfBirth: this.data?.yearOfBirth,
+      birthDate: this.privateData?.birthDate
     });
-
   }
 
   onSubmit() {
     const changes: any = {};
-    if (this.personEditForm.get('firstName').value !== this.data.firstName) {
+    if (this.personEditForm.get('firstName').value !== this.data.firstName && this.personEditForm.get('firstName').value) {
       changes.firstName = this.personEditForm.get('firstName').value;
     }
-    if (this.personEditForm.get('lastName').value !== this.data.lastName) {
+    if (this.personEditForm.get('lastName').value !== this.data.lastName && this.personEditForm.get('lastName').value) {
       changes.lastName = this.personEditForm.get('lastName').value;
     }
-    if (this.personEditForm.get('gender').value !== this.data.gender) {
+    if (this.personEditForm.get('gender').value !== this.data.gender && this.personEditForm.get('gender').value) {
       changes.gender = this.personEditForm.get('gender').value;
     }
 
-    if (Object.keys(changes).length === 0 && changes.constructor === Object) {
+    const privateChanges: any = {};
+    if (this.personEditForm.get('birthDate').value !== this.data.privateData && this.personEditForm.get('birthDate').value) {
+      privateChanges.birthDate = this.personEditForm.get('birthDate').value;
+    }
+    
+    if (Object.keys(changes).length === 0 && changes.constructor === Object &&
+    Object.keys(privateChanges).length === 0 && privateChanges.constructor === Object) {
 
     } else {
       this.rest.getApiEndpoint().then((endpoint) => {
-        this.updateProfile(this.id, changes);
-        alert('Updated');
+        this.updateProfile(this.id, changes, privateChanges);
       });
     }
   }
@@ -126,14 +134,14 @@ export class PersonProfileComponent implements OnInit {
   canEdit() {
     return this.editMode && this.editable;
   }
-  updateProfile(id: string, changes: any) {
+
+  updateProfile(id: string, changes: any, privateChanges: any) {
     this.rest.getApiEndpoint()
       .then((endpoint) => {
-        return this.api.updateProfile(endpoint.toString(), id, changes);
+        return this.api.updateProfile(endpoint, id, changes, privateChanges);
       })
       .then(res => {
-        console.log(res.data);
-        alert(res.data.updatePerson);
+        this.snackBar.open('Profile updated.', 'close', { duration: 5000 });
         location.reload();
       })
       .catch(err => {
