@@ -63,13 +63,10 @@ export class TreeDraw {
 
     if (treeData.spouses.length > 0) {
       this.drawSpouse(svg, treeData.spouses[0], treeData.currentPerson);
-      this.drawChild(svg, treeData.spouses[0], treeData.currentPerson);
     }
 
-
-
-
     if (data.children.length > 0) {
+      this.drawChild(svg, treeData.spouses[0], treeData.currentPerson);
       treeData.children.forEach(x => {
         this.drawParent(svg, x);
       });
