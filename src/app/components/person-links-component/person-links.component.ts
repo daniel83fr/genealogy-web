@@ -64,7 +64,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
 
     this.rest.getApiEndpoint()
       .then(endpoint => {
-        return this.graphQLService.createPersonAndLink(endpoint, changes);
+        return this.graphQLService.createPerson(endpoint, changes);
       })
       .then(res => {
         this.linkId = res;
@@ -128,7 +128,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   linkSpouse() {
     this.rest.getApiEndpoint()
       .then((endpoint) => {
-        return this.graphQLService.linkChild(endpoint, this.id, this.linkId);
+        return this.graphQLService.linkSpouse(endpoint, this.id, this.linkId);
       })
       .then(res => {
         location.reload();

@@ -287,7 +287,7 @@ query Register {
     return patchString;
   }
 
-  createPersonAndLink(endpoint: string, changes: any) {
+  createPerson(endpoint: string, changes: any) {
     const fetch = createApolloFetch({
       uri: endpoint.toString(),
     });
