@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-person-links',
@@ -38,6 +39,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
     private fb: FormBuilder,
     public rest: ConfigurationService,
     private graphQLService: GraphQLService,
+    private snackBar: MatSnackBar,
   ) {
     this.personEditForm = this.fb.group({
       id: this.person._id,
@@ -67,6 +69,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
         return this.graphQLService.createPerson(endpoint, changes);
       })
       .then(res => {
+        this.snackBar.open('Person created', 'close', { duration: 5000 });
         this.linkId = res;
         this.addLink();
       });
@@ -98,7 +101,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
       })
       .then(res => {
         console.log(res.data);
-        alert(res.data.removeLink);
+        this.snackBar.open('Link removed', 'close', { duration: 5000 });
         location.reload();
       });
   }
@@ -109,18 +112,18 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
         return this.graphQLService.linkParent(endpoint, this.id, this.linkId);
       })
       .then(res => {
+        this.snackBar.open('Link added', 'close', { duration: 5000 });
         location.reload();
       });
   }
 
   linkChild() {
-    alert(this.linkId);
     this.rest.getApiEndpoint()
       .then((endpoint) => {
         return this.graphQLService.linkChild(endpoint, this.id, this.linkId);
       })
       .then(res => {
-
+        this.snackBar.open('Link added', 'close', { duration: 5000 });
         location.reload();
       });
   }
@@ -131,6 +134,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
         return this.graphQLService.linkSpouse(endpoint, this.id, this.linkId);
       })
       .then(res => {
+        this.snackBar.open('Link added', 'close', { duration: 5000 });
         location.reload();
       });
   }
@@ -141,6 +145,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
         return this.graphQLService.linkSibling(endpoint, this.id, this.linkId);
       })
       .then(res => {
+        this.snackBar.open('Link added', 'close', { duration: 5000 });
         location.reload();
       });
   }

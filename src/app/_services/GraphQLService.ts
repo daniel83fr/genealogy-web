@@ -368,7 +368,7 @@ query Register {
       uri: endpoint.toString(),
     });
 
-    fetch({
+    return fetch({
       query: `mutation addParentLink($id: String!, $id2: String!) {
           addParentLink(_id: $id, _parentId: $id2)
         }
@@ -412,7 +412,7 @@ query Register {
       uri: endpoint.toString(),
     });
 
-    fetch({
+    return fetch({
       query: `mutation addSpouseLink($id: String!, $id2: String!) {
           addSpouseLink(_id1: $id, _id2: $id2)
         }
@@ -423,9 +423,7 @@ query Register {
       }
     })
       .then(res => {
-        console.log(res.data);
-        alert(res.data.addSpouseLink);
-        location.reload();
+        return res.data.addSpouseLink;
       });
   }
 
