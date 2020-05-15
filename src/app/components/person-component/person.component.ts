@@ -1,10 +1,11 @@
-import { Component, OnInit , AfterContentInit} from '@angular/core';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
+import { ActivatedRoute, Router, ParamMap, NavigationEnd, NavigationStart, ActivationEnd, ActivationStart } from '@angular/router';
 import * as d3 from 'd3';
 
 import { TreeDraw } from '../../treeDraw';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
+import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 
 @Component({
   selector: 'app-person-component',
@@ -19,13 +20,32 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
   constructor(
     public rest: ConfigurationService,
     private route: ActivatedRoute,
+    private router: Router,
+    private auth: AuthenticationService,
     private api: GraphQLService) {
+      // const a = this.route.snapshot.paramMap.get('id');
+      // this.getProfileById(a);
+      // if (this.isConnected()) {
+      //   this.getProfilePrivateById(a);
+      // }
 
+      router.events.subscribe((val) => {
+      if (val instanceof NavigationStart || val instanceof NavigationEnd) {
+        const a = this.route.snapshot.paramMap.get('id');
+        this.getProfileById(a);
+        if (this.isConnected()) {
+          this.getProfilePrivateById(a);
+        }
+      }
+    });
   }
 
   id: any = undefined;
   data: any = {};
-  isConnected = false;
+
+  isConnected() {
+    return this.auth.isConnected();
+  }
 
   getProfileById(id: string) {
     this.rest.getApiEndpoint()
@@ -34,7 +54,6 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
       })
       .then(res => res.data)
       .then(data => {
-        console.log(data);
         this.id = data.currentPerson._id;
         this.data = data;
         const svg = d3.select('.familyTree');
@@ -42,26 +61,20 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
       });
   }
 
-  getProfilePrivateById(id: string){
+  getProfilePrivateById(id: string) {
     this.rest.getApiEndpoint()
       .then(endpoint => {
         return this.api.getPrivateInfo(endpoint, id);
       })
       .then(data => {
-        console.log(data);
         this.privateData = data;
       });
   }
   ngAfterContentInit() {
-    const a = this.route.snapshot.paramMap.get('id');
-    this.getProfileById(a);
-    if(this.isConnected)
-    {
-      this.getProfilePrivateById(a);
-    }
+
   }
 
   ngOnInit(): void {
-    this.isConnected = localStorage.getItem('token') != null;
+
   }
 }

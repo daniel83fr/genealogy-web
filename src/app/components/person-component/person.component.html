@@ -1,36 +1,36 @@
 <div *ngIf = "id!=undefined">
 
-<app-person-profile [id]="id" [editable]="isConnected" [data]="data.currentPerson" [privateData]="privateData">
+<app-person-profile [id]="id" [editable]="isConnected()" [data]="data.currentPerson" [privateData]="privateData">
 </app-person-profile>
 
 <mat-card>
-  <app-person-links title="Father" [id]="id" [person]="data.father" type="parent" [editable]="isConnected">
+  <app-person-links title="Father" [id]="id" [person]="data.father" type="parent" [editable]="isConnected()">
   </app-person-links>
   
   <br>
   
-  <app-person-links title="Mother" [id]="id" [person]="data.mother" type="parent" [editable]="isConnected">
+  <app-person-links title="Mother" [id]="id" [person]="data.mother" type="parent" [editable]="isConnected()">
   </app-person-links>
   
   <br />
   
-  <app-person-links title="Children" [id]="id" [persons]="data.children" type="child" [editable]="isConnected">
+  <app-person-links title="Children" [id]="id" [persons]="data.children" type="child" [editable]="isConnected()">
+  </app-person-links>)
+  
+  <br />
+  
+  <app-person-links title="Spouses" [id]="id" [persons]="data.spouses" type="spouse" [editable]="isConnected()">
   </app-person-links>
   
   <br />
   
-  <app-person-links title="Spouses" [id]="id" [persons]="data.spouses" type="spouse" [editable]="isConnected">
-  </app-person-links>
-  
-  <br />
-  
-  <app-person-links title="Siblings" [id]="id" [persons]="data.siblings" type="sibling" [editable]="isConnected">
+  <app-person-links title="Siblings" [id]="id" [persons]="data.siblings" type="sibling" [editable]="isConnected()">
   </app-person-links>
 </mat-card>
 
 <app-tree [data]="data" ></app-tree>
 
-<app-photo [id]="id" [editable]="isConnected"></app-photo>
+<app-photo [id]="id" [editable]="isConnected()"></app-photo>
 
 </div>
 

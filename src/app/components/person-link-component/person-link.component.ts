@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-person-link',
@@ -28,7 +29,8 @@ export class PersonLinkComponent implements OnInit, AfterContentInit {
     private http: HttpClient,
     private fb: FormBuilder,
     public rest: ConfigurationService,
-    private graphQLService: GraphQLService
+    private graphQLService: GraphQLService,
+    private router: Router
   ) {
     this.personEditForm = this.fb.group({
       id: this.person._id,
@@ -39,6 +41,9 @@ export class PersonLinkComponent implements OnInit, AfterContentInit {
     });
   }
 
+  onClick(){
+    this.router.navigateByUrl('person/' + this.person?._id);
+  }
   ngOnInit(): void {
   }
 

@@ -6,25 +6,14 @@
 
 <mat-tab-group>
   <mat-tab label="Info"> 
-    <pre>
-      Env: Staging
-      Api: https://genealogy-api-staging.herokuapp.com/graphql
-      API Status : OK
-    </pre>
+    <b>Env:</b> {{environnement}}<br>
+    <b>Endpoint:</b> {{endpoint}}<br>
+    <b>IsConnected:</b> {{isConnected()}}<br>
+    <b>Login:</b> {{connectedLogin()}}<br>
+    <b>Profile:</b> {{connectedProfile()}}
   </mat-tab>
 
-  <mat-tab label="Unused Persons"> 
-    <div *ngFor="let x of data; let i=index">
-      <div>
-        <input type="text" [value]=x._id readonly=true>
-        <input type="text" [value]=x.FirstName readonly=true>
-        <input type="text" [value]=x.LastName readonly=true>
   
-        <button (click)="removePerson(x._id)">Remove</button>
-  
-      </div>
-    </div>
-  </mat-tab>
 </mat-tab-group>
 
 

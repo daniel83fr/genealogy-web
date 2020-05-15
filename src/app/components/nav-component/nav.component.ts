@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
+import { AuthenticationService } from 'src/app/_services/AuthenticationService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -11,50 +13,36 @@ import { GraphQLService } from 'src/app/_services/GraphQLService';
 export class NavComponent implements OnInit, AfterContentInit {
 
   environnement = '';
-  isConnected = false;
+
   connectedUser = '';
   profileLink = '/';
 
   constructor(
     private configurationService: ConfigurationService,
-    private graphQLService: GraphQLService) {
-
-    this.configurationService.getEnvironnement()
-      .then(env => {
-        console.log(env);
-        this.environnement = env;
-      });
-
-    this.configurationService.getApiEndpoint()
-      .then(endpoint => {
-        return  this.graphQLService.getConnectedUser(endpoint);
-      })
-      .then(res => {
-        if (res != null) {
-          this.profileLink = `/person/${res.id}`;
-        }
-      })
-      ;
-
-
+    private graphQLService: GraphQLService,
+    public auth: AuthenticationService,
+    private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('login');
-    this.reload()
+    this.auth.logout();
   }
 
-  reload() {
-    window.location.href = this.profileLink;
+  isConnected() {
+    return this.auth.isConnected();
+  }
+
+  getConnectedLogin() {
+    return this.auth.getConnectedLogin();
+  }
+
+  getConnectedProfile() {
+    this.router.navigateByUrl('/person/' + this.auth.getConnectedProfile());
   }
 
   ngAfterContentInit() {
-    this.isConnected = localStorage.getItem('token') != null;
-    this.connectedUser = localStorage.getItem('login');
-
   }
 }

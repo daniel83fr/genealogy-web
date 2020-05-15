@@ -1,21 +1,21 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
 
-    <button mat-raised-button color="primary" routerLink="/">
+    <button mat-flat-button color="primary" routerLink="/">
       <img width="40" alt="Angular Logo" src="../../../assets/img/logo.png" />
-      <span>Genealogy</span>
+      <span>www.res01.com - Family Tree</span>
     </button>
 
     <span style="flex: auto;"></span>
-    <button *ngIf="!isConnected" mat-raised-button color="primary" routerLink="/login">Login</button>
+    <button *ngIf="!isConnected()" mat-raised-button color="primary" routerLink="/login">Login</button>
 
-    <button *ngIf="isConnected" mat-icon-button aria-label="my profile" [matMenuTriggerFor]="menu">
+    <button *ngIf="isConnected()" mat-icon-button aria-label="my profile" [matMenuTriggerFor]="menu">
       <mat-icon>person</mat-icon>
     </button>
-    <mat-label *ngIf="isConnected" style="font-size:10px">Connected as {{connectedUser}}</mat-label>
+    <mat-label *ngIf="isConnected()" style="font-size:10px">Connected as {{getConnectedLogin()}}</mat-label>
 
     <mat-menu  #menu="matMenu">
-      <button mat-menu-item [routerLink]="profileLink"(click)="reload()" >Profile</button>
+      <button mat-menu-item (click)="getConnectedProfile()" >Profile</button>
       <button mat-menu-item routerLink="/admin" >Admin</button>
       <button mat-menu-item (click)="logout()">Logout</button>
     </mat-menu>

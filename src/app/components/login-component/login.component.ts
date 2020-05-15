@@ -25,19 +25,13 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
 
-    let login = this.loginForm.controls.login.value
-    let password = this.loginForm.controls.password.value
+    let login = this.loginForm.controls.login.value;
+    let password = this.loginForm.controls.password.value;
     if (login && password) {
       this.authService.login(login, password)
-        .then(
-          res => {
-            console.log("User is logged in");
-            localStorage.setItem("token", res.toString());
-            localStorage.setItem("login", login)
-            window.location.href = "/";
-          }).catch(
+        .catch(
           err => {
-            this._snackBar.open("Login failed", 'close', { duration: 2000 })
+            this._snackBar.open("Login failed", 'close', { duration: 2000 });
           }
         );
     }

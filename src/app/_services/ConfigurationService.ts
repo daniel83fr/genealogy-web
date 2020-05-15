@@ -24,13 +24,11 @@ export class ConfigurationService {
             }
 
             const url = window.location.origin + '/env';
-            console.log(url);
             fetch(url)
                 .then((resp) => resp.json())
                 .then(res => {
                     const endpoint: string = res.GENEALOGY_API;
                     this.cacheService.endpoint = endpoint;
-                    console.log(`Endpoint: ${endpoint}`);
                     resolve(endpoint);
                     return endpoint;
                 }).catch(err => {
@@ -43,9 +41,9 @@ export class ConfigurationService {
 
         return new Promise((resolve, reject) => {
 
-            const cachedEndpoint = this.cacheService.endpoint;
-            if (cachedEndpoint != null) {
-                resolve(cachedEndpoint);
+            const cachedEnv = this.cacheService.environnement;
+            if (cachedEnv != null) {
+                resolve(cachedEnv);
             }
 
             const url = window.location.origin + '/env';
@@ -54,7 +52,6 @@ export class ConfigurationService {
                 .then(res => {
                     const env: string = res.Environnement;
                     this.cacheService.environnement = env;
-                    console.log(`Env: ${env}`);
                     resolve(env);
                     return env;
                 }).catch(err => {
