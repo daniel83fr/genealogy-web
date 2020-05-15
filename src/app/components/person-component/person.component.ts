@@ -14,19 +14,18 @@ import { GraphQLService } from 'src/app/_services/GraphQLService';
 
 export class PersonComponentComponent implements OnInit, AfterContentInit {
   privateData: any;
+  photos: any[];
 
   constructor(
     public rest: ConfigurationService,
     private route: ActivatedRoute,
-    private router: Router,
     private api: GraphQLService) {
 
   }
 
-  id: any = {};
+  id: any = undefined;
   data: any = {};
   isConnected = false;
-
 
   getProfileById(id: string) {
     this.rest.getApiEndpoint()
@@ -36,7 +35,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
       .then(res => res.data)
       .then(data => {
         console.log(data);
-        this.id = data.currentPerson?._id;
+        this.id = data.currentPerson._id;
         this.data = data;
         const svg = d3.select('.familyTree');
         new TreeDraw().draw(svg, data);
@@ -56,7 +55,10 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
   ngAfterContentInit() {
     const a = this.route.snapshot.paramMap.get('id');
     this.getProfileById(a);
-    this.getProfilePrivateById(a);
+    if(this.isConnected)
+    {
+      this.getProfilePrivateById(a);
+    }
   }
 
   ngOnInit(): void {

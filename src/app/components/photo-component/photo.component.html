@@ -1,0 +1,24 @@
+<div>
+  <h1>Photo Gallery</h1>
+  <span style="margin-left:20px">(Click on photo to enlarge.)</span>
+  <br>
+  <a *ngIf="photos?.length > 0" target="_blank" [href]="photos[photoIndex]?.url">
+    <img  [src]="photos[photoIndex]?.url" height="450" />
+  </a>
+  <br>
+  <button mat-icon-button aria-label="Previous" (click)="previous()">
+    <mat-icon>skip_previous</mat-icon>
+  </button>
+{{ photoIndex + 1}} / {{ photos?.length}}
+  <button mat-icon-button aria-label="Next" (click)="next()">
+    <mat-icon>skip_next</mat-icon>
+  </button>
+<br>
+  <input *ngIf="editable" type="file" accept="image/*" (change)="changeListener($event)">
+
+  <button *ngIf="editable" mat-icon-button aria-label="upload" (click)="upload()">
+    <mat-icon>cloud_upload</mat-icon>
+  </button>
+
+
+</div>

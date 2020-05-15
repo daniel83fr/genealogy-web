@@ -1,3 +1,5 @@
+<div *ngIf = "id!=undefined">
+
 <app-person-profile [id]="id" [editable]="isConnected" [data]="data.currentPerson" [privateData]="privateData">
 </app-person-profile>
 
@@ -28,6 +30,10 @@
 
 <app-tree [data]="data" ></app-tree>
 
+<app-photo [id]="id" [editable]="isConnected"></app-photo>
+
+</div>
+
 <mat-accordion>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
@@ -40,5 +46,6 @@
     <br>
     Private Data:
     <pre> {{ privateData | json }}</pre>
+
   </mat-expansion-panel>
 </mat-accordion>

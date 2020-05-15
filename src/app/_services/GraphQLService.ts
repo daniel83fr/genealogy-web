@@ -8,6 +8,25 @@ import { EncryptionService } from './EncryptionService';
   providedIn: 'root'
 })
 export class GraphQLService {
+  addPhoto(endpoint: string, link: any, deletehash: any, persons: any[]) {
+    const token = localStorage.getItem('token');
+  
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    fetch.use(addToken(token));
+
+    return fetch({
+      query: `mutation addPhoto($link: String!, $deleteHash: String, $persons: [String] ) {
+  addPhoto( url : $link, deleteHash :$deleteHash, persons:$persons)
+          }
+          `,
+          variables: { link: link, deleteHash: deletehash,  persons:  persons }
+    }).then(res => {
+      return res.data.addPhoto;
+    });
+  }
 
   constructor(
     private cacheService: ClientCacheService,
@@ -244,14 +263,7 @@ query Register {
       uri: endpoint,
     });
 
-    fetch.use(({ request, options }, next) => {
-
-      if (!options.headers) {
-        options.headers = {};
-      }
-      options.headers['authorization'] = `Bearer ${token}`;
-      next();
-    });
+    fetch.use(addToken(token));
 
     return fetch({
       query: `mutation UpdatePerson($_id:String!) {
@@ -320,6 +332,26 @@ query Register {
     }).then(res => {
       return res.data.createPerson._id;
     });
+  }
+
+  getPhotos(endpoint: string, person: string) {
+    
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `query getPhotosById($_id: String!) {
+  getPhotosById( _id : $_id) {
+              url
+            }
+          }
+          `,
+          variables: { _id:  person }
+    }).then(res => {
+      return res.data.getPhotosById;
+    });
+
   }
 
 
@@ -449,3 +481,14 @@ query Register {
   }
 
 }
+
+function addToken(token: string) {
+  return ({ request, options }, next) => {
+    if (!options.headers) {
+      options.headers = {};
+    }
+    options.headers['authorization'] = `Bearer ${token}`;
+    next();
+  };
+}
+
