@@ -1,7 +1,9 @@
-footer {
+mat-toolbar {
    
     left: 0;
     bottom: 0;
     width: 100%;
     text-align: center;
+    max-height: 30px;
+    min-height: 30px;
   }

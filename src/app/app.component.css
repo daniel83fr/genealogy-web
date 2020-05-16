@@ -24,19 +24,8 @@
     flex: 1;
   }
 
-  footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: white;
-    color: black;
-    text-align: center;
-  }
-
   .content {
     display: flex;
-    margin: 20px auto 32px;
     padding: 0 16px;
     max-width: 960px;
     flex-direction: column;

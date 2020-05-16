@@ -1,5 +1,15 @@
+.splashContent {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  justify-content: top;
+  align-items: left;
+  vertical-align: center;
+  background-color: #75d0d3;
+}
+
 .example-card {
-    max-width: 800px;
+    width: 80%;
 
   }
   
@@ -9,10 +19,11 @@
   }
 
   .main-div{
-    
+    margin-top:20px;
     display: flex;
-    justify-content: center;
+    /* justify-content: center;
     align-items: center;
+    vertical-align: top; */
   }
 
   table {

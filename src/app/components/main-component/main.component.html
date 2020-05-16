@@ -1,18 +1,37 @@
+<mat-card class="splashContent" >
+  <!-- <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Welcome to Genealogy</mat-card-title>
+    <mat-card-subtitle>A simple website to view and edit family tree.</mat-card-subtitle>
+  </mat-card-header> -->
+  <img src="../../assets/img/genealogy.jpg" alt="Photo of Genealogy">
+
+  <div style="font-size:50px; vertical-align: center;align-self:flex-end;" >Family Tree</div>
+
+  <div style="border-width: 1px; border-style: solid;width: 400px;background-color: #e6f2ff; margin-left:auto; margin-right:40px;">
+    Features: <br>
+    <ul >
+      
+      <li>Family Tree</li>
+      <li>Photos</li>
+      <li>Chat</li>
+      <li>... And more</li>
+    </ul>
+  </div>
+ 
+</mat-card>
+
 <div class="main-div">
+
+
   <mat-card class="example-card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title>Welcome to Genealogy</mat-card-title>
       <mat-card-subtitle>A simple website to view and edit family tree.</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="../../assets/img/genealogy.jpg" alt="Photo of Genealogy">
     <mat-card-content>
-
-
-
       <br>
-      <!-- <form [formGroup]="personEditForm"> -->
-
         <b>Persons: </b><br />
 
         <mat-form-field>
@@ -55,9 +74,31 @@
 
 
         </table>
-        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
  
 
+        <b>Photos: </b><br />
+        <img src="https://i.imgur.com/JQjU6fR.jpg" height="200"/>
+        <img src="https://i.imgur.com/pWeWIu7.jpg" height="200"/>
+        <br>
+
+        <b>Recent activity: </b><br />
+        daniel added photo: <br>
+        daniel added profile for "Daniel"<br>
+        ...
+    </mat-card-content>
+
+  </mat-card>
+
+  <mat-card style="width:20%; height:500px; vertical-align: top;">
+    <mat-card-content>
+      <b>Events</b><br>
+      Today<br>
+
+      Coming soon:<br>
+
+
+     <b>Live</b><br>
     </mat-card-content>
 
   </mat-card>
