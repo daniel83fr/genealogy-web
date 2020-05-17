@@ -1,11 +1,13 @@
-<mat-card class="splashContent" >
+<mat-card class="splashContent" style="width: auto;
+margin-left: 0px;
+margin-right: 0px;" >
   <img src="../../assets/img/genealogy.jpg" alt="Photo of Genealogy" height="200" class="hidden-on-mobile">
-  <div style="font-size:50px;min-width: 200px;" >Family Tree</div>
+  <div style="font-size:50px;min-width: 400px;" >Family Tree</div>
 </mat-card>
 
-<div class="main-div" style="display: flex; flex-direction: row;flex-wrap: wrap;">
+<div class="main-div" style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center; ">
 
-<mat-card style="min-width: 200px;">
+<mat-card style="min-width: 460px; width:auto;margin: 5px;">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>Welcome to Family Tree</mat-card-title>
@@ -31,9 +33,9 @@
   </mat-card-content>
 </mat-card>
 
-  <mat-card style="min-width: 400px;">
+  <mat-card style="min-width: 460px;max-width: auto;margin: 5px;">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
+      <mat-icon>people</mat-icon>
       <mat-card-title>Search</mat-card-title>
       <mat-card-subtitle>Find a person by name.</mat-card-subtitle>
     </mat-card-header>
@@ -83,19 +85,19 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card style="min-width: 200px;max-width: 400;">
+  <mat-card style="min-width: 460px;max-width: auto;margin: 5px;">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
+      <mat-icon>camera_alt</mat-icon>
       <mat-card-title>Random Photos</mat-card-title>
     </mat-card-header>
-    <mat-card-content style="display: flex; flex-wrap: wrap; flex-direction: column;">
-        <img  *ngFor="let image of images" [src]="image.url" height="200" width="170"/>
+    <mat-card-content style="display: flex; flex-direction: row;flex-wrap: wrap;width:460px; justify-content: space-around;">
+        <img  *ngFor="let image of images" [src]="image.url" height="200" width="170" style="margin:5px"/>
       </mat-card-content>
     </mat-card>
 
-  <mat-card style="min-width: 200px;">
+  <mat-card style="min-width: 460px;max-width: 600px;margin: 5px;">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
+      <mat-icon>calendar_today</mat-icon>
       <mat-card-title>Events</mat-card-title>
       <mat-card-subtitle>TODAY's events</mat-card-subtitle>
     </mat-card-header>
@@ -123,9 +125,9 @@
 
   </mat-card>
 
-  <mat-card style="min-width: 400px;">
+  <mat-card style="min-width: 460px;max-width: 600px;margin: 5px;">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
+      <mat-icon>assignment</mat-icon>
       <mat-card-title>Recent Activities</mat-card-title>
     </mat-card-header>
     <mat-card-content>
@@ -137,14 +139,14 @@
 
 </mat-card>
 
-<mat-card style="min-width: 400px;">
+<mat-card style="min-width: 460px;max-width: 600px;margin: 5px;">
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
+    <mat-icon>chat</mat-icon>
     <mat-card-title>Messages</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-form-field appearance="fill">
-      <textarea matInput style="height: 200px;overflow:scroll" [(ngModel)]="messages" ></textarea>
+      <textarea matInput style="height: 200px;overflow:scroll" [(ngModel)]="messages" readonly ></textarea>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
