@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 require('dotenv').config()
 
 // Serve static files....
@@ -19,8 +21,26 @@ app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname + '/dist/GenealogyFrontEnd/index.html'));
 });
 
+const documents = {};
+
+io.on("connection", socket => {
+  console.log('a user connected');
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+
+  socket.on('message', (msg) => {
+    io.emit('message-received', msg);
+  });
+
+  socket.on('message-received', (msg) => {
+    console.log("message - " + msg)
+  });
+});
+
 let PORT = process.env.PORT
-app.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}...`);
   console.log(`Env: ${process.env.NODE_ENV}`);
 });

@@ -1,24 +1,22 @@
 <mat-card class="splashContent" >
-  <!-- <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Welcome to Genealogy</mat-card-title>
-    <mat-card-subtitle>A simple website to view and edit family tree.</mat-card-subtitle>
-  </mat-card-header> -->
   <img src="../../assets/img/genealogy.jpg" alt="Photo of Genealogy" height="200" class="hidden-on-mobile">
-
   <div style="font-size:50px;min-width: 200px;" >Family Tree</div>
- 
 </mat-card>
 
 <div class="main-div" style="display: flex; flex-direction: row;flex-wrap: wrap;">
 
-<mat-card>
+<mat-card style="min-width: 200px;">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>Welcome to Family Tree</mat-card-title>
-    <mat-card-subtitle>Features:</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
+
+    A simple website to view/edit family tree 
+    and share some photos.
+    <br>
+    <br>
+    <b>Features:</b>
     <ul >
       
       <li>Family Tree</li>
@@ -26,10 +24,14 @@
       <li>Chat</li>
       <li>... And more</li>
     </ul>
+  <br>
+    Note: It's a first version of the site,<br>
+    Improvements will come little by little.<br>
+    Feel free to add content and raise any bugs.
   </mat-card-content>
 </mat-card>
 
-  <mat-card>
+  <mat-card style="min-width: 400px;">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title>Search</mat-card-title>
@@ -81,54 +83,76 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card>
+  <mat-card style="min-width: 200px;max-width: 400;">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>PHotos</mat-card-title>
-      <mat-card-subtitle>Find a person by name.</mat-card-subtitle>
+      <mat-card-title>Random Photos</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-
-
-
-        <b>Photos: </b><br />
-        <img src="https://i.imgur.com/JQjU6fR.jpg" height="200"/>
-        <img src="https://i.imgur.com/pWeWIu7.jpg" height="200"/>
-        <br>
+    <mat-card-content style="display: flex; flex-wrap: wrap; flex-direction: column;">
+        <img  *ngFor="let image of images" [src]="image.url" height="200" width="170"/>
       </mat-card-content>
     </mat-card>
 
-
-
-  <mat-card style="width: 300px;">
+  <mat-card style="min-width: 200px;">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title>Events</mat-card-title>
-      <mat-card-subtitle>Birthdays, ...</mat-card-subtitle>
+      <mat-card-subtitle>TODAY's events</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <b>Events</b><br>
-      Today<br>
+      <div *ngIf="events?.birthday?.length>0" style="font-weight: bold;">Birthday:</div>
+      <div *ngFor="let b of events?.birthday">
+        {{b.firstName}} {{b.lastName}}
+      </div>
 
-      Coming soon:<br>
+      <div *ngIf="events?.deathday?.length>0" style="font-weight: bold;">Dead Anniversary:</div>
+      <div *ngFor="let b of events?.deathday">
+        {{b.firstName}} {{b.lastName}}
+      </div>
 
+      <div *ngIf="events?.marriage?.length>0" style="font-weight: bold;">Wedding Anniversary:</div>
+      <div *ngFor="let b of events?.marriage">
+        {{b.firstName}} {{b.lastName}}
+      </div>
 
-     <b>Live</b><br>
+     
+
+  
+
     </mat-card-content>
 
   </mat-card>
 
-  <mat-card style="width: 50%;">
+  <mat-card style="min-width: 400px;">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title>Recent Activities</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <b>Recent activity: </b><br />
-      daniel added photo: <br>
-      daniel added profile for "Daniel"<br>
-      ...
+      <div *ngFor="let auditEntry of audit">
+        {{auditEntry.timestamp}} - {{auditEntry.user || 'unknown'}} -  {{auditEntry.action}} 
+      </div>
+
   </mat-card-content>
+
+</mat-card>
+
+<mat-card style="min-width: 400px;">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Messages</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field appearance="fill">
+      <textarea matInput style="height: 200px;overflow:scroll" [(ngModel)]="messages" ></textarea>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <input matInput [(ngModel)]="inputMessage" autocomplete="off" (keyup.enter)="sendMessage(inputMessage)">
+    </mat-form-field>
+    <br>
+    <button (click)="sendMessage(inputMessage)"  >Send</button>
+</mat-card-content>
 
 </mat-card>
 </div>

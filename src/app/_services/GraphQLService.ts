@@ -354,7 +354,71 @@ query Register {
 
   }
 
+  getPhotosRandom(endpoint: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
 
+    return fetch({
+      query: `query GetPhotos {
+        photos: getPhotosRandom(number: 5) {
+          url
+        }
+      }`
+    }).then(res => {
+      return res.data.photos;
+    });
+
+  }
+  getTodaysEvents(endpoint: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `query getTodayMarriagedays {
+        birthday: getTodayBirthdays{
+         ...usr
+        },
+        deathday: getTodayDeathdays{
+         ...usr
+        },
+        marriage: getTodayMarriagedays{
+         ...usr
+        }
+      }
+      fragment usr on User{
+           _id
+          firstName
+          lastName
+      }
+      `
+    }).then(res => {
+      return res.data;
+    });
+
+  }
+  getAuditLastEntries(endpoint: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `query GetAudit {
+        audit: getAuditLastEntries(number: 10) {
+          timestamp
+          type
+          id
+          user
+          action
+        }
+      }
+      `
+    }).then(res => {
+      return res.data.audit;
+    });
+
+  }
 
   removeLink(endpoint: string, person1: string, person2: string) {
 

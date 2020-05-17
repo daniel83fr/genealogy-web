@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Genealogy</title>
@@ -8,8 +9,29 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Google Analytics -->
+  <script>
+    if (document.location.hostname.search("res01.com") !== -1) {
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+      ga('create', 'UA-24572819-1', 'auto');
+      ga('send', 'pageview');
+    }
+  </script>
+  <script async src='https://www.google-analytics.com/analytics.js'></script>
+  <!-- End Google Analytics -->
+
+
 </head>
+
 <body class="mat-typography">
   <app-root></app-root>
+
+
+  <script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+</script>
 </body>
+
 </html>

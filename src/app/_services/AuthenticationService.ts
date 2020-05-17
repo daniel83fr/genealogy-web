@@ -19,7 +19,7 @@ export class AuthenticationService {
       .then((endpoint) => this.api.login(endpoint.toString(), login, password))
       .then((auth) => {
         if (auth.success === true) {
-          localStorage.setItem("token", auth.token.toString());
+          localStorage.setItem('token', auth.token.toString());
           resolve(auth.token);
           this.router.navigateByUrl('person/' + this.getConnectedProfile());
           return;
@@ -44,11 +44,22 @@ export class AuthenticationService {
 
   logout() {
     localStorage.removeItem('token');
-    this.router.navigateByUrl('login');
+    //this.router.navigateByUrl('login');
   }
 
   isConnected() {
-    return localStorage.getItem('token') != null;
+    const token = this.getToken();
+    if (token == null) {
+      return false;
+    }
+    const data = this.parseJwt(token);
+    const hasExpired =  new Date(data.exp * 1000)  <= new Date();
+    if (hasExpired) {
+      localStorage.removeItem('token');
+      return false;
+    }
+
+    return true;
   }
 
   getToken() {
@@ -57,8 +68,8 @@ export class AuthenticationService {
 
   getConnectedLogin() {
     if (this.isConnected) {
-      let token = this.getToken();
-      let data = this.parseJwt(token);
+      const token = this.getToken();
+      const data = this.parseJwt(token);
       return data.login;
     }
     return '';
@@ -66,19 +77,19 @@ export class AuthenticationService {
 
   getConnectedProfile() {
     if (this.isConnected) {
-      let token = this.getToken();
-      let data = this.parseJwt(token);
+      const token = this.getToken();
+      const data = this.parseJwt(token);
       return data.profile;
     }
     return '';
   }
 
   parseJwt(token) {
-    if(token == null){
-      return {}
+    if (token == null) {
+      return {};
     }
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace('-', '+').replace('_', '/');
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace('-', '+').replace('_', '/');
     return JSON.parse(atob(base64));
   }
 }
