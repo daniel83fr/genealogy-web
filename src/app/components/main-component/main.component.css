@@ -13,11 +13,12 @@
   }
 
   .main-div{
-    margin-top:20px;
+    background-color: blue;
+    min-width: 400;
     display: flex;
-    /* justify-content: center;
-    align-items: center;
-    vertical-align: top; */
+    justify-content: center;
+    align-items: left;
+    vertical-align: top;
   }
 
   table {

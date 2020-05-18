@@ -83,7 +83,11 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.dataSource = new MatTableDataSource(myData);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.displayedColumns = ['firstName', 'lastName', 'gender', 'year', 'link'];
+    if(window.screen.availWidth < 400 ){
+      this.displayedColumns = ['firstName', 'lastName', 'link'];
+    } else{
+      this.displayedColumns = ['firstName', 'lastName', 'gender', 'year', 'link'];
+    }
   }
 
   applyFilter(event: Event) {
