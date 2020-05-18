@@ -10,7 +10,7 @@ import { EncryptionService } from './EncryptionService';
 export class GraphQLService {
   addPhoto(endpoint: string, link: any, deletehash: any, persons: any[]) {
     const token = localStorage.getItem('token');
-  
+
     const fetch = createApolloFetch({
       uri: endpoint,
     });
@@ -22,7 +22,7 @@ export class GraphQLService {
   addPhoto( url : $link, deleteHash :$deleteHash, persons:$persons)
           }
           `,
-          variables: { link: link, deleteHash: deletehash,  persons:  persons }
+          variables: { link, deleteHash: deletehash,  persons }
     }).then(res => {
       return res.data.addPhoto;
     });
@@ -255,8 +255,8 @@ query Register {
 
   updateProfile(endpoint: string, id: string, changes: any, privateChange: any) {
     const token = localStorage.getItem('token');
-    let patchString = this.generatePatch(changes);
-    let privatePatchString = this.generatePatch(privateChange);
+    const patchString = this.generatePatch(changes);
+    const privatePatchString = this.generatePatch(privateChange);
 
 
     const fetch = createApolloFetch({
@@ -335,7 +335,7 @@ query Register {
   }
 
   getPhotos(endpoint: string, person: string) {
-    
+
     const fetch = createApolloFetch({
       uri: endpoint,
     });
@@ -348,8 +348,11 @@ query Register {
           }
           `,
           variables: { _id:  person }
+    })
+    .catch(err => {
+      throw Error(err);
     }).then(res => {
-      return res.data.getPhotosById;
+      return res.data?.getPhotosById;
     });
 
   }
@@ -551,7 +554,7 @@ function addToken(token: string) {
     if (!options.headers) {
       options.headers = {};
     }
-    options.headers['authorization'] = `Bearer ${token}`;
+    options.headers.authorization = `Bearer ${token}`;
     next();
   };
 }

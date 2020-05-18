@@ -1,3 +1,12 @@
+.main-div{
+    min-width: 400;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    vertical-align: top;
+  }
+  
+
 .linage {
     fill: none;
     stroke: black;

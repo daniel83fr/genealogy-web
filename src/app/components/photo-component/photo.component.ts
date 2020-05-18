@@ -2,6 +2,7 @@ import { Component, OnInit, Input, AfterContentInit } from '@angular/core';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { ImageService } from 'src/app/_services/imageService';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -23,7 +24,9 @@ export class PhotoComponent implements OnInit, AfterContentInit {
   constructor(
     public configService: ConfigurationService,
     private graphQlService: GraphQLService,
-    private imageService: ImageService) {
+    private imageService: ImageService,
+    private snackBar: MatSnackBar
+    ) {
 
   }
 
@@ -73,7 +76,10 @@ export class PhotoComponent implements OnInit, AfterContentInit {
         return this.graphQlService.addPhoto(endpoint, link, deletehash, [this.id]);
         })
       })
-      .catch(error => console.log('error', error));
+      .catch(error => {
+        this.snackBar.open(error, 'close', { duration: 2000 , panelClass: ['red-snackbar']}
+        );
+      });
   }
 
 

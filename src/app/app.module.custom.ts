@@ -11,6 +11,7 @@ import { TreeComponent } from './components/tree-component/tree.component';
 import { PersonProfileComponent } from './components/person-profile-component/person-profile.component';
 import { LoginRegisterComponent } from './components/login-register-component/login-register.component';
 import { PhotoComponent } from './components/photo-component/photo.component';
+import { PersonProfileDetailComponent } from './components/person-profile-detail-component/person-profile-detail.component';
 
 export default [
     PersonComponentComponent,
@@ -25,5 +26,6 @@ export default [
     PersonLinkComponent,
     TreeComponent,
     PersonProfileComponent,
+    PersonProfileDetailComponent,
     PhotoComponent
 ]

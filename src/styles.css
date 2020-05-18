@@ -10,3 +10,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @media screen and (min-width: 600px) {
     .hidden-on-desktop {display: none}
 }
+
+.red-snackbar {
+    background: #2196F3;
+}
+
+.green-snackbar {
+    background: #2196F3;
+}
+
+.orange-snackbar {
+    background: #2196F3;
+}
