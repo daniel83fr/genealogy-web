@@ -7,7 +7,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,8 +16,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 export default [
+    MatDatepickerModule,
     MatGridListModule,
     MatInputModule,
     MatToolbarModule,
@@ -36,4 +38,4 @@ export default [
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-]
+];

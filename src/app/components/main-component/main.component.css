@@ -1,6 +1,6 @@
 .splashContent {
   display: flex;
-  background-color: #75d0d3;
+  background-color: #131754;
   flex-direction: row
 }
 
@@ -9,6 +9,7 @@
 
   .example-header-image {
     background-image: url('../../../assets/img/logo.png');
+
     background-size: cover;
   }
 

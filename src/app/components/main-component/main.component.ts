@@ -6,6 +6,7 @@ import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import io from 'socket.io-client';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -16,6 +17,7 @@ import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 export class MainComponent implements OnInit, AfterContentInit {
   dataSource: any;
   displayedColumns = [];
+  date;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -29,7 +31,9 @@ export class MainComponent implements OnInit, AfterContentInit {
   constructor(
     private configurationService: ConfigurationService,
     private graphQLService: GraphQLService,
+    private router: Router,
     private auth: AuthenticationService) {
+      this.date = Date();
   }
 
   ngOnInit(): void {
@@ -88,20 +92,30 @@ export class MainComponent implements OnInit, AfterContentInit {
     // } else{
     //   this.displayedColumns = ['firstName', 'lastName', 'gender', 'year', 'link'];
     // }
-    this.displayedColumns = ['firstName', 'lastName', 'link'];
+    this.displayedColumns = ['firstName', 'lastName', 'link', 'gender'];
   }
 
-  
+  getTitle(element: any) {
+    const birth = element.yearOfBirth ?? '';
+    const death = element.yearOfDeath ?? '';
+    return `${element._id}:
+    ${element.firstName} ${element.lastName}
+    ${birth}-${death}`;
+  }
+  navigateTo(url: string) {
+    this.router.navigateByUrl(url);
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   sendMessage(txt: string) {
-    if(txt!= ''){
+    if (txt !== '') {
       this.ioClient.emit('message', this.auth.getConnectedLogin() + ': ' + txt.replace('<', ''));
       this.inputMessage = '';
     }
-    
+
   }
 }
