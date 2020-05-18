@@ -111,12 +111,12 @@ justify-content: center;" >
     </mat-card-header>
     <mat-card-content>
 
-      <mat-form-field>
+      <!-- <mat-form-field>
         <mat-label>Date</mat-label>
-        <!-- <input matInput [matDatepicker]="picker" [value]="date.value"> -->
-        <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker> -->
-      </mat-form-field>
+        <input matInput [matDatepicker]="picker" [value]="date.value"> 
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker> 
+      </mat-form-field> -->
 
       <div *ngIf="events?.birthday?.length>0" style="font-weight: bold;">Birthday:</div>
       <div *ngFor="let b of events?.birthday">
