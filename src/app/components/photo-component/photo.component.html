@@ -2,7 +2,7 @@
   <span style="margin-left:20px">(Click on photo to enlarge.)</span>
   <br>
   <a *ngIf="photos?.length > 0" target="_blank" [href]="photos[photoIndex]?.url">
-    <img  [src]="photos[photoIndex]?.url" height="450" />
+    <img  [src]="photos[photoIndex]?.url" width="380" />
   </a>
   <br>
   <button mat-icon-button aria-label="Previous" (click)="previous()">

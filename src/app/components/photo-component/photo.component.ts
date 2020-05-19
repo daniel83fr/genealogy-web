@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit, OnChanges } from '@angular/core';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { ImageService } from 'src/app/_services/imageService';
@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./photo.component.css']
 })
 
-export class PhotoComponent implements OnInit, AfterContentInit {
+export class PhotoComponent implements OnInit, OnChanges {
 
   @Input() id = undefined;
   @Input() editable = false;
@@ -97,7 +97,7 @@ export class PhotoComponent implements OnInit, AfterContentInit {
   ngOnInit(): void {
   }
 
-  ngAfterContentInit() {
+  ngOnChanges() {
     this.getPhotos(this.id);
   }
 

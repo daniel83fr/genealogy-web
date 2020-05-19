@@ -98,6 +98,10 @@ export class PersonProfileDetailComponent implements OnInit {
     }
   }
 
+  switchEdit() {
+    this.editMode = !this.editMode;
+  }
+
   deleteProfile() {
     const r = confirm(`Delete ${this.data._id}?`);
     if (r === true) {

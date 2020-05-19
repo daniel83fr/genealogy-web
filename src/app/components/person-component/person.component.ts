@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit, OnChanges, Input } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap, NavigationEnd, NavigationStart, ActivationEnd, ActivationStart } from '@angular/router';
 import * as d3 from 'd3';
 
@@ -13,7 +13,7 @@ import { AuthenticationService } from 'src/app/_services/AuthenticationService';
   styleUrls: ['./person.component.css']
 })
 
-export class PersonComponentComponent implements OnInit, AfterContentInit {
+export class PersonComponentComponent implements OnInit, AfterContentInit, OnChanges {
   privateData: any;
   photos: any[];
 
@@ -25,22 +25,29 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
     private router: Router,
     private auth: AuthenticationService,
     private api: GraphQLService) {
-      // const a = this.route.snapshot.paramMap.get('id');
-      // this.getProfileById(a);
-      // if (this.isConnected()) {
-      //   this.getProfilePrivateById(a);
-      // }
+      const a = this.route.snapshot.paramMap.get('id');
+      this.getProfileById(a);
+      if (this.isConnected()) {
+        this.getProfilePrivateById(a);
+      }
 
       router.events.subscribe((val) => {
-      if (val instanceof NavigationStart || val instanceof NavigationEnd) {
-        const a = this.route.snapshot.paramMap.get('id');
-        this.getProfileById(a);
-        if (this.isConnected()) {
-          this.getProfilePrivateById(a);
+
+        if(this.id != this.route.snapshot.paramMap.get('id')) {
+          this.id = this.route.snapshot.paramMap.get('id');
+          this.ngOnChanges()
         }
         
 
-      }
+      // if (val instanceof NavigationStart || val instanceof NavigationEnd) {
+      //   const a = this.route.snapshot.paramMap.get('id');
+      //   this.getProfileById(a);
+      //   if (this.isConnected()) {
+      //     this.getProfilePrivateById(a);
+      //   }
+        
+
+      // }
     });
   }
 
@@ -76,6 +83,13 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
   }
   ngAfterContentInit() {
 
+  }
+
+  ngOnChanges() {
+    this.getProfileById(this.id);
+    if (this.isConnected()) {
+      this.getProfilePrivateById(this.id);
+    }
   }
 
   ngOnInit(): void {

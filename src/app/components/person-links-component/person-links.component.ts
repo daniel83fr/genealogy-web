@@ -150,7 +150,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
       });
   }
 
-  onChange(value: MatSlideToggleChange) {
-    this.edit = value.checked;
+  switchEdit() {
+    this.edit = !this.edit;
   }
 }

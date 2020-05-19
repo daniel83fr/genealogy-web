@@ -1,7 +1,9 @@
 <div>
   <b>{{title}}</b>:
-  <mat-slide-toggle *ngIf="editable" [checked]="edit" (change)="onChange($event)">Edit
-  </mat-slide-toggle>
+
+  <button *ngIf="editable" mat-icon-button [color]="edit?'warn':'primary'" (click)="switchEdit()" >
+    <mat-icon>edit</mat-icon>
+  </button>
 
   <app-person-link *ngIf="type=='parent'" [id]="id" [person]="person" [type]="type" [editable]="editable && edit"></app-person-link>
   

@@ -1,11 +1,20 @@
 
-  <div class="row">
+ <button *ngIf="editable" mat-icon-button style="float: right;" [color]="editMode?'warn':'primary'" (click)="switchEdit()" >
+  <mat-icon>edit</mat-icon>
+</button>
 
+ <div class="row" style="padding:16px;">
 
-
+ 
 
     <div class="column">
-      <mat-slide-toggle *ngIf="editable" [checked]="editMode" (change)="onChange($event)">Edit</mat-slide-toggle>
+      <div class="row">
+        <mat-card-title>Info</mat-card-title>
+        <mat-icon>face</mat-icon>
+      </div>
+      
+
+
       <br>
       <form [formGroup]="personEditForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="standard">

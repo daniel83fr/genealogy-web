@@ -1,8 +1,8 @@
 
-<button mat-icon-button style="float: right;" color="primary" (click)="switchEdit()">
+<button *ngIf="editable" mat-icon-button style="float: right;" color="primary" (click)="switchEdit()">
     <mat-icon>edit</mat-icon>
 </button>
-<div style="display: flex; flex-direction: column;">
+<div style="display: flex; flex-direction: column;width:350px;padding:16px;">
     <div style="font-size: larger;">{{getDisplayName(data)}}</div>
     <div style="color: gray;">{{data?._id}}</div>
     <div style="display: flex;
