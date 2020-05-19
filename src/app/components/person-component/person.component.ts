@@ -17,6 +17,8 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
   privateData: any;
   photos: any[];
 
+  refreshing = false;
+
   constructor(
     public rest: ConfigurationService,
     private route: ActivatedRoute,
@@ -36,6 +38,8 @@ export class PersonComponentComponent implements OnInit, AfterContentInit {
         if (this.isConnected()) {
           this.getProfilePrivateById(a);
         }
+        
+
       }
     });
   }

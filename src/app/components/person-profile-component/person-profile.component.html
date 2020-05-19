@@ -1,3 +1,11 @@
-<div style="font-size: larger;">{{getDisplayName(data)}}</div>
-<div style="color: gray;">{{data?._id}}</div>
-<div><img [src]="getImage()" /></div>
+
+<button mat-icon-button style="float: right;" color="primary" (click)="switchEdit()">
+    <mat-icon>edit</mat-icon>
+</button>
+<div style="display: flex; flex-direction: column;">
+    <div style="font-size: larger;">{{getDisplayName(data)}}</div>
+    <div style="color: gray;">{{data?._id}}</div>
+    <div style="display: flex;
+    justify-content: center;
+    align-items: center;" ><img [src]="image" width="300" /></div>
+</div>

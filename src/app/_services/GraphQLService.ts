@@ -357,6 +357,28 @@ query Register {
 
   }
 
+  getProfilePhoto(endpoint: string, person: string) {
+
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `query getPhotoProfile($_id: String!) {
+  getPhotoProfile( _id : $_id) {
+              url
+            }
+          }
+          `,
+          variables: { _id:  person }
+    })
+    .catch(err => {
+      throw Error(err);
+    }).then(res => {
+      return res.data?.getPhotoProfile;
+    });
+
+  }
   getPhotosRandom(endpoint: string) {
     const fetch = createApolloFetch({
       uri: endpoint,

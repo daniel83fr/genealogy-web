@@ -11,6 +11,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     .hidden-on-desktop {display: none}
 }
 
+
+.info-snackbar {
+    background: #2196F3;
+    color: black
+}
+
+.info-snackbar button {
+    color: black
+}
+
 .red-snackbar {
     background: #2196F3;
 }
