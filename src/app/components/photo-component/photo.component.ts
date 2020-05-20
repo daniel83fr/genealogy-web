@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, AfterContentInit, OnChanges } from '@angular/core';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
-import { ImageService } from 'src/app/_services/imageService';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from 'src/app/_services/NotificationService';
 
 
 @Component({
@@ -15,17 +14,17 @@ export class PhotoComponent implements OnInit, OnChanges {
 
   @Input() id = undefined;
   @Input() editable = false;
-  
+
   photos: any[];
   photoIndex = 0;
   image: string | ArrayBuffer;
   image2: any;
+  profile: any;
 
   constructor(
     public configService: ConfigurationService,
     private graphQlService: GraphQLService,
-    private imageService: ImageService,
-    private snackBar: MatSnackBar
+    private notification: NotificationService
     ) {
 
   }
@@ -35,13 +34,13 @@ export class PhotoComponent implements OnInit, OnChanges {
   }
 
   readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
+    let file: File = inputValue.files[0];
     this.image2 = file;
-    var myReader: FileReader = new FileReader();
+    let myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
       this.image = myReader.result;
-    }
+    };
     myReader.readAsDataURL(file);
   }
 
@@ -49,15 +48,15 @@ export class PhotoComponent implements OnInit, OnChanges {
   upload() {
 
 
-    let myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append('Authorization', 'Client-ID 7e2fbe3383eb5ed');
 
-    let formdata = new FormData();
+    const formdata = new FormData();
     formdata.append('image', this.image2);
     formdata.append('type', 'file');
     formdata.append('name', this.image2.name);
 
-    let requestOptions: RequestInit = {
+    const requestOptions: RequestInit = {
       method: 'POST',
       headers: myHeaders,
       body: formdata,
@@ -68,20 +67,44 @@ export class PhotoComponent implements OnInit, OnChanges {
       .then(response => response.json())
       .then(result => {
 
-        let link = result.data.link;
-        let deletehash = result.data.deletehash;
+        const link = result.data.link;
+        const deletehash = result.data.deletehash;
 
         return this.configService.getApiEndpoint()
         .then(endpoint => {
         return this.graphQlService.addPhoto(endpoint, link, deletehash, [this.id]);
-        })
+        });
+      })
+      .then(res=>{
+        this.notification.showSuccess("Photo added");
+        window.location.reload();
       })
       .catch(error => {
-        this.snackBar.open(error, 'close', { duration: 2000 , panelClass: ['red-snackbar']}
-        );
+        console.log(Error(error));
+        this.notification.showError("Something went wrong. please check logs for details.")
       });
   }
 
+  setProfilePicture() {
+
+    const picture = this.photos[this.photoIndex]._id;
+    const user = this.id;
+
+    this.configService.getApiEndpoint()
+        .then(endpoint => {
+        return this.graphQlService.setProfilePicture(endpoint, user, picture);
+        })
+        .catch(err =>{
+          this.notification.showError('Something went wrong. please check logs for detail.');
+          console.log(err);
+          throw Error(err);
+        })
+        .then(res => {
+          this.notification.showSuccess('Profile picture changed.');
+          window.location.reload();
+        })
+        ;
+  }
 
   next() {
     if (this.photoIndex < this.photos.length - 1) {
@@ -98,7 +121,43 @@ export class PhotoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+
+
+    this.getProfileImage(this.id);
     this.getPhotos(this.id);
+  }
+
+  deletePicture(){
+
+    const picture = this.photos[this.photoIndex]._id;
+
+
+    this.configService.getApiEndpoint()
+        .then(endpoint => {
+        return this.graphQlService.deletePhoto(endpoint, picture);
+        })
+        .catch(err =>{
+          this.notification.showError('Something went wrong. please check logs for detail.');
+          console.log(err);
+          throw Error(err);
+        })
+        .then(res => {
+          this.notification.showSuccess('Photo deleted.');
+          window.location.reload();
+        })
+        ;
+  }
+
+  getProfileImage(id: string) {
+
+    this.configService.getApiEndpoint()
+    .then(endpoint => {
+      return this.graphQlService.getProfilePhoto(endpoint, id);
+    })
+    .then(data => {
+        this.profile =  data._id;
+    });
+
   }
 
   getPhotos(id: string) {

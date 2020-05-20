@@ -343,6 +343,7 @@ query Register {
     return fetch({
       query: `query getPhotosById($_id: String!) {
   getPhotosById( _id : $_id) {
+              _id
               url
             }
           }
@@ -367,6 +368,7 @@ query Register {
       query: `query getPhotoProfile($_id: String!) {
   getPhotoProfile( _id : $_id) {
               url
+              _id
             }
           }
           `,
@@ -388,6 +390,7 @@ query Register {
       query: `query GetPhotos {
         photos: getPhotosRandom(number: 5) {
           url
+          _id
         }
       }`
     }).then(res => {
@@ -526,6 +529,44 @@ query Register {
       });
   }
 
+  deletePhoto(endpoint: string, image: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint.toString(),
+    });
+
+    return fetch({
+      query: `mutation deletePhoto($image: String!) {
+        deletePhoto(image: $image)
+        }
+        `,
+      variables: {
+        image: image
+      }
+    })
+      .then(res => {
+        return res.data.deletePhoto;
+      });
+  }
+
+  setProfilePicture(endpoint: string, person: string, image: string){
+    const fetch = createApolloFetch({
+      uri: endpoint.toString(),
+    });
+
+    return fetch({
+      query: `mutation setProfilePicture($person: String!, $image: String!) {
+        setProfilePicture(person: $person, image: $image)
+        }
+        `,
+      variables: {
+        person: person,
+        image: image
+      }
+    })
+      .then(res => {
+        return res.data.setProfilePicture;
+      });
+  }
 
   linkSpouse(endpoint: string, person1: string, person2: string) {
 
@@ -580,4 +621,6 @@ function addToken(token: string) {
     next();
   };
 }
+
+
 

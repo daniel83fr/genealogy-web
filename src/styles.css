@@ -12,23 +12,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 
-.info-snackbar {
+.info-snackbar, .info-snackbar button {
     background: #2196F3;
     color: black
 }
 
-.info-snackbar button {
+.error-snackbar, .error-snackbar button {
+    background: #ff5e79;
     color: black
 }
 
-.red-snackbar {
-    background: #2196F3;
+.warn-snackbar, .warn-snackbar button {
+    background: #fcb438;
+    color: black
 }
 
-.green-snackbar {
-    background: #2196F3;
-}
-
-.orange-snackbar {
-    background: #2196F3;
+.success-snackbar, .success-snackbar button {
+    background: #78cf7f;
+    color: black
 }

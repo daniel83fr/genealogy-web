@@ -17,13 +17,15 @@
 
 
 
-<mat-card style="width:400px;margin:5px">
+<mat-card style="width:400px;margin:5px;padding:0px;">
   <mat-card-header>
-    <mat-icon>people_alt</mat-icon>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Family Members</mat-card-title>
+ 
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content style="padding:16px;">
+
+    
+    <mat-card-title>Family Members <mat-icon>people_alt</mat-icon></mat-card-title>
+
     <app-person-links title="Father" [id]="id" [person]="data.father" type="parent" [editable]="isConnected()">
     </app-person-links>
     
@@ -51,13 +53,11 @@
 </mat-card>
 
 
-<mat-card  style="width:1200px;margin: 5px;overflow:scroll;">
+<mat-card  style="min-width:810px;max-width:1220px;margin: 5px;overflow:auto;padding: 0px;">
   <mat-card-header>
-    <mat-icon>dashboard</mat-icon>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Family Tree</mat-card-title>
+
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content style="padding:16px;">
 
     <app-tree [data]="data" ></app-tree>
 
@@ -66,13 +66,14 @@
 
 
 
-<mat-card  style="width:400px;margin: 5px;">
+<mat-card  style="width:400px;margin: 5px;padding:0px;">
   <mat-card-header>
-    <mat-icon>camera_alt</mat-icon>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Photo Gallery</mat-card-title>
+
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content style="padding:16px;">
+    <mat-card-title>Photo Gallery<mat-icon>camera_alt</mat-icon></mat-card-title>
+    
+
     <app-photo [id]="id" [editable]="isConnected()"></app-photo>
   </mat-card-content>
 </mat-card>

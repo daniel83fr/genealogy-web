@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class NotificationService {
 
-    duration = 3000;
+    private duration = 3000;
     constructor(
         private snackBar: MatSnackBar) {
 
@@ -16,6 +16,21 @@ export class NotificationService {
     showInfo(text: string) {
         this.snackBar.open(text,
         'close', { duration: this.duration , panelClass: ['info-snackbar']});
+    }
+
+    showSuccess(text: string) {
+        this.snackBar.open(text,
+        'close', { duration: this.duration , panelClass: ['success-snackbar']});
+    }
+
+    showError(text: string) {
+        this.snackBar.open(text,
+        'close', { duration: this.duration , panelClass: ['error-snackbar']});
+    }
+
+    showWarning(text: string) {
+        this.snackBar.open(text,
+        'close', { duration: this.duration , panelClass: ['warn-snackbar']});
     }
 
 }
