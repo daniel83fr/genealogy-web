@@ -57,12 +57,12 @@
 
           <br>
           <div *ngIf="data?.isDead">
-            <mat-checkbox [checked]="data?.isDead" [disabled]="!canEdit()">Died</mat-checkbox>
+            <mat-checkbox placeholder="isDead" [checked]="data?.isDead" [disabled]="!canEdit()">Died</mat-checkbox>
             <br>
           </div>
         
   
-          <mat-form-field *ngIf="!editable" appearance="standard">
+          <mat-form-field *ngIf="!editable && data?.yearOfDate" appearance="standard">
             <mat-label>Death</mat-label>
   
             <input matInput type="string" placeholder="yearOfDeath" [value]="data?.yearOfDeath" readonly
@@ -100,15 +100,14 @@
 
   </div>
 
-
   <!-- Contact Info (only if alive / and connected) --> 
   <div *ngIf="!data?.isDead">
 
  
   <mat-form-field *ngIf="editable" appearance="standard">
     <mat-label>Location</mat-label>
-    <input matInput type="text" placeholder="location" [value]="privateData?.location" [readonly]="!canEdit()"
-      formControlName="location">
+    <input matInput type="text" placeholder="currentLocation" [value]="privateData?.currentLocation" [readonly]="!canEdit()"
+      formControlName="currentLocation">
   </mat-form-field>
 
   <mat-form-field *ngIf="editable" appearance="standard">
@@ -142,7 +141,7 @@
   </div>
 <div>
 
-  <span *ngIf="!editable">
+  <span *ngIf="!editable && data">
     <app-login-register [id]="data._id"></app-login-register>
   </span>
 </div>

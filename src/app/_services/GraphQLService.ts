@@ -184,7 +184,7 @@ query Register {
         getPrivateInfoById( _id : $_id) {
           birthDate
           deathDate
-          location
+          currentLocation
           birthLocation
           deathLocation
           email
@@ -288,7 +288,7 @@ query Register {
                 _id
                 birthDate
                 deathDate
-                location
+                currentLocation
                 birthLocation
                 deathLocation
                 email

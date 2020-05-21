@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -11,7 +11,7 @@ import { NotificationService } from 'src/app/_services/NotificationService';
   styleUrls: ['./person-profile-detail.component.css']
 })
 
-export class PersonProfileDetailComponent implements OnInit {
+export class PersonProfileDetailComponent implements OnInit, OnChanges {
 
   @Input() id = '';
 
@@ -35,11 +35,35 @@ export class PersonProfileDetailComponent implements OnInit {
       yearOfBirth: '',
       birthDate: '',
       yearOfDeath: '',
-      deathDate: ''
+      deathDate: '',
+      isDead: '',
+      currentLocation: '',
+      birthLocation: '',
+      deathLocation: '',
+      email: '',
+      phone: '',
     });
 
 
 
+  }
+  ngOnChanges(changes: any): void {
+    this.personEditForm = this.fb.group({
+      id: this.data?._id,
+      firstName: this.data?.firstName,
+      lastName: this.data?.lastName,
+      gender: this.data?.gender,
+      yearOfBirth: this.data?.yearOfBirth,
+      birthDate: this.privateData?.birthDate,
+      yearOfDeath: this.data?.yearOfDeath,
+      deathDate: this.privateData?.deathDate,
+      isDead: this.data?.isDead ?? false,
+      currentLocation: this.privateData?.currentLocation,
+      birthLocation: this.privateData?.birthLocation,
+      deathLocation: this.privateData?.deathLocation,
+      email: this.privateData?.email,
+      phone: this.privateData?.phone,
+    });
   }
 
   getImage(): string {
@@ -63,16 +87,7 @@ export class PersonProfileDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.personEditForm = this.fb.group({
-      id: this.data?._id,
-      firstName: this.data?.firstName,
-      lastName: this.data?.lastName,
-      gender: this.data?.gender,
-      yearOfBirth: this.data?.yearOfBirth,
-      birthDate: this.privateData?.birthDate,
-      yearOfDeath: this.data?.yearOfDeath,
-      deathDate: this.privateData?.deathDate,
-    });
+
   }
 
   onSubmit() {
@@ -86,13 +101,38 @@ export class PersonProfileDetailComponent implements OnInit {
     if (this.personEditForm.get('gender').value !== this.data.gender && this.personEditForm.get('gender').value) {
       changes.gender = this.personEditForm.get('gender').value;
     }
+    if (this.personEditForm.get('isDead').value !== this.data.isDead && this.personEditForm.get('isDead').value) {
+      changes.isDead = this.personEditForm.get('isDead').value;
+    }
 
     const privateChanges: any = {};
-    if (this.personEditForm.get('birthDate').value !== this.data.privateData && this.personEditForm.get('birthDate').value) {
+
+    if (this.personEditForm.get('birthDate').value !== this.data.privateData?.birthDate && this.personEditForm.get('birthDate').value) {
       privateChanges.birthDate = this.personEditForm.get('birthDate').value;
     }
-    if (this.personEditForm.get('deathDate').value !== this.data.privateData && this.personEditForm.get('deathDate').value) {
+
+    if (this.personEditForm.get('deathDate').value !== this.data.privateData?.deathDate && this.personEditForm.get('deathDate').value) {
       privateChanges.deathDate = this.personEditForm.get('deathDate').value;
+    }
+
+    if (this.personEditForm.get('currentLocation').value !== this.data.privateData?.currentLocation && this.personEditForm.get('currentLocation').value) {
+      privateChanges.currentLocation = this.personEditForm.get('currentLocation').value;
+    }
+
+    if (this.personEditForm.get('birthLocation').value !== this.data.privateData?.birthLocation && this.personEditForm.get('birthLocation').value) {
+      privateChanges.birthLocation = this.personEditForm.get('birthLocation').value;
+    }
+
+    if (this.personEditForm.get('deathLocation').value !== this.data.privateData?.deathLocation && this.personEditForm.get('deathLocation').value) {
+      privateChanges.deathLocation = this.personEditForm.get('deathLocation').value;
+    }
+
+    if (this.personEditForm.get('phone').value !== this.data.privateData?.phone && this.personEditForm.get('phone').value) {
+      privateChanges.phone = this.personEditForm.get('phone').value;
+    }
+
+    if (this.personEditForm.get('email').value !== this.data.privateData?.email && this.personEditForm.get('email').value) {
+      privateChanges.email = this.personEditForm.get('email').value;
     }
 
     if (Object.keys(changes).length === 0 && changes.constructor === Object &&
