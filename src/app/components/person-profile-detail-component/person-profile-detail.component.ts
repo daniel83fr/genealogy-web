@@ -3,7 +3,7 @@ import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from 'src/app/_services/NotificationService';
 
 @Component({
   selector: 'app-person-profile-detail',
@@ -25,7 +25,7 @@ export class PersonProfileDetailComponent implements OnInit {
     public rest: ConfigurationService,
     private api: GraphQLService,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private notif: NotificationService
   ) {
     this.personEditForm = this.fb.group({
       id: '',
@@ -33,7 +33,9 @@ export class PersonProfileDetailComponent implements OnInit {
       lastName: '',
       gender: '',
       yearOfBirth: '',
-      birthDate: ''
+      birthDate: '',
+      yearOfDeath: '',
+      deathDate: ''
     });
 
 
@@ -67,7 +69,9 @@ export class PersonProfileDetailComponent implements OnInit {
       lastName: this.data?.lastName,
       gender: this.data?.gender,
       yearOfBirth: this.data?.yearOfBirth,
-      birthDate: this.privateData?.birthDate
+      birthDate: this.privateData?.birthDate,
+      yearOfDeath: this.data?.yearOfDeath,
+      deathDate: this.privateData?.deathDate,
     });
   }
 
@@ -87,7 +91,10 @@ export class PersonProfileDetailComponent implements OnInit {
     if (this.personEditForm.get('birthDate').value !== this.data.privateData && this.personEditForm.get('birthDate').value) {
       privateChanges.birthDate = this.personEditForm.get('birthDate').value;
     }
-    
+    if (this.personEditForm.get('deathDate').value !== this.data.privateData && this.personEditForm.get('deathDate').value) {
+      privateChanges.deathDate = this.personEditForm.get('deathDate').value;
+    }
+
     if (Object.keys(changes).length === 0 && changes.constructor === Object &&
     Object.keys(privateChanges).length === 0 && privateChanges.constructor === Object) {
 
@@ -113,7 +120,7 @@ export class PersonProfileDetailComponent implements OnInit {
         })
         .then(res => {
           console.log(res.data);
-          this.snackBar.open(res.data.removeProfile, 'close', { duration: 5000 });
+          this.notif.showSuccess(res.data.removeProfile);
           window.location.href = '/';
         });
     }
@@ -145,7 +152,7 @@ export class PersonProfileDetailComponent implements OnInit {
         return this.api.updateProfile(endpoint, id, changes, privateChanges);
       })
       .then(res => {
-        this.snackBar.open('Profile updated.', 'close', { duration: 5000 });
+        this.notif.showSuccess('Profile updated.');
         location.reload();
       })
       .catch(err => {

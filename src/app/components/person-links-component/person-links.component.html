@@ -30,10 +30,7 @@
   
   <div *ngIf="editable && edit && person?._id == null">
     
-    <mat-form-field appearance="standard" >
-      <mat-label>Id</mat-label>
-      <input matInput  [(ngModel)]= "linkId"  >
-    </mat-form-field>
+    <app-person-search (personChanged)="setLink($event)"></app-person-search>
 
     <button mat-icon-button color="primary" matTooltip="add link"  *ngIf="editable && edit && person?._id == null" (click)="addLink()">
       <mat-icon>link</mat-icon>

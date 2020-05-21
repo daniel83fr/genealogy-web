@@ -12,6 +12,14 @@ import { NotificationService } from 'src/app/_services/NotificationService';
 
 export class PhotoComponent implements OnInit, OnChanges {
 
+  constructor(
+    public configService: ConfigurationService,
+    private graphQlService: GraphQLService,
+    private notification: NotificationService
+    ) {
+
+  }
+
   @Input() id = undefined;
   @Input() editable = false;
 
@@ -21,12 +29,12 @@ export class PhotoComponent implements OnInit, OnChanges {
   image2: any;
   profile: any;
 
-  constructor(
-    public configService: ConfigurationService,
-    private graphQlService: GraphQLService,
-    private notification: NotificationService
-    ) {
+  persons: any[] = [];
+  linkId;
+  edit = false;
 
+  setLink(option: any) {
+    this.linkId = option._id;
   }
 
   changeListener($event): void {
@@ -34,9 +42,9 @@ export class PhotoComponent implements OnInit, OnChanges {
   }
 
   readThis(inputValue: any): void {
-    let file: File = inputValue.files[0];
+    const file: File = inputValue.files[0];
     this.image2 = file;
-    let myReader: FileReader = new FileReader();
+    const myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
       this.image = myReader.result;
@@ -75,13 +83,13 @@ export class PhotoComponent implements OnInit, OnChanges {
         return this.graphQlService.addPhoto(endpoint, link, deletehash, [this.id]);
         });
       })
-      .then(res=>{
-        this.notification.showSuccess("Photo added");
+      .then(res => {
+        this.notification.showSuccess('Photo added');
         window.location.reload();
       })
       .catch(error => {
         console.log(Error(error));
-        this.notification.showError("Something went wrong. please check logs for details.")
+        this.notification.showError('Something went wrong. please check logs for details.');
       });
   }
 
@@ -94,7 +102,7 @@ export class PhotoComponent implements OnInit, OnChanges {
         .then(endpoint => {
         return this.graphQlService.setProfilePicture(endpoint, user, picture);
         })
-        .catch(err =>{
+        .catch(err => {
           this.notification.showError('Something went wrong. please check logs for detail.');
           console.log(err);
           throw Error(err);
@@ -104,6 +112,45 @@ export class PhotoComponent implements OnInit, OnChanges {
           window.location.reload();
         })
         ;
+  }
+
+  removeTag(tag: string, photo: string) {
+    this.configService.getApiEndpoint()
+    .then(endpoint => {
+    return this.graphQlService.removePhotoTag(endpoint, tag, photo);
+    })
+    .catch(err => {
+      this.notification.showError('Something went wrong. please check logs for detail.');
+      console.log(err);
+      throw Error(err);
+    })
+    .then(res => {
+      this.notification.showSuccess('Tag removed');
+      window.location.reload();
+    });
+  }
+
+  addTag(tag: string, photo: string) {
+
+    if (tag.length < 12) {
+      this.notification.showError('Id should be valid');
+      return;
+    }
+
+    this.configService.getApiEndpoint()
+        .then(endpoint => {
+        return this.graphQlService.addPhotoTag(endpoint, tag, photo);
+        })
+        .catch(err => {
+          this.notification.showError('Something went wrong. please check logs for detail.');
+          console.log(err);
+          throw Error(err);
+        })
+        .then(res => {
+          this.notification.showSuccess('Tag added');
+          this.linkId = '';
+          window.location.reload();
+        });
   }
 
   next() {
@@ -127,7 +174,7 @@ export class PhotoComponent implements OnInit, OnChanges {
     this.getPhotos(this.id);
   }
 
-  deletePicture(){
+  deletePicture() {
 
     const picture = this.photos[this.photoIndex]._id;
 
@@ -136,7 +183,7 @@ export class PhotoComponent implements OnInit, OnChanges {
         .then(endpoint => {
         return this.graphQlService.deletePhoto(endpoint, picture);
         })
-        .catch(err =>{
+        .catch(err => {
           this.notification.showError('Something went wrong. please check logs for detail.');
           console.log(err);
           throw Error(err);
@@ -155,10 +202,13 @@ export class PhotoComponent implements OnInit, OnChanges {
       return this.graphQlService.getProfilePhoto(endpoint, id);
     })
     .then(data => {
-        this.profile =  data._id;
+        this.profile =  data?._id;
     });
 
   }
+
+
+
 
   getPhotos(id: string) {
     this.configService.getApiEndpoint()

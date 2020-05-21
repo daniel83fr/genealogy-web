@@ -21,10 +21,33 @@
    
   </div>
  
+
+  <mat-chip-list *ngIf="photos?.length>0">
+    Tags:
+    <mat-chip *ngFor="let x of photos[photoIndex].persons">{{x.firstName}}
+      
+      <button mat-icon-button color="primary" matTooltip="delete tag"  (click)="removeTag(x._id, photos[photoIndex]._id)">
+        <mat-icon>clear</mat-icon>
+      </button>
+      </mat-chip>
+  </mat-chip-list>
+
+
+ 
+
+  <div *ngIf="photos?.length>0">
+     
+   Add Tag: <app-person-search (personChanged)="setLink($event)"></app-person-search>
+    <button mat-icon-button color="primary" matTooltip="add tag"  (click)="addTag(linkId, photos[photoIndex]._id)">
+      <mat-icon>link</mat-icon>
+    </button> 
+  </div>
+
+  
   <div *ngIf="editable">
     <br>
-    <button  mat-icon-button color="warn" aria-label="Delete" (click)="deletePicture()">
-      Delete
+    <button *ngIf="photos?.length > 0" mat-icon-button color="warn" aria-label="Delete" (click)="deletePicture()">
+      Delete photo
     </button>
     <br>
     

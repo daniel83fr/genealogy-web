@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from '../../_services/AuthenticationService';
+import { NotificationService } from 'src/app/_services/NotificationService';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthenticationService,
-    private _snackBar: MatSnackBar) {
+    private notif: NotificationService) {
     this.loginForm = this.fb.group({
       'login': '',
       'password': ''
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
             window.location.href = "/";
           }).catch(
           err => {
-            this._snackBar.open("Login failed", 'close', { duration: 2000 })
+            this.notif.showError("Login failed")
           }
         );
     }

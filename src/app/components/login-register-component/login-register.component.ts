@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { NotificationService } from 'src/app/_services/NotificationService';
 
 @Component({
   selector: 'app-login-register',
@@ -19,7 +19,7 @@ export class LoginRegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthenticationService,
-    private _snackBar: MatSnackBar) {
+    private notif: NotificationService) {
     this.registerForm = this.fb.group({
       id: '',
       login: '',
@@ -39,7 +39,7 @@ export class LoginRegisterComponent implements OnInit {
     const confirm = this.registerForm.controls.confirm.value;
 
     if (password != confirm) {
-      this._snackBar.open('Password/confirmation not matching', 'close', { duration: 2000 });
+      this.notif.showError('Password/confirmation not matching');
       return;
     }
 
@@ -47,11 +47,11 @@ export class LoginRegisterComponent implements OnInit {
       this.authService.register(id, login, password)
         .then(
           res => {
-            this._snackBar.open('Registrated', 'close', { duration: 2000 });
+            this.notif.showSuccess('Registrated');
             window.location.reload();
           }).catch(
           err => {
-            this._snackBar.open(err, 'close', { duration: 2000 });
+            this.notif.showError(err);
           }
         );
     }

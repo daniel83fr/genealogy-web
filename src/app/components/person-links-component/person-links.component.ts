@@ -1,10 +1,9 @@
 import { Component, OnInit, Input, AfterContentInit, APP_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from 'src/app/_services/NotificationService';
 
 @Component({
   selector: 'app-person-links',
@@ -39,7 +38,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
     private fb: FormBuilder,
     public rest: ConfigurationService,
     private graphQLService: GraphQLService,
-    private snackBar: MatSnackBar,
+    private notif: NotificationService,
   ) {
     this.personEditForm = this.fb.group({
       id: this.person._id,
@@ -69,7 +68,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
         return this.graphQLService.createPerson(endpoint, changes);
       })
       .then(res => {
-        this.snackBar.open('Person created', 'close', { duration: 5000 });
+        this.notif.showSuccess('Person created');
         this.linkId = res;
         this.addLink();
       });
@@ -101,7 +100,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
       })
       .then(res => {
         console.log(res.data);
-        this.snackBar.open('Link removed', 'close', { duration: 5000 });
+        this.notif.showSuccess('Link removed');
         location.reload();
       });
   }
@@ -112,7 +111,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
         return this.graphQLService.linkParent(endpoint, this.id, this.linkId);
       })
       .then(res => {
-        this.snackBar.open('Link added', 'close', { duration: 5000 });
+        this.notif.showSuccess('Link added');
         location.reload();
       });
   }
@@ -123,7 +122,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
         return this.graphQLService.linkChild(endpoint, this.id, this.linkId);
       })
       .then(res => {
-        this.snackBar.open('Link added', 'close', { duration: 5000 });
+        this.notif.showSuccess('Link added');
         location.reload();
       });
   }
@@ -134,7 +133,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
         return this.graphQLService.linkSpouse(endpoint, this.id, this.linkId);
       })
       .then(res => {
-        this.snackBar.open('Link added', 'close', { duration: 5000 });
+        this.notif.showSuccess('Link added');
         location.reload();
       });
   }
@@ -145,12 +144,16 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
         return this.graphQLService.linkSibling(endpoint, this.id, this.linkId);
       })
       .then(res => {
-        this.snackBar.open('Link added', 'close', { duration: 5000 });
+        this.notif.showSuccess('Link added');
         location.reload();
       });
   }
 
   switchEdit() {
     this.edit = !this.edit;
+  }
+
+  setLink(option: any) {
+    this.linkId = option._id;
   }
 }

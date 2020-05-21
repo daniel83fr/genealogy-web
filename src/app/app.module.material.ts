@@ -17,8 +17,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 export default [
+    MatCheckboxModule,
+    MatAutocompleteModule,
     MatDatepickerModule,
     MatGridListModule,
     MatInputModule,
@@ -38,4 +43,5 @@ export default [
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    MatChipsModule
 ];

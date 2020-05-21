@@ -8,6 +8,7 @@ import { EncryptionService } from './EncryptionService';
   providedIn: 'root'
 })
 export class GraphQLService {
+  
   addPhoto(endpoint: string, link: any, deletehash: any, persons: any[]) {
     const token = localStorage.getItem('token');
 
@@ -114,7 +115,8 @@ query Register {
               maidenName,
               gender,
               yearOfBirth,
-              yearOfDeath
+              yearOfDeath,
+              isDead
             }
           }
           `,
@@ -181,6 +183,12 @@ query Register {
       query: `query getPrivateInfoById($_id: String!) {
         getPrivateInfoById( _id : $_id) {
           birthDate
+          deathDate
+          location
+          birthLocation
+          deathLocation
+          email
+          phone
           _id
         }
       }
@@ -230,6 +238,7 @@ query Register {
               gender
               yearOfBirth
               yearOfDeath
+              isDead
             }
 
             `,
@@ -273,10 +282,17 @@ query Register {
                 lastName
                 maidenName
                 gender
+                isDead
               },
               updatePersonPrivateInfo(_id: $_id, patch: ${privatePatchString} ) {
                 _id
                 birthDate
+                deathDate
+                location
+                birthLocation
+                deathLocation
+                email
+                phone
               },
             }
             `,
@@ -342,11 +358,16 @@ query Register {
 
     return fetch({
       query: `query getPhotosById($_id: String!) {
-  getPhotosById( _id : $_id) {
-              _id
-              url
-            }
+        getPhotosById(_id: $_id) {
+          _id
+          url
+          persons{
+            firstName
+            lastName
+            _id
           }
+        }
+      }
           `,
           variables: { _id:  person }
     })
@@ -565,6 +586,46 @@ query Register {
     })
       .then(res => {
         return res.data.setProfilePicture;
+      });
+  }
+
+  addPhotoTag(endpoint: string, person: string, image: string){
+    const fetch = createApolloFetch({
+      uri: endpoint.toString(),
+    });
+
+    return fetch({
+      query: `mutation addPhotoTag($person: String!, $image: String!) {
+        addPhotoTag(image: $image, tag: $person)
+        }
+        `,
+      variables: {
+        person: person,
+        image: image
+      }
+    })
+      .then(res => {
+        return res.data.addPhotoTag;
+      });
+  }
+
+  removePhotoTag(endpoint: string, person: string, image: string){
+    const fetch = createApolloFetch({
+      uri: endpoint.toString(),
+    });
+
+    return fetch({
+      query: `mutation removePhotoTag($person: String!, $image: String!) {
+        removePhotoTag(image: $image, tag: $person)
+        }
+        `,
+      variables: {
+        person: person,
+        image: image
+      }
+    })
+      .then(res => {
+        return res.data.removePhotoTag;
       });
   }
 

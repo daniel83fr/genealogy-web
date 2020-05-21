@@ -12,6 +12,7 @@ import { PersonProfileComponent } from './components/person-profile-component/pe
 import { LoginRegisterComponent } from './components/login-register-component/login-register.component';
 import { PhotoComponent } from './components/photo-component/photo.component';
 import { PersonProfileDetailComponent } from './components/person-profile-detail-component/person-profile-detail.component';
+import { PersonSearchComponent } from './components/person-search-component/person-search.component';
 
 export default [
     PersonComponentComponent,
@@ -27,5 +28,6 @@ export default [
     TreeComponent,
     PersonProfileComponent,
     PersonProfileDetailComponent,
-    PhotoComponent
+    PhotoComponent,
+    PersonSearchComponent
 ]

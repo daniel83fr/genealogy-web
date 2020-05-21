@@ -26,3 +26,17 @@
 h1{
     margin-left: 20px;
 }
+
+mat-card{
+    width:400px;
+    margin:5px;
+    padding:0px
+}
+
+.tree-card{
+    width:auto;
+    max-width: 1220px;
+    overflow:auto;
+    padding: 0px;
+}
+
