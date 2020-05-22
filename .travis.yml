@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+- 13
+deploy:
+  provider: heroku
+  api_key:
+    secure: K6+7IPx2OB7RrN48TLie7mCDLAPn0+N0UhUdHKSl5ItFCf3H6JwuVyzLLSwiL12Zd0OZgtb4RmbroH6quRfOHXTx0Q+ZtbiPlxsqq8THUjuXalKbB1lxOWtprIw7L3r02tmkegXOHDm6/kMQxtiHsyy8M9ifGiDcvixlt55OgM7iR85U110s4AkjG+lOftFAco4uYnTx9hybruas785st3ZUg50mtrmahBw+nNLt00lrTb6vBDNr2bamzaFp98JcXzqvgUh0gRc0VTdmbtJJT01BDIvJNcLvFXt9lq0ucw1hUX1yLDlbteFw4DmF8kLX8oyLp83dCHDPFGVw5iQK6FC2SB3nskUig3ssBED51mTsfT/+bxWXDXkuN2uE6dZVECXvm3mYOFeBuv+v+01XJ6BAmW0vdC8PAvbGiJgapRhmLoPdTEwi/zc5A3BmUL7Vxjopl/DpBOCssPFCB7hkFC+x/mHIIMasU1wRVaPmaIbnHLvjwfcf2Sy8lVBG/bAaRnGm6NQzAXRLD299QU56NXx3mGe8Mz/gBk4jakfoKQbGoI1N/iJJChUVuxlEBLhMO/v+EsAt5vBpxvQFJqVe167VYiYn32lVXo6+OEl7KS3Gsfvq/OPqLESQx4N5AIC20S/Z9Vrl3Zb8sXwakR5E5On5Yr//PkXFNsncdDWjfqY=
+  app:
+    prod: genealogy-web
