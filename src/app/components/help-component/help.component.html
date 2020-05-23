@@ -12,8 +12,43 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <pre>
-    The website is hosted for free on <a href="http://www.heroku.com" target="_blank">Heroku</a>.
-    After 30 mins of inactivity, the server is sleeping, and takes a while to restart.
+
+The site is composed of two components:
+- an API
+- a frontEnd
+
+Both are available on github : 
+<a href="https://github.com/daniel83fr/genealogy-api">genealogy-api</a>
+<a href="https://github.com/daniel83fr/genealogy-web">genealogy-web</a>
+
+Feel free to contribute.
+
+<hr>
+
+STAGING Env:
+When a commit is done on staging environnment,
+a build is triggered using heroku and binaries are deployed to :
+<a href="https://genealogy-api-staging.herokuapp.com/">genealogy-api-staging</a>
+<a href="https://genealogy-web-staging.herokuapp.com/">genealogy-web-staging</a>
+
+PROD:
+When a commit is done on prod environnment,
+a build is triggered using travis-ci 
+
+<a href="https://travis-ci.com/github/daniel83fr/genealogy-api">travis - genealogy-api</a>
+<a href="https://travis-ci.com/github/daniel83fr/genealogy-web">travis - genealogy-web</a>
+
+Once tests executed successfully, it is deployed to 
+<a href="http://www.res01.com"> Res01.com</a>
+<a href="https://genealogy-api.herokuapp.com/">Api</a>
+
+
+Note both services are hosted for free on <a href="http://www.heroku.com" target="_blank">Heroku</a>.
+After 30 mins of inactivity, the server is sleeping, and takes a while to restart.
+I may switch to paid hosting if needed.
+
+
+
   </pre>
   </mat-expansion-panel>
   <mat-expansion-panel>
@@ -24,15 +59,13 @@
     </mat-expansion-panel-header>
     <pre>
     By default, names and year of birth/death are visible to everyone.
-    Other informations are only visible to admins and profile owners.
+    Other informations are only visible logged users.
 
-    Roles:
-    - Normal user:
-      Can see simplified profile, suggest update  
-    - Logged user:
-      Can see full profile owned / releated persons
-    - Admin:
-      Full rights
+    To register, you should find your profile first (if it exists) and then
+    claim the profile.
+
+    Roles will be implemented later to avoid sharing all the informations with
+    everyone.
 
   </pre>
   </mat-expansion-panel>
