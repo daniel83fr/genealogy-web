@@ -66,49 +66,14 @@ query Register {
       });
   }
 
-  shouldResetPersonCache(endpoint: string): Promise<boolean> {
-
-    return new Promise<boolean>((resolve, reject) => {
-      if (this.cacheService.personsList == null) {
-        resolve(false);
-      }
-      const dte = this.cacheService.personsList.timestamp;
-      const fetch = createApolloFetch({
-        uri: endpoint,
-      });
-      return fetch({
-        query: `query shouldResetCache {
-                  shouldResetCache(lastEntry: "${dte}")
-                }
-            `,
-      }).then(res => {
-        let shouldReset: boolean;
-        shouldReset = res.data.shouldResetCache;
-        resolve(shouldReset);
-      });
-
-    });
-
-
-  }
 
   getPersonList(endpoint: string) {
-    this.shouldResetPersonCache(endpoint).then(res => {
-      if (res) {
-        this.cacheService.clearPersonsList();
-      }
-      if (this.cacheService.personsList != null) {
-        const dataFromCache = this.cacheService.personsList.data;
-        return dataFromCache;
-      }
-    });
-
     const fetch = createApolloFetch({
       uri: endpoint,
     });
     return fetch({
       query: `query SearchAllPersons {
-            persons:getPersons {
+            persons: getPersonList {
               _id
               firstName
               lastName
@@ -180,8 +145,8 @@ query Register {
     });
 
     return fetch({
-      query: `query getPrivateInfoById($_id: String!) {
-        getPrivateInfoById( _id : $_id) {
+      query: `query getPrivateInfo($_id: String!) {
+        getPrivateInfo( _id : $_id) {
           birthDate
           deathDate
           currentLocation
@@ -199,7 +164,7 @@ query Register {
         throw Error(err);
       })
       .then(res => {
-        return res.data.getPrivateInfoById;
+        return res.data.getPrivateInfo;
       }
       );
   }
@@ -210,22 +175,22 @@ query Register {
     });
     return fetch({
       query: `query GetProfile($id: String!) {
-              currentPerson: getPersonById(_id: $id) {
+              currentPerson: getPerson(_id: $id) {
                 ...PersonInfo
               }
-              mother: getMotherById(_id: $id) {
+              mother: getMother(_id: $id) {
                 ...PersonInfo
               }
-              father: getFatherById(_id: $id) {
+              father: getFather(_id: $id) {
                 ...PersonInfo
               },
-              children: getChildrenById(_id: $id) {
+              children: getChildren(_id: $id) {
                 ...PersonInfo
               },
-              spouses: getSpousesById(_id: $id) {
+              spouses: getSpouses(_id: $id) {
                 ...PersonInfo
               },
-              siblings: getSiblingsById(_id: $id) {
+              siblings: getSiblings(_id: $id) {
                 ...PersonInfo
               },
             }
