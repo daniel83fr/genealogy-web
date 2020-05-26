@@ -13,14 +13,20 @@ import { NotificationService } from 'src/app/_services/NotificationService';
 export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
-    private authService: AuthenticationService,
+    private auth: AuthenticationService,
     private notif: NotificationService) {
     this.loginForm = this.fb.group({
       login: '',
       password: ''
     });
+
+    this.changePasswordForm = this.fb.group({
+      login: '',
+      password: ''
+    });
   }
 
+  changePasswordForm: FormGroup = null;
   loginForm: FormGroup = null;
 
   onSubmit(): void {
@@ -28,7 +34,7 @@ export class LoginComponent implements OnInit {
     const login = this.loginForm.controls.login.value;
     const password = this.loginForm.controls.password.value;
     if (login && password) {
-      this.authService.login(login, password)
+      this.auth.login(login, password)
         .catch(
           err => {
             this.notif.showError('Login failed');
@@ -37,6 +43,10 @@ export class LoginComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+  }
+
+  isConnected() {
+    return this.auth.isConnected();
   }
 
   ngAfterContentInit() {

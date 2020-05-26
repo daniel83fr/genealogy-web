@@ -37,6 +37,7 @@ export class LoginRegisterComponent implements OnInit {
     const login = this.registerForm.controls.login.value;
     const password = this.registerForm.controls.password.value;
     const confirm = this.registerForm.controls.confirm.value;
+    const email = this.registerForm.controls.email.value;
 
     if (password != confirm) {
       this.notif.showError('Password/confirmation not matching');
@@ -44,7 +45,7 @@ export class LoginRegisterComponent implements OnInit {
     }
 
     if (login && password) {
-      this.authService.register(id, login, password)
+      this.authService.register(id, login, email, password)
         .then(
           res => {
             this.notif.showSuccess('Registrated');
@@ -65,6 +66,7 @@ export class LoginRegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       id: this?.id,
       login: '',
+      email: '',
       password: '',
       confirm: ''
     });

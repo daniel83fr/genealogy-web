@@ -4,6 +4,7 @@ import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { NotificationService } from 'src/app/_services/NotificationService';
+import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 
 @Component({
   selector: 'app-person-profile',
@@ -16,7 +17,8 @@ export class PersonProfileComponent implements OnInit {
     public configService: ConfigurationService,
     private api: GraphQLService,
     private fb: FormBuilder,
-    private notif: NotificationService
+    private notif: NotificationService,
+    public auth: AuthenticationService,
   ) {
     this.personEditForm = this.fb.group({
       id: '',
@@ -37,6 +39,10 @@ export class PersonProfileComponent implements OnInit {
   editMode = false;
 
   image = '';
+
+  getConnectedLogin() {
+    return this.auth.getConnectedLogin();
+  }
 
   switchEdit() {
     this.notif.showInfo(`To change profile image, please go to photo gallery and choose 'Set as profile' on the selected image.`);

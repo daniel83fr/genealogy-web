@@ -10,3 +10,13 @@
     justify-content: center;
     align-items: center;" ><img [src]="image" width="300" /></div>
 </div>
+
+<span *ngIf="!editable && data && data.profileId == data._id">
+  <app-login-register [id]="data._id"></app-login-register>
+</span>
+
+<div *ngIf="getConnectedLogin() == data.profileId">
+  Unclaim profile : Todo<br>
+  change login: Todo<br>
+  Change password: Todo
+</div>

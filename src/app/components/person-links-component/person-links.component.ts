@@ -60,8 +60,13 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   createPersonAndLink() {
 
     const changes: any = {};
-    changes.firstName = this.firstName;
-    changes.lastName = this.lastName;
+    changes.firstName = this.firstName??'';
+    changes.lastName = this.lastName??'';
+
+    if(changes.firstName == '' && changes.lastName == ''){
+      this.notif.showError('please fill up the name.');
+      return;
+    }
 
     this.rest.getApiEndpoint()
       .then(endpoint => {
@@ -75,6 +80,12 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   }
 
   addLink() {
+    console.log(this.linkId);
+    if((this.linkId ?? ''  == '') || (this.id ??'' == '')){
+      this.notif.showError('please fill up the link.');
+      return;
+    }
+
     switch (this.type) {
       case 'parent':
         this.linkParent();

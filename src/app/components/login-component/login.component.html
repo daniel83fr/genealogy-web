@@ -1,13 +1,13 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Login</mat-card-title>
+    <mat-card-title>Credentials</mat-card-title>
   </mat-card-header>
 </mat-card>
 
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" style="margin: 10px;" >
+<form  *ngIf="!isConnected()" [formGroup]="loginForm" (ngSubmit)="onSubmit()" style="margin: 10px;" >
   <mat-form-field>
     <mat-label>Login</mat-label>
-    <input matInput placeholder="Login"  formControlName="login" type="email">
+    <input matInput placeholder="Login"  formControlName="login" type="text">
   </mat-form-field>
 
   <mat-form-field>
@@ -16,6 +16,33 @@
   </mat-form-field>
 
   <button>Login</button>
+
+  To create an account, find your profile <br>
+  then choose claim profile.
+</form>
+
+<form  *ngIf="isConnected()" [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()" style="margin: 10px;" >
+  <mat-form-field>
+    <mat-label>Login</mat-label>
+    <input matInput placeholder="Login"  formControlName="login" type="email">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Old Password" type="password"  formControlName="password">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Password" type="password"  formControlName="password">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="confirm" type="password"  formControlName="confirm">
+  </mat-form-field>
+
+  <button disabled>Change</button>
 
   To create an account, find your profile <br>
   then choose claim profile.

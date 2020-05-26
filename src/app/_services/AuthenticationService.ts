@@ -31,9 +31,9 @@ export class AuthenticationService {
       }));
   }
 
-  register(id: string, login: string, password: string) {
+  register(id: string, login: string, email: string, password: string) {
     return new Promise((resolve, reject) => this.rest.getApiEndpoint()
-      .then((endpoint) => this.api.register(endpoint.toString(), id, login, password))
+      .then((endpoint) => this.api.register(endpoint.toString(), id, login, email, password))
       .then((res) => {
         resolve(res);
       })

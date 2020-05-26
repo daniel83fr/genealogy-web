@@ -51,7 +51,7 @@ query Login {
       .then(res => res.data.login);
   }
 
-  register(endpoint: string, id: string, login: string, password: string) {
+  register(endpoint: string, id: string, login: string, email: string, password: string) {
     const fetch = createApolloFetch({
       uri: endpoint,
     });
@@ -60,7 +60,7 @@ query Login {
     return fetch({
       query: `
 query Register {
-  register(id: "${id}", login: "${login}", password: "${encrypted}")
+  register(id: "${id}", login: "${login}", email: "${email}" password: "${encrypted}")
 }`}).then(res => {
         return res.data;
       });
