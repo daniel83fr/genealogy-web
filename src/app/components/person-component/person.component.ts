@@ -19,36 +19,23 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
 
   refreshing = false;
 
+  profile;
+
   constructor(
     public rest: ConfigurationService,
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthenticationService,
     private api: GraphQLService) {
-      const a = this.route.snapshot.paramMap.get('id');
-      this.getProfileById(a);
-      if (this.isConnected()) {
-        this.getProfilePrivateById(a);
+
+    router.events.subscribe((val) => {
+      if (this.profile != this.route.snapshot.paramMap.get('profile')) {
+        this.profile = this.route.snapshot.paramMap.get('profile');
+        this.ngOnChanges();
       }
-
-      router.events.subscribe((val) => {
-
-        if(this.id != this.route.snapshot.paramMap.get('id')) {
-          this.id = this.route.snapshot.paramMap.get('id');
-          this.ngOnChanges()
-        }
-        
-
-      // if (val instanceof NavigationStart || val instanceof NavigationEnd) {
-      //   const a = this.route.snapshot.paramMap.get('id');
-      //   this.getProfileById(a);
-      //   if (this.isConnected()) {
-      //     this.getProfilePrivateById(a);
-      //   }
-        
-
-      // }
     });
+
+    this.ngOnChanges();
   }
 
   id: any = undefined;
@@ -56,6 +43,13 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
 
   isConnected() {
     return this.auth.isConnected();
+  }
+
+  getProfileId(profileId: string) {
+    return this.rest.getApiEndpoint()
+      .then(endpoint => {
+        return this.api.getProfileId(endpoint, profileId);
+      });
   }
 
   getProfileById(id: string) {
@@ -86,10 +80,19 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
   }
 
   ngOnChanges() {
-    this.getProfileById(this.id);
-    if (this.isConnected()) {
-      this.getProfilePrivateById(this.id);
+
+    if(this.profile == undefined){
+      return;
     }
+    console.log(this.profile);
+    this.getProfileId(this.profile)
+      .then(profileId => {
+        console.log(profileId);
+        this.getProfileById(profileId);
+        if (this.isConnected()) {
+          this.getProfilePrivateById(profileId);
+        }
+      });
   }
 
   ngOnInit(): void {

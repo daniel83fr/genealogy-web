@@ -102,6 +102,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     ${element.firstName} ${element.lastName}
     ${birth}-${death}`;
   }
+  
   navigateTo(url: string) {
     this.router.navigateByUrl(url);
   }

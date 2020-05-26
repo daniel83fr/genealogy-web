@@ -81,7 +81,8 @@ query Register {
               gender,
               yearOfBirth,
               yearOfDeath,
-              isDead
+              isDead,
+              profileId
             }
           }
           `,
@@ -203,11 +204,32 @@ query Register {
               gender
               yearOfBirth
               yearOfDeath
-              isDead
+              isDead,
+              profileId
             }
 
             `,
       variables: { id }
+    });
+  }
+
+  getProfileId(endpoint: string, id: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+    return fetch({
+      query: `query GetProfileId($id: String!) {
+              getProfileId(_id: $id)
+            }
+            `,
+      variables: { id }
+    })
+    .then(res => {
+      console.log(JSON.stringify(res));
+      return res?.data?.getProfileId ?? id;
+    })
+    .catch(err => {
+      return id;
     });
   }
 

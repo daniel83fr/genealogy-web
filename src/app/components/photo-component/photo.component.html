@@ -1,4 +1,9 @@
+<button *ngIf="editable" mat-icon-button style="float: right;" [color]="editMode?'warn':'primary'" (click)="switchEdit()">
+  <mat-icon>edit</mat-icon>
+</button>
 <div>
+  <mat-card-title>Photo Gallery<mat-icon>camera_alt</mat-icon></mat-card-title>
+  
   <span *ngIf="photos?.length > 0" style="margin-left:20px">(Click on photo to enlarge.)</span>
   <span *ngIf="photos?.length == 0" style="margin-left:20px">No photos yet.</span>
   <br>
@@ -26,7 +31,7 @@
     Tags:
     <mat-chip *ngFor="let x of photos[photoIndex].persons">{{x.firstName}}
       
-      <button mat-icon-button color="primary" matTooltip="delete tag"  (click)="removeTag(x._id, photos[photoIndex]._id)">
+      <button *ngIf="editMode" mat-icon-button color="primary" matTooltip="delete tag"  (click)="removeTag(x._id, photos[photoIndex]._id)">
         <mat-icon>clear</mat-icon>
       </button>
       </mat-chip>
@@ -35,7 +40,7 @@
 
  
 
-  <div *ngIf="photos?.length>0">
+  <div *ngIf="photos?.length>0 && editMode">
      
    Add Tag: <app-person-search (personChanged)="setLink($event)"></app-person-search>
     <button mat-icon-button color="primary" matTooltip="add tag"  (click)="addTag(linkId, photos[photoIndex]._id)">
@@ -44,7 +49,7 @@
   </div>
 
   
-  <div *ngIf="editable">
+  <div *ngIf="editMode">
     <br>
     <button *ngIf="photos?.length > 0" mat-icon-button color="warn" aria-label="Delete" (click)="deletePicture()">
       Delete photo

@@ -44,7 +44,7 @@ export class TreeDraw {
       .style('width', width  + 'px')
       .style('height', height + 'px');
 
-    const id = data.currentPerson?._id;
+    const id = data.currentPerson?.profileId;
 
     treeData.row1.forEach(element => {
       this.drawPerson2(svg, element, id);
@@ -163,7 +163,7 @@ export class TreeDraw {
       style = womanStyle;
     }
 
-    if (person._id === currentPersonId) {
+    if (person.profileId === currentPersonId) {
       if (person.gender === 'Male') {
         style = currentUserMan;
       } else {
@@ -186,9 +186,9 @@ export class TreeDraw {
       .text(person.firstName);
     const baseUrl = 'person/';
 
-    if (person._id !== currentPersonId) {
+    if (person.profileId !== currentPersonId) {
       g = g.append('a')
-        .attr('href', baseUrl + person._id);
+        .attr('href', baseUrl + person.profileId);
     }
 
     g.append('rect')

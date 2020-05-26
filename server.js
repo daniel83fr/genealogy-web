@@ -26,13 +26,13 @@ const documents = {}
 io.on('connection', socket => {
   var clientIp = socket.request.connection.remoteAddress
 
-  console.log('a user connected')
-  io.emit('message-received', 'User connected: ' + clientIp)
+  // console.log('a user connected')
+  // io.emit('message-received', 'User connected: ' + clientIp)
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected')
-    io.emit('message-received', 'User disconnected: ' + clientIp)
-  })
+  // socket.on('disconnect', () => {
+  //   console.log('user disconnected')
+  //   io.emit('message-received', 'User disconnected: ' + clientIp)
+  // })
 
   socket.on('message', (msg) => {
     io.emit('message-received', msg)

@@ -81,7 +81,7 @@ justify-content: center;" >
           <ng-container matColumnDef="link">
             <th mat-header-cell *matHeaderCellDef> Link </th>
             <td mat-cell *matCellDef="let element">
-               <button (click)="navigateTo('person/'+element._id)" [title]="getTitle(element)">view</button> 
+               <button (click)="navigateTo('person/'+element.profileId)" [title]="getTitle(element)">view</button> 
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

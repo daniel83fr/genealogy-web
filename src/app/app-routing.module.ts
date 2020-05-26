@@ -18,7 +18,7 @@ const routes: Routes = [
     path: 'login',      component: LoginComponent
   },
   {
-    path: 'person/:id',      component: PersonComponentComponent
+    path: 'person/:profile',      component: PersonComponentComponent
   },
   {
     path: '**',      component: MainComponent

@@ -20,8 +20,16 @@ export class PhotoComponent implements OnInit, OnChanges {
 
   }
 
+  switchEdit() {
+    this.editMode = !this.editMode;
+  }
+
   @Input() id = undefined;
   @Input() editable = false;
+
+  editMode = false;
+
+ 
 
   photos: any[];
   photoIndex = 0;
