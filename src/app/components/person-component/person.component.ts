@@ -53,17 +53,31 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
   }
 
   getProfileById(id: string) {
-    this.rest.getApiEndpoint()
+
+    let cache = localStorage.getItem('profile_'+ id);
+    let cacheData
+    if(cache!= null){
+      cacheData = JSON.parse(cache);
+      this.id = cacheData.data.currentPerson._id;
+        this.data = cacheData.data;
+        const svg = d3.select('.familyTree');
+        new TreeDraw().draw(svg, cacheData.data);
+
+    }
+    if(cacheData == undefined || cacheData.timestamp < new Date(new Date().getTime() - 10 *60000).toJSON() ){
+      this.rest.getApiEndpoint()
       .then(endpoint => {
         return this.api.getProfile(endpoint, id);
       })
-      .then(res => res.data)
       .then(data => {
         this.id = data.currentPerson._id;
         this.data = data;
         const svg = d3.select('.familyTree');
         new TreeDraw().draw(svg, data);
       });
+    }
+    
+    
   }
 
   getProfilePrivateById(id: string) {
@@ -85,14 +99,14 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       return;
     }
     console.log(this.profile);
-    this.getProfileId(this.profile)
-      .then(profileId => {
-        console.log(profileId);
-        this.getProfileById(profileId);
+    //this.getProfileId(this.profile)
+     // .then(profileId => {
+        console.log(this.profile);
+        this.getProfileById(this.profile);
         if (this.isConnected()) {
-          this.getProfilePrivateById(profileId);
+          this.getProfilePrivateById(this.profile);
         }
-      });
+    //  });
   }
 
   ngOnInit(): void {

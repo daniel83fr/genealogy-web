@@ -53,15 +53,20 @@ export class MainComponent implements OnInit, AfterContentInit {
   });
   }
 
+  randomPhotos(){
+    const fileCache  = require('../../data/cache/randomPhotos.json');
+    this.images = fileCache;
+    this.configurationService.getApiEndpoint()
+    .then(endpoint => {
+      return this.graphQLService.getPhotosRandom(endpoint);
+    })
+    .then(res =>
+      this.images = res);
+  }
+
   ngAfterContentInit() {
     this.search();
-
-    this.configurationService.getApiEndpoint()
-      .then(endpoint => {
-        return this.graphQLService.getPhotosRandom(endpoint);
-      })
-      .then(res =>
-        this.images = res);
+    this.randomPhotos();
 
     this.configurationService.getApiEndpoint()
       .then(endpoint => {

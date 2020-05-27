@@ -8,7 +8,7 @@ import { EncryptionService } from './EncryptionService';
   providedIn: 'root'
 })
 export class GraphQLService {
-  
+
   addPhoto(endpoint: string, link: any, deletehash: any, persons: any[]) {
     const token = localStorage.getItem('token');
 
@@ -23,7 +23,7 @@ export class GraphQLService {
   addPhoto( url : $link, deleteHash :$deleteHash, persons:$persons)
           }
           `,
-          variables: { link, deleteHash: deletehash,  persons }
+      variables: { link, deleteHash: deletehash, persons }
     }).then(res => {
       return res.data.addPhoto;
     });
@@ -89,10 +89,10 @@ query Register {
             }
           }
           `,
-          variables: { cacheCount: itemCount, cacheDate: cacheDate}
+      variables: { cacheCount: itemCount, cacheDate: cacheDate }
     }).then(res => {
 
-      if(!res.data.data.isUpToDate){
+      if (!res.data.data.isUpToDate) {
         this.cacheService.personsList = this.cacheService.createCacheObject(res.data.data.users);
       }
       return res.data.data;
@@ -182,40 +182,60 @@ query Register {
     });
     return fetch({
       query: `query GetProfile($id: String!) {
-              currentPerson: getPerson(_id: $id) {
-                ...PersonInfo
-              }
-              mother: getMother(_id: $id) {
-                ...PersonInfo
-              }
-              father: getFather(_id: $id) {
-                ...PersonInfo
-              },
-              children: getChildren(_id: $id) {
-                ...PersonInfo
-              },
-              spouses: getSpouses(_id: $id) {
-                ...PersonInfo
-              },
-              siblings: getSiblings(_id: $id) {
-                ...PersonInfo
-              },
+        getPublicInfo( _id : $id) {
+          currentPerson{
+            ...PersonInfo
+          }
+          mother{
+            ...PersonInfo
+          }
+          father{
+            ...PersonInfo
+          }
+          siblings{
+            ...PersonInfo
+          }
+          spouses{
+            ...PersonInfo
+          }
+          children{
+            ...PersonInfo
+          }
+          photos{
+            url
+            _id
+            persons{
+              ...PhotoTag
             }
-
-            fragment PersonInfo on User {
-              _id
-              firstName
-              lastName
-              maidenName
-              gender
-              yearOfBirth
-              yearOfDeath
-              isDead,
-              profileId
-            }
-
+          }
+      }
+    }
+    
+    fragment PhotoTag on User {
+                  _id
+                  firstName
+                  lastName
+                  profileId
+                }
+       fragment PersonInfo on User {
+                  _id
+                  firstName
+                  lastName
+                  maidenName
+                  gender
+                  yearOfBirth
+                  yearOfDeath
+                  isDead,
+                  profileId
+                }
             `,
       variables: { id }
+    })
+    .then(res=>{
+      let cacheObject = this.cacheService.createCacheObject(res.data.getPublicInfo);
+      localStorage.setItem("profile_"+ id, JSON.stringify( cacheObject))
+      return res.data.getPublicInfo;
+
     });
   }
 
@@ -230,13 +250,13 @@ query Register {
             `,
       variables: { id }
     })
-    .then(res => {
-      console.log(JSON.stringify(res));
-      return res?.data?.getProfileId ?? id;
-    })
-    .catch(err => {
-      return id;
-    });
+      .then(res => {
+        console.log(JSON.stringify(res));
+        return res?.data?.getProfileId ?? id;
+      })
+      .catch(err => {
+        return id;
+      });
   }
 
   deleteProfile(endpoint: string, id: string) {
@@ -362,13 +382,13 @@ query Register {
         }
       }
           `,
-          variables: { _id:  person }
+      variables: { _id: person }
     })
-    .catch(err => {
-      throw Error(err);
-    }).then(res => {
-      return res.data?.getPhotosById;
-    });
+      .catch(err => {
+        throw Error(err);
+      }).then(res => {
+        return res.data?.getPhotosById;
+      });
 
   }
 
@@ -386,13 +406,13 @@ query Register {
             }
           }
           `,
-          variables: { _id:  person }
+      variables: { _id: person }
     })
-    .catch(err => {
-      throw Error(err);
-    }).then(res => {
-      return res.data?.getPhotoProfile;
-    });
+      .catch(err => {
+        throw Error(err);
+      }).then(res => {
+        return res.data?.getPhotoProfile;
+      });
 
   }
   getPhotosRandom(endpoint: string) {
@@ -562,7 +582,7 @@ query Register {
       });
   }
 
-  setProfilePicture(endpoint: string, person: string, image: string){
+  setProfilePicture(endpoint: string, person: string, image: string) {
     const fetch = createApolloFetch({
       uri: endpoint.toString(),
     });
@@ -582,7 +602,7 @@ query Register {
       });
   }
 
-  addPhotoTag(endpoint: string, person: string, image: string){
+  addPhotoTag(endpoint: string, person: string, image: string) {
     const fetch = createApolloFetch({
       uri: endpoint.toString(),
     });
@@ -602,7 +622,7 @@ query Register {
       });
   }
 
-  removePhotoTag(endpoint: string, person: string, image: string){
+  removePhotoTag(endpoint: string, person: string, image: string) {
     const fetch = createApolloFetch({
       uri: endpoint.toString(),
     });
