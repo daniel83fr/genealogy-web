@@ -86,21 +86,27 @@ export class MainComponent implements OnInit, AfterContentInit {
     let cachedItems;
     if (!this.cacheService.isPersonListInCache()) {
       this.logger.info('Cache from file');
-      cachedItems = fileCache.data;
+      cachedItems = fileCache;
     } else {
-      const cache = this.cacheService.personsList;
+      const cache = Object.assign(this.cacheService.personsList);
       if ( cache.timestamp < fileCache.timestamp ) {
         this.logger.info('Cache in storage too old => Cache from file');
         this.cacheService.clearPersonsList();
-        cachedItems = fileCache.data;
+        cachedItems = fileCache;
       } else {
         this.logger.info('Cache from storage');
-        cachedItems = cache.data;
+        cachedItems = cache;
       }
     }
+    this.fillGrid(cachedItems.data);
+
+    console.log(cachedItems.data.length)
+    console.log(cachedItems.timestamp)
 
     this.configurationService.getApiEndpoint()
       .then(endpoint => {
+
+
         return this.graphQLService.getPersonList(endpoint);
       })
       .then(res => {
@@ -112,9 +118,8 @@ export class MainComponent implements OnInit, AfterContentInit {
       });
   }
 
-  private fillGrid(json: any) {
-    const myData: any = Object.assign(json);
-    this.dataSource = new MatTableDataSource(myData);
+  private fillGrid(data: any) {
+    this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     // if(window.screen.availWidth < 400 ){
