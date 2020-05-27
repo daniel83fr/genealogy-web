@@ -8,6 +8,11 @@ require('dotenv').config()
 // Serve static files....
 app.use(express.static(__dirname + '/dist/GenealogyFrontEnd'))
 
+app.use(function(req, res, next) {
+  res.setHeader("Cache-Control", "public, must-revalidate, max-age=600");
+  return next();
+});
+
 app.get('/env', (req, res) => {
   res.send(
     {

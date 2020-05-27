@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class ClientCacheService {
+ 
+    personListKey = 'PersonList';
+    personListStorage = localStorage;
+
+    isPersonListInCache(){
+      return this.personListStorage.getItem('PersonList') != null;
+    }
+
     clearPersonsList() {
         localStorage.removeItem("PersonList")
     }

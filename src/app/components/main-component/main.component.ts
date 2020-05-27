@@ -7,6 +7,10 @@ import { GraphQLService } from 'src/app/_services/GraphQLService';
 import io from 'socket.io-client';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { Router } from '@angular/router';
+import { ClientCacheService } from 'src/app/_services/ClientCacheService';
+import LoggerService from 'src/app/_services/logger_service';
+
+
 
 @Component({
   selector: 'app-main',
@@ -15,6 +19,9 @@ import { Router } from '@angular/router';
 })
 
 export class MainComponent implements OnInit, AfterContentInit {
+
+  logger: LoggerService = new LoggerService('main');
+
   dataSource: any;
   displayedColumns = [];
   date;
@@ -32,7 +39,8 @@ export class MainComponent implements OnInit, AfterContentInit {
     private configurationService: ConfigurationService,
     private graphQLService: GraphQLService,
     private router: Router,
-    private auth: AuthenticationService) {
+    private auth: AuthenticationService,
+    private cacheService: ClientCacheService) {
       this.date = Date();
   }
 
@@ -73,12 +81,34 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   search() {
+    const fileCache  = require('../../data/cache/personList.json');
+
+    let cachedItems;
+    if (!this.cacheService.isPersonListInCache()) {
+      this.logger.info('Cache from file');
+      cachedItems = fileCache.data;
+    } else {
+      const cache = this.cacheService.personsList;
+      if ( cache.timestamp < fileCache.timestamp ) {
+        this.logger.info('Cache in storage too old => Cache from file');
+        this.cacheService.clearPersonsList();
+        cachedItems = fileCache.data;
+      } else {
+        this.logger.info('Cache from storage');
+        cachedItems = cache.data;
+      }
+    }
+
     this.configurationService.getApiEndpoint()
       .then(endpoint => {
         return this.graphQLService.getPersonList(endpoint);
       })
       .then(res => {
+
+        this.cacheService.personsList = this.cacheService.createCacheObject(res, new Date());
+        this.logger.info('cache updated');
         this.fillGrid(res);
+        this.logger.info('search refreshed');
       });
   }
 
@@ -102,7 +132,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     ${element.firstName} ${element.lastName}
     ${birth}-${death}`;
   }
-  
+
   navigateTo(url: string) {
     this.router.navigateByUrl(url);
   }
