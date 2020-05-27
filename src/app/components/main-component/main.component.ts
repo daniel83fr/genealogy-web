@@ -81,40 +81,20 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   search() {
-    const fileCache  = require('../../data/cache/personList.json');
-
-    let cachedItems;
-    if (!this.cacheService.isPersonListInCache()) {
-      this.logger.info('Cache from file');
-      cachedItems = fileCache;
-    } else {
-      const cache = Object.assign(this.cacheService.personsList);
-      if ( cache.timestamp < fileCache.timestamp ) {
-        this.logger.info('Cache in storage too old => Cache from file');
-        this.cacheService.clearPersonsList();
-        cachedItems = fileCache;
-      } else {
-        this.logger.info('Cache from storage');
-        cachedItems = cache;
-      }
-    }
+    let cachedItems = this.cacheService.getPersonListFromCache();
     this.fillGrid(cachedItems.data);
-
-    console.log(cachedItems.data.length)
-    console.log(cachedItems.timestamp)
-
     this.configurationService.getApiEndpoint()
       .then(endpoint => {
-
-
-        return this.graphQLService.getPersonList(endpoint);
+        return this.graphQLService.getPersonList(endpoint, cachedItems.data.length, cachedItems.timestamp);
       })
       .then(res => {
 
-        this.cacheService.personsList = this.cacheService.createCacheObject(res, new Date());
-        this.logger.info('cache updated');
-        this.fillGrid(res);
-        this.logger.info('search refreshed');
+        console.log(JSON.stringify(res));
+        if(!res.isUpToDate){
+          this.logger.info('cache updated');
+          this.fillGrid(res.users);
+          this.logger.info('search refreshed');
+        }
       });
   }
 

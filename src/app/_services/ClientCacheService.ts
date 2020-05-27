@@ -1,10 +1,32 @@
 import { Injectable } from '@angular/core';
+import LoggerService from './logger_service';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class ClientCacheService {
+
+  logger: LoggerService = new LoggerService('clientCacheService');
+
+    getPersonListFromCache() {
+      const fileCache  = require('../data/cache/personList.json');
+      if (!this.isPersonListInCache()) {
+        this.logger.info('Cache from file');
+        this.personsList = this.createCacheObject(fileCache.data);
+        return fileCache;
+      } else {
+        const cache = Object.assign(this.personsList);
+        if ( cache.timestamp < fileCache.timestamp ) {
+          this.logger.info('Cache in storage too old => Cache from file');
+          this.personsList = this.createCacheObject(fileCache.data);
+          return fileCache;
+        } else {
+          this.logger.info('Cache from storage');
+          return cache;
+        }
+      }
+    }
  
     personListKey = 'PersonList';
     personListStorage = localStorage;
@@ -41,7 +63,7 @@ export class ClientCacheService {
         return sessionStorage.getItem('Environnement');
     }
 
-    createCacheObject(data: any, timestamp: Date) {
+    createCacheObject(data: any, timestamp: Date = new Date()) {
         return { "data": data, "timestamp": timestamp.toISOString() }
     }
 }

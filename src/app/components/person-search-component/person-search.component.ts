@@ -7,6 +7,7 @@ import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { ClientCacheService } from 'src/app/_services/ClientCacheService';
 
 
 export interface User {
@@ -36,7 +37,8 @@ export class PersonSearchComponent implements OnInit, AfterContentInit {
     private fb: FormBuilder,
     public configurationService: ConfigurationService,
     private graphQLService: GraphQLService,
-    private router: Router
+    private router: Router,
+    private cacheService: ClientCacheService
   ) {
 
   }
@@ -49,16 +51,25 @@ export class PersonSearchComponent implements OnInit, AfterContentInit {
     return user && user.firstName + ' ' + user.lastName;
   }
 
-  ngOnInit(): void {
-
+  getPersonList() {
+    let cachedItems = this.cacheService.getPersonListFromCache();
+    this.options = cachedItems.data;
     this.configurationService.getApiEndpoint()
       .then(endpoint => {
-        return this.graphQLService.getPersonList(endpoint);
+        return this.graphQLService.getPersonList(endpoint, cachedItems.data.length, cachedItems.timestamp);
       })
       .then(res => {
-        this.options = res;
-      });
 
+        console.log(JSON.stringify(res));
+        if(!res.isUpToDate){
+          this.options = res.users;
+        }
+      });
+  }
+
+  ngOnInit(): void {
+
+    this.getPersonList();
     this.filteredOptions = this.myControl.valueChanges
     .pipe(
       startWith(''),
