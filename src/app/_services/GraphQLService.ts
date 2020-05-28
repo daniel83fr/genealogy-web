@@ -3,6 +3,7 @@ import { createApolloFetch } from 'apollo-fetch';
 
 import { ClientCacheService } from './ClientCacheService';
 import { EncryptionService } from './EncryptionService';
+import { AuthenticationService } from './AuthenticationService';
 
 @Injectable({
   providedIn: 'root'
@@ -277,8 +278,19 @@ query Register {
     });
   }
 
-  updateProfile(endpoint: string, id: string, changes: any, privateChange: any) {
+  updateProfile(endpoint: string, id: string, changes: any, privateChange: any, updateUser: string) {
     const token = localStorage.getItem('token');
+
+    if(changes!= {})
+    {
+      changes['updatedBy'] = updateUser;
+    }
+
+    if(privateChange!= {})
+    {
+      privateChange['updatedBy'] = updateUser;
+    }
+
     const patchString = this.generatePatch(changes);
     const privatePatchString = this.generatePatch(privateChange);
 

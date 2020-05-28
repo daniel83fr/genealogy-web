@@ -4,6 +4,7 @@ import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { NotificationService } from 'src/app/_services/NotificationService';
+import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 
 @Component({
   selector: 'app-person-profile-detail',
@@ -25,7 +26,8 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
     public rest: ConfigurationService,
     private api: GraphQLService,
     private fb: FormBuilder,
-    private notif: NotificationService
+    private notif: NotificationService,
+    private auth: AuthenticationService
   ) {
     this.personEditForm = this.fb.group({
       id: '',
@@ -187,9 +189,10 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
   }
 
   updateProfile(id: string, changes: any, privateChanges: any) {
+
     this.rest.getApiEndpoint()
       .then((endpoint) => {
-        return this.api.updateProfile(endpoint, id, changes, privateChanges);
+        return this.api.updateProfile(endpoint, id, changes, privateChanges, this.auth.getConnectedProfile());
       })
       .then(res => {
         this.notif.showSuccess('Profile updated.');
