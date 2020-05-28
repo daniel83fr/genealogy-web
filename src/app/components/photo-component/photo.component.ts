@@ -26,12 +26,12 @@ export class PhotoComponent implements OnInit, OnChanges {
 
   @Input() id = undefined;
   @Input() editable = false;
-
+  @Input() photos: any[];
   editMode = false;
 
  
 
-  photos: any[];
+
   photoIndex = 0;
   image: string | ArrayBuffer;
   image2: any;
@@ -221,10 +221,10 @@ export class PhotoComponent implements OnInit, OnChanges {
   getPhotos(id: string) {
     this.configService.getApiEndpoint()
       .then(endpoint => {
-        return this.graphQlService.getPhotos(endpoint, id);
+        return this.graphQlService.getProfile(endpoint, id);
       })
       .then(data => {
-        this.photos = data;
+        this.photos = data.photos;
       });
   }
 }

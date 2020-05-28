@@ -152,10 +152,11 @@ query Register {
     });
 
     return fetch({
-      query: `query getPrivateInfo($_id: String!) {
-        getPrivateInfo( _id : $_id) {
+      query: `query getPrivateProfile($_id: String!) {
+        profile: getPrivateProfile( profileId : $_id) {
           birthDate
           deathDate
+          isDead
           currentLocation
           birthLocation
           deathLocation
@@ -171,7 +172,7 @@ query Register {
         throw Error(err);
       })
       .then(res => {
-        return res.data.getPrivateInfo;
+        return res.data.profile;
       }
       );
   }
@@ -182,7 +183,7 @@ query Register {
     });
     return fetch({
       query: `query GetProfile($id: String!) {
-        getPublicInfo( _id : $id) {
+        profile: getProfile( profileId : $id) {
           currentPerson{
             ...PersonInfo
           }
@@ -232,9 +233,10 @@ query Register {
       variables: { id }
     })
     .then(res=>{
-      let cacheObject = this.cacheService.createCacheObject(res.data.getPublicInfo);
-      localStorage.setItem("profile_"+ id, JSON.stringify( cacheObject))
-      return res.data.getPublicInfo;
+      let profile = res.data.profile;
+      let cacheObject = this.cacheService.createCacheObject(profile);
+      localStorage.setItem("profile_"+ id, JSON.stringify( cacheObject));
+      return profile;
 
     });
   }
