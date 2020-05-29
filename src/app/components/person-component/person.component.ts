@@ -6,6 +6,7 @@ import { TreeDraw } from '../../treeDraw';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-person-component',
@@ -26,7 +27,9 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthenticationService,
-    private api: GraphQLService) {
+    private api: GraphQLService,
+    private titleService: Title, 
+    private metaService: Meta) {
 
     router.events.subscribe((val) => {
       if (this.profile != this.route.snapshot.paramMap.get('profile')) {
@@ -59,6 +62,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     if(cache!= null){
       cacheData = JSON.parse(cache);
       this.id = cacheData.data.currentPerson._id;
+      this.setTitle(cacheData.data.currentPerson);
         this.data = cacheData.data;
         const svg = d3.select('.familyTree');
         new TreeDraw().draw(svg, cacheData.data);
@@ -71,6 +75,8 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       })
       .then(data => {
         this.id = data.currentPerson._id;
+        this.setTitle(data.currentPerson);
+        this.setMeta(data);
         this.data = data;
         const svg = d3.select('.familyTree');
         new TreeDraw().draw(svg, data);
@@ -79,7 +85,15 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     
     
   }
+  setTitle(person: any){
+    this.titleService.setTitle(`${person.firstName} ${person.lastName}'s profile`);
+  }
 
+  setMeta(data: any){
+    const person = data.currentPerson;
+    this.metaService.updateTag({ content: `${person.firstName} ${person.lastName}'s profile`} , 'name="description"' );
+    this.metaService.updateTag({ content: `${person.firstName}, ${person.lastName}, profile`} , 'name="keywords"' );
+  }
   getProfilePrivateById(id: string) {
     this.rest.getApiEndpoint()
       .then(endpoint => {
@@ -99,6 +113,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       return;
     }
     console.log(this.profile);
+    
     //this.getProfileId(this.profile)
      // .then(profileId => {
         console.log(this.profile);

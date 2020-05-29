@@ -2,7 +2,7 @@
 margin-left: 0px;
 margin-right: 0px;
 justify-content: center;" >
-  <img src="../../assets/img/main.jpg" alt="Photo of Genealogy" height="200" class="hidden-on-mobile"
+  <img src="../../assets/img/main.jpg" loading="lazy" alt="Photo of Genealogy" height="200" class="hidden-on-mobile"
   
   style="border-style: solid;  border-color: white;border-width: 1px;">
   <div style="font-size:50px;color:white;" class="hidden-on-desktop">Family Tree</div>
@@ -81,7 +81,7 @@ justify-content: center;" >
           <ng-container matColumnDef="link">
             <th mat-header-cell *matHeaderCellDef> Link </th>
             <td mat-cell *matCellDef="let element">
-               <button (click)="navigateTo('person/'+element.profileId)" [title]="getTitle(element)">view</button> 
+               <a mat-button [routerLink]="'person/'+element.profileId" [title]="getTitle(element)" > view</a>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -99,7 +99,7 @@ justify-content: center;" >
       <mat-card-title>Random Photos</mat-card-title>
     </mat-card-header>
      <mat-card-content >
-        <img  *ngFor="let image of images" [src]="image.url" height="200" width="170" style="margin:5px"/>
+        <img loading="lazy"  *ngFor="let image of images" [src]="image.url" height="200" width="170" style="margin:5px"/>
       </mat-card-content>
     </mat-card>
 
@@ -148,9 +148,8 @@ justify-content: center;" >
     </mat-card-header>
     <mat-card-content>
       <div *ngFor="let auditEntry of audit">
-        {{auditEntry.timestamp}} - {{auditEntry.user || 'unknown'}} -  {{auditEntry.action}} 
+        {{auditEntry.timestamp | date : 'short'}} - <b>{{auditEntry.user}}</b> {{auditEntry.action}} "{{auditEntry.id}}"
       </div>
-
   </mat-card-content>
 
 </mat-card>
@@ -175,4 +174,13 @@ justify-content: center;" >
 </mat-card>
 </div>
 
+<br>
+
+<div style="color: grey;">
+  Keywords:
+ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage
+blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors, 
+birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network,
+pedigree, progenitors, progeny, relations, relationship, relatives, siblings,
+</div>
 <br>
