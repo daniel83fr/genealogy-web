@@ -1,20 +1,17 @@
 language: node_js
 node_js:
 - 13
-deploy:
-  - provider: heroku
-    api_key:
-      secure: gvP+OAiZuAwlX/n1pot0pszuh3BMIipsJZanOzXdJsEJrRnpagQn3thbe3KsTGthDk5tQe98X+BIoaJRiP5TwGFcsdx5qfvcpo1l9uFt3LAIAc1pegK7TMC/VAkBy+poCWMI3auyrGzS+PfHs5eM9Ovp+gycrUt1vjK8EIvOHQUQfeGQ84/yyonZJd6LV8YgJhBeu01TAm6KYY5eSvA6jg06MMVSPUQZ0byP543KYfmrfj67+kI+/npoIRoFGHsDmQxtCvJXvKUzh71JCdVRp7uBvjfXnD8zD3OF4WLzQ4/hbEHQf0tDwuC1Sar5nNauIl7ezTpHoWMjNs6Q1ewAttwOwfv13ED0RrKF0edzGRg8XA1iKoKUO9pJ13IGFLmP6HcipYRqJrQbr7gA1nt/wY0kwvHIo9uA1t9MA9c5pOpMGaVEgjD29GF+UYT4nay2SNwaYz0e7iYwzVdVcPbG3/v6aMN5MPlPywHAg545DnH3GEEescVwc3iDc4VLRMam+45qN1kOr0/VfLHws9PRllK7l8+yiJNbtJVFw5dyEcqxkc2TRJf4xKCNf1EDS+TJEhaCLfHli7CPoSGgzDoWV1coOqkRF7WIk7S4oOiJMxffLEexFrjJx/Y9jo5FRoUxDPotEFwVpa9ZN6S+2Jb3nSvbQllLQrOIuoZqPdfWI6M=
-    app: genealogy-web
-    on:
-      repo: daniel83fr/genealogy-web
-      branch: prod
-    cleanup: false
-  - provider: releases
-    api_key:
-      secure: hGfr3p/jnd5KJ/jnZBM8AC9GYDliq20Xqf/yKVEOwU/ADAb0WYKSF6xckD3zn7Qw/97J1J/+GQQwOT1pVMn7IPXXIgZ01jF3+a+GfYuf0c+a+yG5K5Jy32YshuT+wCuHhIEnlQI8TV1UGtDiXNcLtQBDymvFcWpmPP2P7v94sn7vuA6dC9Ug+b5rC6Nq7q49WN8XPEUblK048JdwsyCJOTUQXfhC05mQbrHVCuJDhtHQqgmwmajX8CXrF3ECyEB9EP/j/YwdCKtntTVbRzrzEKoA8Z4Tzt65s5W0e1WfeTTMVEXJTK8tfdaPTVcuRzL8LUWS9jKu9Gw9jTJpVbQqmyYoeE7rsivmvYuTZVGRUXXwIZIlh1hqXZIXtESMU8jQxKiyT0J5wnOcWBq+AjSV/V40bKm8yUMvmpChSfWjcDNo9r+db1LfnF0HGISiLDPiyy8+Enn70sqCV2atuz3HRz0VcT0FXQgm0hGyPGJRKbYT2AwMtixVYaQh51++yS6JHq5yR2xrh90vlQU27Jx/fZtfegOgW6zt0hbSYj1U8D42SusuheqXbaEPNKumtwJVWTBZDOo6FM1btRvp8JhGhWGuiMKHO55f8SYZH+PJk2HDNCBVG9B2OO/blZtstTTC4dEqWrzA3K3DwDH029lVoGrXZvRIun9EAjdGh3TdVAs=
-    file: dist/**
-    cleanup: false
-    # on:
-    #   tags: true
-    
+before_deploy:
+  - cd $TRAVIS_BUILD_DIR/dist
+  - tar -zcf ../genealogy-web-$TRAVIS_BRANCH.tar.gz .
+deploy: 
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file: ../genealogy-api-$TRAVIS_BRANCH.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: $TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+  
+env:
+  global:
+    secure: czjA6IDg6jG17WYNddDesPdbtoQUYbFac86owOVPb0FkE9Q39Olbcuax86clKd7kn01bAkpt3b5Oy6eM2zgljLxqyIxNYNpx4VgOrVavP8NUNNq5sy77wd6CFArt1/8IYfzCzOGCqplmuh1QtvPY1kbHHMpkO1X0hpuKnJrxt2GRyXM7WUcbu3QC5Gpnd+FnFIntfq3D90P8PhajtJGJ5nJwpR/ROzixwJJMFh0OAwsHYwBi7c237a233YLSYeN5h2YS4+ujnRukN21hjtEl5GFA49xXvyxRHbULtUHczp9vTHlWcWBqG+DzQHffHiYBu52LxjlSt7wwt5joXr7QrMyR58oS3z0l3+aDX9Ja8nToEvu1KRzXp5EI5KUuxEtrI9Kmk9524oWHysAzQxfz4mkVxajYeFSGITvNmssKioLNWiKCVVaft6+ig8tB9GsVei1wJmiTL8zu/rY/VpSpXqlXsn+CYuUJ0ZDYKeObNKx4JZdrRdjMl5o6+VsS/ueZZFSucR5AlWQW+ZNKOTdi2YtaPKdTQPIoFC90TBX/RxWvdR3McJeG2TXAKwk2GeUIO1nnFEjW3KrmYoI1fyb7OBAmv+nwjkCAJWwBwuPWmxRJ49lN764a/fhVuzmEg65VImOcqGgSNYWAYNLH1Nlnj/frDAouVxCqOiMYMDWr8LU=
