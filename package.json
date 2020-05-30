@@ -8,7 +8,7 @@
     "dev": "npm-run-all -p devBuild start",
     "ng": "ng",
     "startOld": "ng serve",
-    "build": "ng build",
+    "build": "npx tsc && ng build",
     "test": "",
     "lint": "ng lint",
     "e2e": "ng e2e"
