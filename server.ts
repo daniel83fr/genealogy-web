@@ -6,7 +6,7 @@ const io = require('socket.io')(http)
 require('dotenv').config()
 
 // Serve static files....
-app.use(express.static(__dirname + '/dist/GenealogyFrontEnd'))
+app.use(express.static(__dirname + '/frontEnd'))
 
 app.use(function(req, res, next) {
   res.setHeader("Cache-Control", "public, must-revalidate, max-age=600");
@@ -23,7 +23,7 @@ app.get('/env', (req, res) => {
 
 // Send all requests to index.html
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname + '/dist/GenealogyFrontEnd/index.html'))
+  res.sendFile(path.join(__dirname + '/frontEnd/index.html'))
 })
 
 const documents = {}

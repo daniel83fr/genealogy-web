@@ -8,7 +8,7 @@
     <div *ngIf="data?.profileId != data?._id" style="color: gray;">Id: {{data?._id}}</div>
     <div style="display: flex;
     justify-content: center;
-    align-items: center;" ><img [src]="image" width="300" loading="lazy/></div>
+    align-items: center;" ><img [src]="image" width="300" loading="lazy"/></div>
 </div>
 
 <span *ngIf="!editable && data && data.profileId == data._id">

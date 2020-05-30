@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+    "outDir": "./dist",
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -15,7 +15,7 @@
       "es2018",
       "dom"
     ],
-    "types" : ["node", "express"],
+    "types" : ["node", "express", "jasmine"],
     "plugins": [
       {
         "name": "typescript-tslint-plugin",

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "GenealogyFrontEnd": {
+    "frontEnd": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/GenealogyFrontEnd",
+            "outputPath": "dist/frontEnd",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -127,5 +127,5 @@
       }
     }
   },
-  "defaultProject": "GenealogyFrontEnd"
+  "defaultProject": "frontEnd"
 }
