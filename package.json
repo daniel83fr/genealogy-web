@@ -2,7 +2,7 @@
   "name": "genealogy-front-end",
   "version": "0.0.0",
   "scripts": {
-    "postinstall": "ng build --aot --prod",
+    "postinstall": "npx tsc && ng build --aot --prod",
     "start": "node server.js",
     "devBuild": "ng build --watch",
     "dev": "npm-run-all -p devBuild start",
