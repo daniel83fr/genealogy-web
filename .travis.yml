@@ -5,7 +5,7 @@ node_js:
 before_deploy:
   - cd $TRAVIS_BUILD_DIR/dist
   - echo -e $TRAVIS_BRANCH > src/.version
-  - cp ../package.json src
+  - cp ../package.json .
   - tar --exclude=e2e --exclude=*.tar.gz  -zcf genealogy-web-$TRAVIS_BRANCH.tar.gz .
 deploy: 
   provider: releases
