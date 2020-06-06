@@ -13,6 +13,7 @@ export class FooterComponent implements OnInit {
 
   environnement: string;
   endpoint: string;
+  version: string
 
   constructor(
     private configurationService: ConfigurationService,
@@ -27,6 +28,8 @@ export class FooterComponent implements OnInit {
       .then(endpoint => {
         this.endpoint = endpoint;
       });
+
+    this.version = process.env.VERSION;
   }
 
   isConnected() {
