@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
+require('dotenv').config()
 
 @Component({
   selector: 'app-footer',
@@ -13,7 +14,7 @@ export class FooterComponent implements OnInit {
 
   environnement: string;
   endpoint: string;
-  version: string
+  version: string;
 
   constructor(
     private configurationService: ConfigurationService,
