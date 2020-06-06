@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
-require('dotenv').config()
 
 @Component({
   selector: 'app-footer',
@@ -30,7 +29,10 @@ export class FooterComponent implements OnInit {
         this.endpoint = endpoint;
       });
 
-    this.version = process.env.VERSION;
+    this.configurationService.getVersion()
+      .then(version => {
+        this.version = version;
+      });
   }
 
   isConnected() {

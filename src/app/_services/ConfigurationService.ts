@@ -14,6 +14,12 @@ export class ConfigurationService {
 
     }
 
+    getVersion(): Promise<string> {
+      return new Promise((resolve) => {
+        resolve('v1.0.0-beta');
+      });
+    }
+
     getApiEndpoint(): Promise<string> {
 
         return new Promise((resolve, reject) => {
