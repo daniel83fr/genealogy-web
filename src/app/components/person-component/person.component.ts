@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, AfterContentInit, OnChanges, Input, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap, NavigationEnd, NavigationStart, ActivationEnd, ActivationStart } from '@angular/router';
 import * as d3 from 'd3';
 
@@ -7,6 +7,8 @@ import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { Title, Meta } from '@angular/platform-browser';
+import { Inject } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'app-person-component',
@@ -23,6 +25,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
   profile;
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     public rest: ConfigurationService,
     private route: ActivatedRoute,
     private router: Router,
@@ -30,15 +33,14 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     private api: GraphQLService,
     private titleService: Title, 
     private metaService: Meta) {
-
-    router.events.subscribe((val) => {
-      if (this.profile != this.route.snapshot.paramMap.get('profile')) {
-        this.profile = this.route.snapshot.paramMap.get('profile');
-        this.ngOnChanges();
-      }
-    });
-
-    this.ngOnChanges();
+      this.router.events.subscribe((val) => {
+        if (this.profile != this.route.snapshot.paramMap.get('profile')) {
+          this.profile = this.route.snapshot.paramMap.get('profile');
+          this.ngOnChanges();
+        }
+      });
+   
+      this.ngOnChanges();
   }
 
   id: any = undefined;
@@ -114,17 +116,25 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     }
     console.log(this.profile);
     
-    //this.getProfileId(this.profile)
-     // .then(profileId => {
         console.log(this.profile);
         this.getProfileById(this.profile);
         if (this.isConnected()) {
           this.getProfilePrivateById(this.profile);
         }
-    //  });
   }
 
-  ngOnInit(): void {
-
+  async ngOnInit(): Promise<void> {
+    this.profile = this.route.snapshot.paramMap.get('profile');
+    try{
+      this.data = require(`../../data/cache/person_${this.profile}.json`) || {};
+    }
+    catch(){
+      
+    }
+    
+    this.id = this.data.currentPerson._id;
+    this.setTitle(this.data.currentPerson);
+    this.setMeta(this.data);
   }
 }
+

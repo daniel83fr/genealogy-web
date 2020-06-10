@@ -48,19 +48,19 @@ export class ClientCacheService {
     }
 
     set endpoint(name) {
-        sessionStorage.setItem('GENEALOGY_API', name);
+        localStorage.setItem('GENEALOGY_API', name);
     }
 
     get endpoint() {
-        return sessionStorage.getItem('GENEALOGY_API');
+        return localStorage.getItem('GENEALOGY_API');
     }
 
     set environnement(name) {
-        sessionStorage.setItem('Environnement', name);
+        localStorage.setItem('Environnement', name);
     }
 
     get environnement() {
-        return sessionStorage.getItem('Environnement');
+        return localStorage.getItem('Environnement');
     }
 
     createCacheObject(data: any, timestamp: Date = new Date()) {

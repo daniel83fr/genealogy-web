@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ClientCacheService } from './ClientCacheService';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +27,7 @@ export class ConfigurationService {
 
             const cachedEndpoint = this.cacheService.endpoint;
             if (cachedEndpoint != null) {
-                resolve(cachedEndpoint);
+              resolve(cachedEndpoint);
             }
 
             const url = window.location.origin + '/env';

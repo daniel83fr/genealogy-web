@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
-import io from 'socket.io-client';
+//import io from 'socket.io-client';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { Router } from '@angular/router';
 import { ClientCacheService } from 'src/app/_services/ClientCacheService';
@@ -46,11 +46,11 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   ngOnInit(): void {
 
-    this.ioClient = io.connect();
-    this.ioClient.on('message-received', (msg: any) => {
-      const message = msg + '\r\n';
-      this.messages = this.messages + message ;
-  });
+  //   this.ioClient = io.connect();
+  //   this.ioClient.on('message-received', (msg: any) => {
+  //     const message = msg + '\r\n';
+  //     this.messages = this.messages + message ;
+  // });
   }
 
   randomPhotos(){

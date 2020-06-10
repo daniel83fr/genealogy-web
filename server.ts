@@ -1,55 +1,76 @@
-const express = require('express')
-const path = require('path')
-const app = express()
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
-require('dotenv').config()
+import 'zone.js/dist/zone-node';
 
-// Serve static files....
-app.use(express.static(__dirname + '/frontEnd'))
+import { ngExpressEngine } from '@nguniversal/express-engine';
+import * as express from 'express';
+import { join } from 'path';
 
-app.use(function(req, res, next) {
-  res.setHeader("Cache-Control", "public, must-revalidate, max-age=600");
-  return next();
-});
+import { AppServerModule } from './src/main.server';
+import { APP_BASE_HREF } from '@angular/common';
+import { existsSync } from 'fs';
+import 'localstorage-polyfill';
 
-app.get('/env', (req, res) => {
-  res.send(
-    {
-      Environnement: process.env.NODE_ENV,
-      GENEALOGY_API: process.env.GENEALOGY_API
-    })
-})
+require('dotenv').config();
+global['localStorage'] = localStorage;
 
-// Send all requests to index.html
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname + '/frontEnd/index.html'))
-})
+// The Express app is exported so that it can be used by serverless Functions.
+export function app() {
+  const server = express();
+  const distFolder = join(process.cwd(), 'dist/frontEnd/browser');
+  const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
-const documents = {}
+  // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
+  server.engine('html', ngExpressEngine({
+    bootstrap: AppServerModule,
+  }));
 
-io.on('connection', socket => {
-  var clientIp = socket.request.connection.remoteAddress
+  server.set('view engine', 'html');
+  server.set('views', distFolder);
 
-  // console.log('a user connected')
-  // io.emit('message-received', 'User connected: ' + clientIp)
+  // Example Express Rest API endpoints
+  // app.get('/api/**', (req, res) => { });
+  server.get('/env', (req, res) => {
+    console.log(process.cwd());
 
-  // socket.on('disconnect', () => {
-  //   console.log('user disconnected')
-  //   io.emit('message-received', 'User disconnected: ' + clientIp)
-  // })
+    res.send(
+      {
+        Environnement: process.env.NODE_ENV,
+        'GENEALOGY_API': process.env.GENEALOGY_API,
+        'VERSION': process.env.VERSION,
+        'Path': process.cwd()
+      });
+  });
 
-  socket.on('message', (msg) => {
-    io.emit('message-received', msg)
-  })
+  // Serve static files from /browser
+  server.get('*.*', express.static(distFolder, {
+    maxAge: '1y'
+  }));
 
-  socket.on('message-received', (msg) => {
-    console.log('message - ' + msg)
-  })
-})
+  // All regular routes use the Universal engine
+  server.get('*', (req, res) => {
+    res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
+  });
 
-const PORT = process.env.PORT
-http.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}...`)
-  console.log(`Env: ${process.env.NODE_ENV}`)
-})
+  return server;
+}
+
+function run() {
+  const port = process.env.PORT || 4200;
+
+  // Start up the Node server
+  const server = app();
+  server.listen(port, () => {
+    console.log(`Node Express server listening on http://localhost:${port}`);
+  });
+}
+
+// Webpack will replace 'require' with '__webpack_require__'
+// '__non_webpack_require__' is a proxy to Node 'require'
+// The below code is to ensure that the server is run only when not requiring the bundle.
+declare const __non_webpack_require__: NodeRequire;
+const mainModule = __non_webpack_require__.main;
+const moduleFilename = mainModule && mainModule.filename || '';
+if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
+  run();
+}
+
+export * from './src/main.server';
