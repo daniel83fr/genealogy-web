@@ -127,9 +127,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     this.profile = this.route.snapshot.paramMap.get('profile');
     try{
       this.data = require(`../../data/cache/person_${this.profile}.json`) || {};
-    }
-    catch(){
-      
+    } catch {
     }
     
     this.id = this.data.currentPerson._id;
