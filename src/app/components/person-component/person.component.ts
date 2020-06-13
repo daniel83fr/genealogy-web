@@ -135,7 +135,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       const cacheFile = path.join(__dirname, `../cache/profile_${this.profile}.json`);
       if (fs.existsSync(cacheFile)) {
         const rawdata = fs.readFileSync(cacheFile);
-        this.data = JSON.parse(rawdata);
+        this.data = JSON.parse(rawdata).data;
 
         this.id = this.data.currentPerson._id;
         this.setTitle(this.data.currentPerson);
