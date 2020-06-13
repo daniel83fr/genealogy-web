@@ -10,7 +10,8 @@ export class ClientCacheService {
   logger: LoggerService = new LoggerService('clientCacheService');
 
     getPersonListFromCache() {
-      const fileCache  = require('../data/cache/personList.json');
+     // const fileCache  = require('src/cache/personList.json');
+     let fileCache :any = {};
       if (!this.isPersonListInCache()) {
         this.logger.info('Cache from file');
         this.personsList = this.createCacheObject(fileCache.data);

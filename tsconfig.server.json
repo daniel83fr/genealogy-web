@@ -5,11 +5,12 @@
     "module": "commonjs",
     "types": [
       "node"
-    ]
+    ],
+    "allowJs": true
   },
   "files": [
     "src/main.server.ts",
-    "server.ts"
+    "server.ts",
   ],
   "angularCompilerOptions": {
     "entryModule": "./src/app/app.server.module#AppServerModule"

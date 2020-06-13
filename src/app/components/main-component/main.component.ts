@@ -54,8 +54,8 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   randomPhotos(){
-    const fileCache  = require('../../data/cache/randomPhotos.json');
-    this.images = fileCache;
+    // const fileCache  = require('../../../cache/randomPhotos.json');
+    // this.images = fileCache;
     this.configurationService.getApiEndpoint()
     .then(endpoint => {
       return this.graphQLService.getPhotosRandom(endpoint);
@@ -86,8 +86,9 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   search() {
-    let cachedItems = this.cacheService.getPersonListFromCache();
-    this.fillGrid(cachedItems.data);
+ // let cachedItems = this.cacheService.getPersonListFromCache();
+  // this.fillGrid(cachedItems.data);
+  let cachedItems:any = { };
     this.configurationService.getApiEndpoint()
       .then(endpoint => {
         return this.graphQLService.getPersonList(endpoint, cachedItems.data.length, cachedItems.timestamp);

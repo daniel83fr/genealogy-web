@@ -9,6 +9,8 @@ import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { Title, Meta } from '@angular/platform-browser';
 import { Inject } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
+import * as path from 'path';
+
 
 @Component({
   selector: 'app-person-component',
@@ -31,16 +33,16 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     private router: Router,
     private auth: AuthenticationService,
     private api: GraphQLService,
-    private titleService: Title, 
+    private titleService: Title,
     private metaService: Meta) {
-      this.router.events.subscribe((val) => {
-        if (this.profile != this.route.snapshot.paramMap.get('profile')) {
-          this.profile = this.route.snapshot.paramMap.get('profile');
-          this.ngOnChanges();
-        }
-      });
-   
-      this.ngOnChanges();
+    this.router.events.subscribe((val) => {
+      if (this.profile != this.route.snapshot.paramMap.get('profile')) {
+        this.profile = this.route.snapshot.paramMap.get('profile');
+        this.ngOnChanges();
+      }
+    });
+
+    this.ngOnChanges();
   }
 
   id: any = undefined;
@@ -59,42 +61,42 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
 
   getProfileById(id: string) {
 
-    let cache = localStorage.getItem('profile_'+ id);
+    let cache = localStorage.getItem('profile_' + id);
     let cacheData
-    if(cache!= null){
+    if (cache != null) {
       cacheData = JSON.parse(cache);
       this.id = cacheData.data.currentPerson._id;
       this.setTitle(cacheData.data.currentPerson);
-        this.data = cacheData.data;
-        const svg = d3.select('.familyTree');
-        new TreeDraw().draw(svg, cacheData.data);
+      this.data = cacheData.data;
+      const svg = d3.select('.familyTree');
+      new TreeDraw().draw(svg, cacheData.data);
 
     }
-    if(cacheData == undefined || cacheData.timestamp < new Date(new Date().getTime() - 10 *60000).toJSON() ){
+    if (cacheData == undefined || cacheData.timestamp < new Date(new Date().getTime() - 10 * 60000).toJSON()) {
       this.rest.getApiEndpoint()
-      .then(endpoint => {
-        return this.api.getProfile(endpoint, id);
-      })
-      .then(data => {
-        this.id = data.currentPerson._id;
-        this.setTitle(data.currentPerson);
-        this.setMeta(data);
-        this.data = data;
-        const svg = d3.select('.familyTree');
-        new TreeDraw().draw(svg, data);
-      });
+        .then(endpoint => {
+          return this.api.getProfile(endpoint, id);
+        })
+        .then(data => {
+          this.id = data.currentPerson._id;
+          this.setTitle(data.currentPerson);
+          this.setMeta(data);
+          this.data = data;
+          const svg = d3.select('.familyTree');
+          new TreeDraw().draw(svg, data);
+        });
     }
-    
-    
+
+
   }
-  setTitle(person: any){
+  setTitle(person: any) {
     this.titleService.setTitle(`${person.firstName} ${person.lastName}'s profile`);
   }
 
-  setMeta(data: any){
+  setMeta(data: any) {
     const person = data.currentPerson;
-    this.metaService.updateTag({ content: `${person.firstName} ${person.lastName}'s profile`} , 'name="description"' );
-    this.metaService.updateTag({ content: `${person.firstName}, ${person.lastName}, profile`} , 'name="keywords"' );
+    this.metaService.updateTag({ content: `${person.firstName} ${person.lastName}'s profile` }, 'name="description"');
+    this.metaService.updateTag({ content: `${person.firstName}, ${person.lastName}, profile` }, 'name="keywords"');
   }
   getProfilePrivateById(id: string) {
     this.rest.getApiEndpoint()
@@ -111,28 +113,42 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
 
   ngOnChanges() {
 
-    if(this.profile == undefined){
+    if (this.profile == undefined) {
       return;
     }
     console.log(this.profile);
-    
-        console.log(this.profile);
-        this.getProfileById(this.profile);
-        if (this.isConnected()) {
-          this.getProfilePrivateById(this.profile);
-        }
+
+    console.log(this.profile);
+    this.getProfileById(this.profile);
+    if (this.isConnected()) {
+      this.getProfilePrivateById(this.profile);
+    }
   }
 
-  async ngOnInit(): Promise<void> {
-    this.profile = this.route.snapshot.paramMap.get('profile');
-    try{
-      this.data = require(`../../data/cache/person_${this.profile}.json`) || {};
-    } catch {
+  ngOnInit() {
+
+    if (isPlatformServer(this.platformId)) {
+
+      this.profile = this.route.snapshot.paramMap.get('profile');
+      const fs = require('fs');
+
+      const cacheFile = path.join(__dirname, `../cache/profile_${this.profile}.json`);
+      if (fs.existsSync(cacheFile)) {
+        const rawdata = fs.readFileSync(cacheFile);
+        this.data = JSON.parse(rawdata);
+
+        this.id = this.data.currentPerson._id;
+        this.setTitle(this.data.currentPerson);
+        this.setMeta(this.data);
+      }
+      else {
+
+        this.titleService.setTitle(`profile ${this.profile}`);
+        this.metaService.updateTag({ content: `profile ${this.profile}` }, 'name="description"');
+        this.metaService.updateTag({ content: `profile ${this.profile}` }, 'name="keywords"');
+
+
+      }
     }
-    
-    this.id = this.data.currentPerson._id;
-    this.setTitle(this.data.currentPerson);
-    this.setMeta(this.data);
   }
 }
-

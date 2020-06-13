@@ -19,8 +19,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle(this.title);
     this.metaService.addTags([
-      { name: 'keywords', content: 'Angular, Universal, Example' },
-      { name: 'description', content: 'Angular Universal Example' },
+      { name: 'keywords', content: 'Res01, family tree, genealogy' },
+      { name: 'description', content: 'res01 - family tree' },
       { name: 'robots', content: 'index, follow' }
     ]);
   }
