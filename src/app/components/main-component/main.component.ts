@@ -86,9 +86,8 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   search() {
- // let cachedItems = this.cacheService.getPersonListFromCache();
-  // this.fillGrid(cachedItems.data);
-  let cachedItems:any = { };
+    let cachedItems = this.cacheService.getPersonListFromCache();
+   this.fillGrid(cachedItems.data);
     this.configurationService.getApiEndpoint()
       .then(endpoint => {
         return this.graphQLService.getPersonList(endpoint, cachedItems.data.length, cachedItems.timestamp);
