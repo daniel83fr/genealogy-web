@@ -159,17 +159,6 @@ justify-content: center;" >
     <mat-icon>chat</mat-icon>
     <mat-card-title>Messages</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
-    <mat-form-field appearance="fill">
-      <textarea matInput style="height: 200px;overflow:scroll" [(ngModel)]="messages" readonly ></textarea>
-    </mat-form-field>
-    <br>
-    <mat-form-field appearance="fill">
-      <input matInput [(ngModel)]="inputMessage" autocomplete="off" (keyup.enter)="sendMessage(inputMessage)">
-    </mat-form-field>
-    <br>
-    <button (click)="sendMessage(inputMessage)"  >Send</button>
-</mat-card-content>
 
 </mat-card>
 </div>

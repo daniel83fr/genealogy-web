@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterContentInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit, PLATFORM_ID } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,7 +9,9 @@ import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { Router } from '@angular/router';
 import { ClientCacheService } from 'src/app/_services/ClientCacheService';
 import LoggerService from 'src/app/_services/logger_service';
-
+import { Inject } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import path from 'path';
 
 
 @Component({
@@ -34,34 +36,43 @@ export class MainComponent implements OnInit, AfterContentInit {
   inputMessage = '';
   messages = '';
 
-  ioClient: any;
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     private configurationService: ConfigurationService,
     private graphQLService: GraphQLService,
     private router: Router,
     private auth: AuthenticationService,
     private cacheService: ClientCacheService) {
-      this.date = Date();
+    this.date = Date();
   }
 
   ngOnInit(): void {
+    if (isPlatformServer(this.platformId)) {
 
-  //   this.ioClient = io.connect();
-  //   this.ioClient.on('message-received', (msg: any) => {
-  //     const message = msg + '\r\n';
-  //     this.messages = this.messages + message ;
-  // });
+      const fs = require('fs');
+      const cacheFile = path.join(__dirname, `../cache/personList.json`);
+      if (fs.existsSync(cacheFile)) {
+        const rawdata = fs.readFileSync(cacheFile);
+        let data = JSON.parse(rawdata).data;
+        this.fillGrid(data);
+      }
+
+      const photosCacheFile = path.join(__dirname, `../cache/randomPhotos.json`);
+      if (fs.existsSync(photosCacheFile)) {
+        const rawdata = fs.readFileSync(photosCacheFile);
+        let data = JSON.parse(rawdata);
+        this.images = data;
+      }
+    }
   }
 
-  randomPhotos(){
-    // const fileCache  = require('../../../cache/randomPhotos.json');
-    // this.images = fileCache;
+  randomPhotos() {
     this.configurationService.getApiEndpoint()
-    .then(endpoint => {
-      return this.graphQLService.getPhotosRandom(endpoint);
-    })
-    .then(res =>
-      this.images = res);
+      .then(endpoint => {
+        return this.graphQLService.getPhotosRandom(endpoint);
+      })
+      .then(res =>
+        this.images = res);
   }
 
   ngAfterContentInit() {
@@ -76,26 +87,25 @@ export class MainComponent implements OnInit, AfterContentInit {
         this.audit = res);
 
     this.configurationService.getApiEndpoint()
-        .then(endpoint => {
-          const res =  this.graphQLService.getTodaysEvents(endpoint);
-          console.log(JSON.stringify(res));
-          return res;
-        })
-        .then(res =>
-          this.events = res);
+      .then(endpoint => {
+        const res = this.graphQLService.getTodaysEvents(endpoint);
+        console.log(JSON.stringify(res));
+        return res;
+      })
+      .then(res =>
+        this.events = res);
   }
 
   search() {
-    let cachedItems = this.cacheService.getPersonListFromCache();
-   this.fillGrid(cachedItems.data);
+
     this.configurationService.getApiEndpoint()
       .then(endpoint => {
-        return this.graphQLService.getPersonList(endpoint, cachedItems.data.length, cachedItems.timestamp);
+        return this.graphQLService.getPersonList(endpoint, 0, new Date(2010,1,1).toISOString());
       })
       .then(res => {
 
         console.log(JSON.stringify(res));
-        if(!res.isUpToDate){
+        if (!res.isUpToDate) {
           this.logger.info('cache updated');
           this.fillGrid(res.users);
           this.logger.info('search refreshed');
@@ -107,11 +117,6 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    // if(window.screen.availWidth < 400 ){
-    //   this.displayedColumns = ['firstName', 'lastName', 'link'];
-    // } else{
-    //   this.displayedColumns = ['firstName', 'lastName', 'gender', 'year', 'link'];
-    // }
     this.displayedColumns = ['firstName', 'lastName', 'link', 'gender'];
   }
 
@@ -132,11 +137,4 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  sendMessage(txt: string) {
-    if (txt !== '') {
-      this.ioClient.emit('message', this.auth.getConnectedLogin() + ': ' + txt.replace('<', ''));
-      this.inputMessage = '';
-    }
-
-  }
 }

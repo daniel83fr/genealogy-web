@@ -8,6 +8,7 @@ import { AppServerModule } from './src/main.server';
 import { APP_BASE_HREF } from '@angular/common';
 import { existsSync } from 'fs';
 import 'localstorage-polyfill';
+import admin_task from './server_admin_task';
 
 require('dotenv').config();
 global['localStorage'] = localStorage;
@@ -38,6 +39,11 @@ export function app() {
         'VERSION': process.env.VERSION,
         'Path': process.cwd()
       });
+  });
+  
+  server.get('/refresh_cache', (req, res) => {
+    admin_task.GenerateCache(res);
+   
   });
 
   // Serve static files from /browser

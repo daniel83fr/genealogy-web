@@ -33,7 +33,8 @@ export class ClientCacheService {
     personListStorage = localStorage;
 
     isPersonListInCache(){
-      return this.personListStorage.getItem('PersonList') != null;
+      return false;
+      //return this.personListStorage.getItem('PersonList') != null;
     }
 
     clearPersonsList() {

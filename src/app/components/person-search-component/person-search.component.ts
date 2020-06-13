@@ -52,11 +52,11 @@ export class PersonSearchComponent implements OnInit, AfterContentInit {
   }
 
   getPersonList() {
-    let cachedItems = this.cacheService.getPersonListFromCache();
-    this.options = cachedItems.data;
+    // let cachedItems = this.cacheService.getPersonListFromCache();
+    // this.options = cachedItems.data;
     this.configurationService.getApiEndpoint()
       .then(endpoint => {
-        return this.graphQLService.getPersonList(endpoint, cachedItems.data.length, cachedItems.timestamp);
+        return this.graphQLService.getPersonList(endpoint, 0, new Date(2010,1,1).toISOString());
       })
       .then(res => {
 

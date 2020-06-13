@@ -93,9 +93,9 @@ query Register {
       variables: { cacheCount: itemCount, cacheDate: cacheDate }
     }).then(res => {
 
-      if (!res.data.data.isUpToDate) {
-        this.cacheService.personsList = this.cacheService.createCacheObject(res.data.data.users);
-      }
+      // if (!res.data.data.isUpToDate) {
+      //   this.cacheService.personsList = this.cacheService.createCacheObject(res.data.data.users);
+      // }
       return res.data.data;
     });
 
@@ -235,8 +235,8 @@ query Register {
     })
     .then(res=>{
       let profile = res.data.profile;
-      let cacheObject = this.cacheService.createCacheObject(profile);
-      localStorage.setItem("profile_"+ id, JSON.stringify( cacheObject));
+      // let cacheObject = this.cacheService.createCacheObject(profile);
+      // localStorage.setItem("profile_"+ id, JSON.stringify( cacheObject));
       return profile;
 
     });
