@@ -50,14 +50,14 @@ export class MainComponent implements OnInit, AfterContentInit {
     if (isPlatformServer(this.platformId)) {
 
       const fs = require('fs');
-      const cacheFile = path.join(__dirname, `../cache/personList.json`);
+      const cacheFile = path.join(__dirname, `../../../cache/personList.json`);
       if (fs.existsSync(cacheFile)) {
         const rawdata = fs.readFileSync(cacheFile);
         let data = JSON.parse(rawdata).data;
         this.fillGrid(data);
       }
 
-      const photosCacheFile = path.join(__dirname, `../cache/randomPhotos.json`);
+      const photosCacheFile = path.join(__dirname, `../../../cache/randomPhotos.json`);
       if (fs.existsSync(photosCacheFile)) {
         const rawdata = fs.readFileSync(photosCacheFile);
         let data = JSON.parse(rawdata);
