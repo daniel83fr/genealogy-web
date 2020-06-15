@@ -1,30 +1,37 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
 
-    <button mat-flat-button color="primary" routerLink="/">
-      <img width="40" alt="Angular Logo" src="../../../assets/img/logo.png" />
+    <button mat-flat-button color="primary" routerLink="/" aria-label="Home">
+
+      <picture   height="40" class="hidden-on-mobile">
+        <source srcset="../../assets/img/logo.webp" type="image/webp">
+        <source srcset="../../../assets/img/logo.png" type="image/png">
+        <img src="../../../assets/img/logo.png" alt="Logo" loading="lazy" height="40">
+      </picture>
+
+      
       <span class="hidden-on-mobile">www.res01.com</span>
     </button>
 
     <span style="flex: auto;"></span>
-    <button *ngIf="!isConnected()" mat-raised-button color="primary" routerLink="/login">Login</button>
+    <button *ngIf="!isConnected()" mat-raised-button color="primary" routerLink="/login" aria-label="Login">Login</button>
 
-    <button *ngIf="isConnected()" mat-icon-button aria-label="my profile" [matMenuTriggerFor]="menu">
+    <button *ngIf="isConnected()" mat-icon-button aria-label="my profile" [matMenuTriggerFor]="menu" aria-label="My profile">
       <mat-icon>person</mat-icon>
     </button>
     <mat-label *ngIf="isConnected()" style="font-size:10px">Connected as {{getConnectedLogin()}}</mat-label>
 
     <mat-menu  #menu="matMenu">
-      <button mat-menu-item (click)="getConnectedProfile()" >Profile</button>
-      <button mat-menu-item routerLink="/admin" >Admin</button>
-      <button mat-menu-item routerLink="/login" >Change credentials</button>
-      <button mat-menu-item (click)="logout()">Logout</button>
+      <button mat-menu-item (click)="getConnectedProfile()" aria-label="profile">Profile</button>
+      <button mat-menu-item routerLink="/admin" aria-label="admin" >Admin</button>
+      <button mat-menu-item routerLink="/login" aria-label="change credentials" >Change credentials</button>
+      <button mat-menu-item (click)="logout()" aria-label="logout">Logout</button>
     </mat-menu>
 
     <button mat-icon-button routerLink="/help">
       <mat-icon>help_outline</mat-icon>
     </button>
 
-    <button *ngIf="environnement!='production'" mat-raised-button color="warn">{{environnement}}</button>
+    <button *ngIf="environnement!='production'" mat-raised-button color="warn" aria-label="env">{{environnement}}</button>
   </mat-toolbar-row>
 </mat-toolbar>

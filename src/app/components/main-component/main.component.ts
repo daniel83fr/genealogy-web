@@ -49,6 +49,13 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle("Res01.com - Family Tree");
+    this.metaService.addTags([
+      { name: 'keywords', content: 'ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors, birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network, pedigree, progenitors, progeny, relations, relationship, relatives, siblings,' },
+      { name: 'description', content:  'Welcome to Family Tree - A simple website to view/edit family tree and share some photos.' },
+      { name: 'robots', content: 'index, follow' }
+    ]);
+
     if (isPlatformServer(this.platformId)) {
 
       const fs = require('fs');
@@ -65,13 +72,12 @@ export class MainComponent implements OnInit, AfterContentInit {
         let data = JSON.parse(rawdata);
         this.images = data;
       }
+  
 
      }
 
-    this.titleService.setTitle('Res01.com - Family Tree');
-    this.metaService.updateTag({ content: 'Welcome to Family Tree - A simple website to view/edit family tree and share some photos.' }, 'name="description"');
-    this.metaService.updateTag({ content: 'ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors, birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network, pedigree, progenitors, progeny, relations, relationship, relatives, siblings,' }, 'name="keywords"');
- 
+  
+  
   }
 
   randomPhotos() {

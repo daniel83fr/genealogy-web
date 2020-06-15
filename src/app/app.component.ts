@@ -11,17 +11,17 @@ import { Title, Meta } from '@angular/platform-browser';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Res01 - Family Tree';
+ // title = 'Res01 - Family Tree';
 
-  constructor(private titleService: Title, private metaService: Meta) {
-  }
+  // constructor(private titleService: Title, private metaService: Meta) {
+  // }
 
   ngOnInit() {
-    this.titleService.setTitle(this.title);
-    this.metaService.addTags([
-      { name: 'keywords', content: 'Res01, family tree, genealogy' },
-      { name: 'description', content: 'res01 - family tree' },
-      { name: 'robots', content: 'index, follow' }
-    ]);
+    // this.titleService.setTitle(this.title);
+    // this.metaService.addTags([
+    //   { name: 'keywords', content: 'Res01, family tree, genealogy' },
+    //   { name: 'description', content: 'res01 - family tree' },
+    //   { name: 'robots', content: 'index, follow' }
+    // ]);
   }
 }

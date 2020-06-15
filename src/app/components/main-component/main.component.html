@@ -2,7 +2,12 @@
 margin-left: 0px;
 margin-right: 0px;
 justify-content: center;" >
-  <img src="../../assets/img/main.jpg" loading="lazy" alt="Photo of Genealogy" height="200" class="hidden-on-mobile"
+<picture   height="200" class="hidden-on-mobile">
+  <source srcset="../../assets/img/main.webp" type="image/webp">
+  <source srcset="../../assets/img/main.jpg" type="image/jpeg">
+  <img src="../../assets/img/main.jpg" alt="Photo of Genealogy" loading="lazy" height="200">
+</picture>
+
   
   style="border-style: solid;  border-color: white;border-width: 1px;">
   <div style="font-size:50px;color:white;" class="hidden-on-desktop">Family Tree</div>
@@ -99,7 +104,7 @@ justify-content: center;" >
       <mat-card-title><h1>Random Photos</h1></mat-card-title>
     </mat-card-header>
      <mat-card-content >
-        <img loading="lazy" alt="Random images" *ngFor="let image of images" [src]="image.url" height="200" width="170" style="margin:5px"/>
+        <img loading="lazy" alt="Random images" *ngFor="let image of images" [src]="image.url" style="margin:5px"/>
       </mat-card-content>
     </mat-card>
 

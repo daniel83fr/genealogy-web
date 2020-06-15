@@ -138,16 +138,24 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
         this.data = JSON.parse(rawdata).data;
 
         this.id = this.data.currentPerson._id;
-        this.setTitle(this.data.currentPerson);
+ 
         this.setMeta(this.data);
+        const person = this.data.currentPerson;
+        this.titleService.setTitle(`${person.firstName} ${person.lastName}'s profile`);
+        this.metaService.addTags([
+          { name: 'keywords', content: `${person.firstName} ${person.lastName},${person.firstName},${person.lastName},profile` },
+          { name: 'description', content:  `${person.firstName} ${person.lastName}'s profile` },
+          { name: 'robots', content: 'index, follow' }
+        ]);
       }
       else {
 
         this.titleService.setTitle(`profile ${this.profile}`);
-        this.metaService.updateTag({ content: `profile ${this.profile}` }, 'name="description"');
-        this.metaService.updateTag({ content: `profile ${this.profile}` }, 'name="keywords"');
-
-
+        this.metaService.addTags([
+          { name: 'keywords', content: `profile ${this.profile}` },
+          { name: 'description', content:  `profile ${this.profile}` },
+          { name: 'robots', content: 'index, follow' }
+        ]);
       }
     }
   }
