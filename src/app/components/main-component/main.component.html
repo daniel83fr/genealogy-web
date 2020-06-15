@@ -13,7 +13,7 @@ justify-content: center;" >
 <mat-card style="width:400px;margin: 5px;">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Welcome to Family Tree</mat-card-title>
+    <mat-card-title><h1>Welcome to Family Tree</h1></mat-card-title>
   </mat-card-header>
   <mat-card-content>
 
@@ -39,7 +39,7 @@ justify-content: center;" >
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>people</mat-icon>
-      <mat-card-title>Search</mat-card-title>
+      <mat-card-title><h1>Search</h1></mat-card-title>
       <mat-card-subtitle>Find a person by name.</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -81,7 +81,7 @@ justify-content: center;" >
           <ng-container matColumnDef="link">
             <th mat-header-cell *matHeaderCellDef> Link </th>
             <td mat-cell *matCellDef="let element">
-               <a mat-button [routerLink]="'person/'+element.profileId" [title]="getTitle(element)" > view</a>
+               <a mat-button [routerLink]="'person/'+element.profileId" [title]="getTitle(element)" aria-label="view" > view</a>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -96,17 +96,17 @@ justify-content: center;" >
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>camera_alt</mat-icon>
-      <mat-card-title>Random Photos</mat-card-title>
+      <mat-card-title><h1>Random Photos</h1></mat-card-title>
     </mat-card-header>
      <mat-card-content >
-        <img loading="lazy"  *ngFor="let image of images" [src]="image.url" height="200" width="170" style="margin:5px"/>
+        <img loading="lazy" alt="Random images" *ngFor="let image of images" [src]="image.url" height="200" width="170" style="margin:5px"/>
       </mat-card-content>
     </mat-card>
 
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>calendar_today</mat-icon>
-      <mat-card-title>Events</mat-card-title>
+      <mat-card-title><h1>Events</h1></mat-card-title>
       <mat-card-subtitle>TODAY's events2</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -144,21 +144,13 @@ justify-content: center;" >
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>assignment</mat-icon>
-      <mat-card-title>Recent Activities</mat-card-title>
+      <mat-card-title><h1>Recent Activities</h1></mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div *ngFor="let auditEntry of audit">
         {{auditEntry.timestamp | date : 'short'}} - <b>{{auditEntry.user}}</b> {{auditEntry.action}} "{{auditEntry.id}}"
       </div>
   </mat-card-content>
-
-</mat-card>
-
-<mat-card style="width: 400px;margin: 5px;">
-  <mat-card-header>
-    <mat-icon>chat</mat-icon>
-    <mat-card-title>Messages</mat-card-title>
-  </mat-card-header>
 
 </mat-card>
 </div>

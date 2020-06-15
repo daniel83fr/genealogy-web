@@ -4,7 +4,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
-//import io from 'socket.io-client';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { Router } from '@angular/router';
 import { ClientCacheService } from 'src/app/_services/ClientCacheService';
@@ -12,6 +11,7 @@ import LoggerService from 'src/app/_services/logger_service';
 import { Inject } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import path from 'path';
+import { Title, Meta } from '@angular/platform-browser';
 
 
 @Component({
@@ -42,7 +42,9 @@ export class MainComponent implements OnInit, AfterContentInit {
     private graphQLService: GraphQLService,
     private router: Router,
     private auth: AuthenticationService,
-    private cacheService: ClientCacheService) {
+    private cacheService: ClientCacheService,
+    private titleService: Title,
+    private metaService: Meta) {
     this.date = Date();
   }
 
@@ -63,7 +65,13 @@ export class MainComponent implements OnInit, AfterContentInit {
         let data = JSON.parse(rawdata);
         this.images = data;
       }
-    }
+
+     }
+
+    this.titleService.setTitle('Res01.com - Family Tree');
+    this.metaService.updateTag({ content: 'Welcome to Family Tree - A simple website to view/edit family tree and share some photos.' }, 'name="description"');
+    this.metaService.updateTag({ content: 'ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors, birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network, pedigree, progenitors, progeny, relations, relationship, relatives, siblings,' }, 'name="keywords"');
+ 
   }
 
   randomPhotos() {

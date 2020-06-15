@@ -16,9 +16,18 @@ export class ConfigurationService {
     }
 
     getVersion(): Promise<string> {
-      return new Promise((resolve) => {
-        resolve('v0.1.7');
-      });
+      return new Promise((resolve, reject) => {
+        const url = window.location.origin + '/env';
+        fetch(url)
+            .then((resp) => resp.json())
+            .then(res => {
+                const version: string = res.VERSION;
+                resolve(version);
+                return version;
+            }).catch(err => {
+                reject(Error(err));
+            });
+    });
     }
 
     getApiEndpoint(): Promise<string> {
