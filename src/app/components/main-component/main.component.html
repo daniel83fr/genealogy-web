@@ -2,14 +2,13 @@
 margin-left: 0px;
 margin-right: 0px;
 justify-content: center;" >
-<picture   height="200" class="hidden-on-mobile">
+<picture   height="200" class="hidden-on-mobile" style="border-style: solid;  border-color: white;border-width: 1px;">
   <source srcset="../../assets/img/main.webp" type="image/webp">
   <source srcset="../../assets/img/main.jpg" type="image/jpeg">
   <img src="../../assets/img/main.jpg" alt="Photo of Genealogy" loading="lazy" height="200">
 </picture>
 
-  
-  style="border-style: solid;  border-color: white;border-width: 1px;">
+
   <div style="font-size:50px;color:white;" class="hidden-on-desktop">Family Tree</div>
 </mat-card>
 
@@ -94,7 +93,7 @@ justify-content: center;" >
 
 
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
     </mat-card-content>
   </mat-card>
 
