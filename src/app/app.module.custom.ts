@@ -13,9 +13,11 @@ import { LoginRegisterComponent } from './components/login-register-component/lo
 import { PhotoComponent } from './components/photo-component/photo.component';
 import { PersonProfileDetailComponent } from './components/person-profile-detail-component/person-profile-detail.component';
 import { PersonSearchComponent } from './components/person-search-component/person-search.component';
+import { ErrorComponent } from './components/error-component/error.component';
 
 export default [
     PersonComponentComponent,
+    ErrorComponent,
     MainComponent,
     AdminComponent,
     NavComponent,

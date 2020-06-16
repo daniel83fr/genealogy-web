@@ -6,6 +6,7 @@ import { AdminComponent } from './components/admin-component/admin.component';
 import { HelpComponent } from './components/help-component/help.component';
 
 import { LoginComponent } from './components/login-component/login.component';
+import { ErrorComponent } from './components/error-component/error.component';
 
 const routes: Routes = [
   {
@@ -21,7 +22,13 @@ const routes: Routes = [
     path: 'person/:profile',      component: PersonComponentComponent
   },
   {
-    path: '**',      component: MainComponent
+    path: '',      component: MainComponent
+  },
+  {
+    path: 'page-not-found',      component: ErrorComponent
+  },
+  {
+    path: '**', redirectTo: '/page-not-found'
   }
 ];
 
