@@ -51,11 +51,22 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle("Res01.com - Family Tree");
+    this.titleService.setTitle('Family Tree - Learn about your Genealogy - Res01.com');
     this.metaService.addTags([
       { name: 'keywords', content: 'ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors, birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network, pedigree, progenitors, progeny, relations, relationship, relatives, siblings,' },
-      { name: 'description', content:  'Welcome to Family Tree - A simple website to view/edit family tree and share some photos.' },
-      { name: 'robots', content: 'index, follow' }
+      { name: 'description', content:  'Want to know more about your ancestors, and relatives? Come view the family tree, special dates, share photos and keep in touch.' },
+      { name: 'robots', content: 'index, follow' },
+      { name: 'og:type', content:'website' },
+      { name: 'og:url', content:'https://www.res01.com/' },
+      { name: 'og:title',content:'Family Tree - Learn about your Genealogy - Res01.com' },
+      { name: 'og:description',content:'Want to know more about your ancestors, and relatives? Come view the family tree,  special dates, share photos and keep in touch.'},
+      { name: 'og:image', content:''},
+      { name: 'twitter:card', content:'summary_large_image'},
+      { name: 'twitter:url', content:'https://www.res01.com/'},
+      { name: 'twitter:title', content:'Family Tree - Learn about your Genealogy - Res01.com'},
+      { name: 'twitter:description', content:'Want to know more about your ancestors, and relatives? Come view the family tree,  special dates, share photos and keep in touch.'},
+      { name: 'twitter:image', content:''}
+
     ]);
 
     if (isPlatformServer(this.platformId)) {

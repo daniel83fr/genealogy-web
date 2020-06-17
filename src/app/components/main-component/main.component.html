@@ -43,7 +43,7 @@ justify-content: center;" >
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>people</mat-icon>
-      <mat-card-title><h1>Search</h1></mat-card-title>
+      <mat-card-title><h2>Search</h2></mat-card-title>
       <mat-card-subtitle>Find a person by name.</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -100,7 +100,7 @@ justify-content: center;" >
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>camera_alt</mat-icon>
-      <mat-card-title><h1>Random Photos</h1></mat-card-title>
+      <mat-card-title><h2>Random Photos</h2></mat-card-title>
     </mat-card-header>
      <mat-card-content >
         <img loading="lazy" alt="Random images" *ngFor="let image of images" [src]="image.url" style="margin:5px"/>
@@ -110,7 +110,7 @@ justify-content: center;" >
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>calendar_today</mat-icon>
-      <mat-card-title><h1>Events</h1></mat-card-title>
+      <mat-card-title><h2>Events</h2></mat-card-title>
       <mat-card-subtitle>TODAY's events2</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -148,7 +148,7 @@ justify-content: center;" >
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>assignment</mat-icon>
-      <mat-card-title><h1>Recent Activities</h1></mat-card-title>
+      <mat-card-title><h2>Recent Activities</h2></mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div *ngFor="let auditEntry of audit">
@@ -168,4 +168,24 @@ blood line, progeniture, clan, folk, group, house, household, people, tribe, anc
 birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network,
 pedigree, progenitors, progeny, relations, relationship, relatives, siblings,
 </div>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Res01",
+    "url": "https://www.res01.com",
+    "logo": "https://www.res01.com/assets/img/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "",
+      "contactType": ""
+    },
+    "sameAs": [
+      "https://github.com/daniel83fr/genealogy-web",
+      "https://twitter.com/res01com"
+    ]
+  }
+  </script>
+
 <br>
