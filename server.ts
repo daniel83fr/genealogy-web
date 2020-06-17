@@ -9,6 +9,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { existsSync } from 'fs';
 import 'localstorage-polyfill';
 import admin_task from './server_admin_task';
+import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
 
 require('dotenv').config();
 global['localStorage'] = localStorage;
@@ -53,7 +54,20 @@ export function app() {
 
   // All regular routes use the Universal engine
   server.get('*', (req, res) => {
-    res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
+    res.render(indexHtml, {
+      req,
+      res,
+      providers: [
+        {
+          provide: REQUEST, useValue: (req)
+      },
+      {
+          provide: RESPONSE, useValue: (res)
+      },
+        {
+          provide: APP_BASE_HREF,
+          useValue: req.baseUrl
+        }] });
   });
 
   return server;
