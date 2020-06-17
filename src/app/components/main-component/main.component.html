@@ -1,116 +1,157 @@
 <mat-card class="splashContent" style="width: auto;
 margin-left: 0px;
 margin-right: 0px;
-justify-content: center;" >
-<picture   height="200" class="hidden-on-mobile" style="border-style: solid;  border-color: white;border-width: 1px;">
-  <source srcset="../../assets/img/main.webp" type="image/webp">
-  <source srcset="../../assets/img/main.jpg" type="image/jpeg">
-  <img src="../../assets/img/main.jpg" alt="Photo of Genealogy" loading="lazy" height="200">
-</picture>
+justify-content: center;">
+  <picture height="200" class="hidden-on-mobile" style="border-style: solid;  border-color: white;border-width: 1px;">
+    <source srcset="../../assets/img/main.webp" type="image/webp">
+    <source srcset="../../assets/img/main.jpg" type="image/jpeg">
+    <img src="../../assets/img/main.jpg" alt="Photo of Genealogy" loading="lazy" height="200">
+  </picture>
 
 
   <div style="font-size:50px;color:white;" class="hidden-on-desktop">Family Tree</div>
 </mat-card>
 
-<div class="main-div" style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center; ">
+<div class="main-div"
+  style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center; ">
 
-<mat-card style="width:400px;margin: 5px;">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title><h1>Welcome to Family Tree</h1></mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
+  <mat-card style="width:400px;margin: 5px;">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>
+        <h1>Welcome to Family Tree</h1>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
 
-    A simple website to view/edit family tree 
-    and share some photos.
-    <br>
-    <br>
-    <b>Features:</b>
-    <ul >
-      
-      <li>Family Tree</li>
-      <li>Photos</li>
-      <li>Chat</li>
-      <li>... And more</li>
-    </ul>
-  <br>
-    Note: It's a first version of the site,<br>
-    Improvements will come little by little.<br>
-    Feel free to add content and raise any bugs.
-  </mat-card-content>
-</mat-card>
+      <p>The family beeing splitted across the world, it is not easy to keep in touch
+        with relatives. Of course we usually know our close family, some of our direct cousins,
+        but that's about it. When it comes to second cousins, we marely know how we are related.</p>
+
+      <h3>Purpose</h3>
+      <p>The purpose of this website is to learn about our genealogy. The aim is to collaborate,
+        to build the family tree so it can be usefull for the next generation.</p>
+
+      <h3>Solution</h3>
+      <p>I tried some tools available on the market to build family trees, but didn't find anything
+        that fits what I was expecting. Something easy to use and accessible to everyone.</p>
+
+      <h3>Features</h3>
+      <p>- Family Tree and user information
+        - Photos
+
+        In the future, it would be interesting to have some features like messaging,
+        contact infos, birthday reminders, GEDCOM generation ...</p>
+
+      <h3>Keywords</h3>
+      <p>ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage blood line, progeniture,
+        clan, folk, group, house, household, people, tribe, ancestors, birth, children, descendants, descent, dynasty,,
+        generations, in-laws, network, pedigree, progenitors, progeny, relations, relationship,
+        relatives, siblings</p>
+
+      <h3>Data privacy</h3>
+      <p>For the moment, all information are public. Except dates, places and contact infos, that are
+        only availble to connected users.
+        All information you consider sensitive, should not be added. Please also avoid put photos
+        unless authorized by concerned persons.</p>
+
+      <h3>Note</h3>
+      <p>This is a first version of the  website, and it will be improved over time.
+        If you have any comment, suggestions or issues, feel free to contact me.
+
+        Interested in helping?  
+        You can create an account,  and start adding content.
+
+        Any help adding content is welcome. Everyone can collaborate after creating a account.
+        For people with technical background, you can also help improve the website.
+
+        Daniel
+      </p>
+
+
+
+
+
+
+    </mat-card-content>
+  </mat-card>
 
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>people</mat-icon>
-      <mat-card-title><h2>Search</h2></mat-card-title>
+      <mat-card-title>
+        <h2>Search</h2>
+      </mat-card-title>
       <mat-card-subtitle>Find a person by name.</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
 
-        <mat-form-field>
-          <mat-label>Filter</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Daniel">
-        </mat-form-field>
-        <!-- class="mat-elevation-z8"  -->
-        <table style="display:block;"
-        
-  
-        mat-table matSort [dataSource]="dataSource" matSortActive="FirstName" matSortDirection="asc">
+      <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Daniel">
+      </mat-form-field>
+      <!-- class="mat-elevation-z8"  -->
+      <table style="display:block;" mat-table matSort [dataSource]="dataSource" matSortActive="FirstName"
+        matSortDirection="asc">
 
-          <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> FirstName </th>
-            <td mat-cell *matCellDef="let element" > {{element.firstName}} </td>
-          </ng-container>
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> FirstName </th>
+          <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+        </ng-container>
 
-          <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> LastName </th>
-            <td mat-cell *matCellDef="let element"  [innerHTML]="element.lastName 
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> LastName </th>
+          <td mat-cell *matCellDef="let element" [innerHTML]="element.lastName 
             + (element.maidenName == '' ? '':' (')
             + element.maidenName 
             + (element.maidenName == '' ? '':')')
             "></td>
-          </ng-container>
+        </ng-container>
 
-          <ng-container matColumnDef="gender" style="display:none;">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header style="visibility:hidden;"> Gender </th>
-            <td mat-cell *matCellDef="let element" style="visibility:hidden;"> {{element.gender}} </td>
-          </ng-container> 
+        <ng-container matColumnDef="gender" style="display:none;">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="visibility:hidden;"> Gender </th>
+          <td mat-cell *matCellDef="let element" style="visibility:hidden;"> {{element.gender}} </td>
+        </ng-container>
 
-          <ng-container matColumnDef="year">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Year </th>
-            <td mat-cell *matCellDef="let element"> {{element.yearOfBirth}} - {{element.yearOfDeath}}</td>
-          </ng-container>
+        <ng-container matColumnDef="year">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Year </th>
+          <td mat-cell *matCellDef="let element"> {{element.yearOfBirth}} - {{element.yearOfDeath}}</td>
+        </ng-container>
 
-          <ng-container matColumnDef="link">
-            <th mat-header-cell *matHeaderCellDef> Link </th>
-            <td mat-cell *matCellDef="let element">
-               <a mat-button [routerLink]="'person/'+element.profileId" [title]="getTitle(element)" aria-label="view" > view</a>
-          </ng-container>
+        <ng-container matColumnDef="link">
+          <th mat-header-cell *matHeaderCellDef> Link </th>
+          <td mat-cell *matCellDef="let element">
+            <a mat-button [routerLink]="'person/'+element.profileId" [title]="getTitle(element)" aria-label="view">
+              view</a>
+        </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
 
-        </table>
-        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
     </mat-card-content>
   </mat-card>
 
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>camera_alt</mat-icon>
-      <mat-card-title><h2>Random Photos</h2></mat-card-title>
+      <mat-card-title>
+        <h2>Random Photos</h2>
+      </mat-card-title>
     </mat-card-header>
-     <mat-card-content >
-        <img loading="lazy" alt="Random images" *ngFor="let image of images" [src]="image.url" style="margin:5px"/>
-      </mat-card-content>
-    </mat-card>
+    <mat-card-content>
+      <img loading="lazy" alt="Random images" *ngFor="let image of images" [src]="image.url" style="margin:5px" />
+    </mat-card-content>
+  </mat-card>
 
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>calendar_today</mat-icon>
-      <mat-card-title><h2>Events</h2></mat-card-title>
+      <mat-card-title>
+        <h2>Events</h2>
+      </mat-card-title>
       <mat-card-subtitle>TODAY's events2</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -137,9 +178,9 @@ justify-content: center;" >
         {{b.firstName}} {{b.lastName}}
       </div>
 
-     
 
-  
+
+
 
     </mat-card-content>
 
@@ -148,25 +189,27 @@ justify-content: center;" >
   <mat-card style="width: 400px;margin: 5px;">
     <mat-card-header>
       <mat-icon>assignment</mat-icon>
-      <mat-card-title><h2>Recent Activities</h2></mat-card-title>
+      <mat-card-title>
+        <h2>Recent Activities</h2>
+      </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div *ngFor="let auditEntry of audit">
         {{auditEntry.timestamp | date : 'short'}} - <b>{{auditEntry.user}}</b> {{auditEntry.action}} "{{auditEntry.id}}"
       </div>
-  </mat-card-content>
+    </mat-card-content>
 
-</mat-card>
+  </mat-card>
 </div>
 
 <br>
 
 <div style="color: grey;">
   Keywords:
-ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage
-blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors, 
-birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network,
-pedigree, progenitors, progeny, relations, relationship, relatives, siblings,
+  ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage
+  blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors,
+  birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network,
+  pedigree, progenitors, progeny, relations, relationship, relatives, siblings,
 </div>
 
 <script type="application/ld+json">
