@@ -3,19 +3,23 @@
     <mat-icon>edit</mat-icon>
 </button>
 <div style="display: flex; flex-direction: column;width:350px;padding:16px;">
-    <div style="font-size: larger;">{{getDisplayName(data)}}</div>
-    <div style="color: gray;">Profile: {{data?.profileId}}</div>
-    <div *ngIf="data?.profileId != data?._id" style="color: gray;">Id: {{data?._id}}</div>
+    <div style="font-size: larger;">{{getDisplayName(data?.currentPerson)}}</div>
+    <div style="color: gray;">Profile: {{data?.currentPerson?.profileId}}</div>
+    <div *ngIf="data?.currentPerson?.profileId != data?.currentPerson?._id" style="color: gray;">Id: {{data?.currentPerson?._id}}</div>
     <div style="display: flex;
     justify-content: center;
     align-items: center;" ><img [src]="image" width="300" loading="lazy"/></div>
 </div>
 
-<span *ngIf="!editable && data && data.profileId == data._id">
-  <app-login-register [id]="data._id"></app-login-register>
+<p>
+  {{ getBiography(data)}}
+</p>
+
+<span *ngIf="!editable && data && data.currentPerson.profileId == data.currentPerson._id">
+  <app-login-register [id]="data?.currentPerson?._id"></app-login-register>
 </span>
 
-<div *ngIf="getConnectedLogin() == data.profileId">
+<div *ngIf="getConnectedLogin() == data?.currentPerson?.profileId">
   Unclaim profile : Todo<br>
   change login: Todo<br>
   Change password: Todo

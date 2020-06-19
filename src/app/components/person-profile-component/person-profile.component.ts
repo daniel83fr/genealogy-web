@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { NotificationService } from 'src/app/_services/NotificationService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
+import { BiographyService } from 'src/app/_services/BiographyService';
 
 @Component({
   selector: 'app-person-profile',
@@ -19,6 +20,7 @@ export class PersonProfileComponent implements OnInit {
     private fb: FormBuilder,
     private notif: NotificationService,
     public auth: AuthenticationService,
+    public biographyService: BiographyService
   ) {
     this.personEditForm = this.fb.group({
       id: '',
@@ -59,7 +61,7 @@ export class PersonProfileComponent implements OnInit {
         this.image =  data.url;
         return;
       }
-      if (this.data?.gender == 'Female') {
+      if (this.data?.currentPerson?.gender == 'Female') {
         this.image =  '../../../assets/img/profile_female.jpg';
       } else {
         this.image = '../../../assets/img/profile_male.jpg';
@@ -89,6 +91,13 @@ export class PersonProfileComponent implements OnInit {
 
   }
 
+  getBiography(data: any){
+    return this.biographyService.Generate(data);
+    // const currentPerson = data.currentPerson;
+    // if(data.father != null )
+
+    // return `${data.currentPerson.gender == 'Male' ? 'Son': 'Daughter'} of ${data.father.firstName} and ${data.mother.firstName}`;
+  }
 
   getDisplayName(person: any) {
     let maidenName = person?.maidenName;

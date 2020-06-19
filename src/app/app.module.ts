@@ -18,7 +18,7 @@ import { BottomSheetOverviewExampleSheet } from './components/share-component/sh
 
   imports: [
     ...materialModules,
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserModule,
     AppRoutingModule,
     NoopAnimationsModule,
     HttpClientModule,

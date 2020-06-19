@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, OnChanges, Input, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, AfterContentInit, OnChanges, Input, PLATFORM_ID, APP_ID } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap, NavigationEnd, NavigationStart, ActivationEnd, ActivationStart } from '@angular/router';
 import * as d3 from 'd3';
 
@@ -6,11 +6,12 @@ import { TreeDraw } from '../../treeDraw';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
-import { Title, Meta } from '@angular/platform-browser';
+import { Title, Meta, TransferState, makeStateKey } from '@angular/platform-browser';
 import { Inject } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import * as path from 'path';
 
+const STATE_KEY_ITEMS = makeStateKey('items');
 
 @Component({
   selector: 'app-person-component',
@@ -19,15 +20,11 @@ import * as path from 'path';
 })
 
 export class PersonComponentComponent implements OnInit, AfterContentInit, OnChanges {
-  privateData: any;
-  photos: any[];
-
-  refreshing = false;
-
-  profile;
 
   constructor(
+    private state: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     public rest: ConfigurationService,
     private route: ActivatedRoute,
     private router: Router,
@@ -44,9 +41,16 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
 
     this.ngOnChanges();
   }
+  privateData: any;
+  photos: any[];
+
+  refreshing = false;
+
+  profile;
 
   id: any = undefined;
   data: any = {};
+  
 
   isConnected() {
     return this.auth.isConnected();
@@ -61,18 +65,19 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
 
   getProfileById(id: string) {
 
-    let cache = localStorage.getItem('profile_' + id);
-    let cacheData
-    if (cache != null) {
-      cacheData = JSON.parse(cache);
-      this.id = cacheData.data.currentPerson._id;
-      this.setTitle(cacheData.data.currentPerson);
-      this.data = cacheData.data;
+    let cacheData:any = this.state.get(STATE_KEY_ITEMS, {});
+   // let cache = localStorage.getItem('profile_' + id);
+  //  let cacheData
+    if (cacheData != null) {
+     // cacheData = JSON.parse(cache);
+      this.id = cacheData?.currentPerson?._id;
+      this.setTitle(cacheData?.currentPerson);
+      this.data = cacheData;
       const svg = d3.select('.familyTree');
-      new TreeDraw().draw(svg, cacheData.data);
+      new TreeDraw().draw(svg, cacheData);
 
     }
-    if (cacheData == undefined || cacheData.timestamp < new Date(new Date().getTime() - 10 * 60000).toJSON()) {
+    // if (cacheData == undefined || cacheData.timestamp < new Date(new Date().getTime() - 10 * 60000).toJSON()) {
       this.rest.getApiEndpoint()
         .then(endpoint => {
           return this.api.getProfile(endpoint, id);
@@ -85,7 +90,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
           const svg = d3.select('.familyTree');
           new TreeDraw().draw(svg, data);
         });
-    }
+    // }
 
 
   }
@@ -126,7 +131,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
   }
 
   ngOnInit() {
-
+    
     if (isPlatformServer(this.platformId)) {
 
       this.profile = this.route.snapshot.paramMap.get('profile');
@@ -136,7 +141,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       if (fs.existsSync(cacheFile)) {
         const rawdata = fs.readFileSync(cacheFile);
         this.data = JSON.parse(rawdata).data;
-
+        this.state.set(STATE_KEY_ITEMS, this.data);
         this.id = this.data.currentPerson._id;
  
         this.setMeta(this.data);
