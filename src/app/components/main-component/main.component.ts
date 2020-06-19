@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterContentInit, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit, PLATFORM_ID, APP_ID } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,10 +11,9 @@ import LoggerService from 'src/app/_services/logger_service';
 import { Inject } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import path from 'path';
-import { Title, Meta } from '@angular/platform-browser';
+import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 
-
-
+const STATE_KEY_ENDPOINT = makeStateKey('endpoint');
 
 @Component({
   selector: 'app-main',
@@ -39,7 +38,9 @@ export class MainComponent implements OnInit, AfterContentInit {
   messages = '';
 
   constructor(
+    private state: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private configurationService: ConfigurationService,
     private graphQLService: GraphQLService,
     private router: Router,
@@ -54,22 +55,23 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.titleService.setTitle('Family Tree - Learn about your Genealogy - Res01.com');
     this.metaService.addTags([
       { name: 'keywords', content: 'ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors, birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network, pedigree, progenitors, progeny, relations, relationship, relatives, siblings,' },
-      { name: 'description', content:  'Want to know more about your ancestors, and relatives? Come view the family tree, special dates, share photos and keep in touch.' },
+      { name: 'description', content: 'Want to know more about your ancestors, and relatives? Come view the family tree, special dates, share photos and keep in touch.' },
       { name: 'robots', content: 'index, follow' },
-      { name: 'og:type', content:'website' },
-      { name: 'og:url', content:'https://www.res01.com/' },
-      { name: 'og:title',content:'Family Tree - Learn about your Genealogy - Res01.com' },
-      { name: 'og:description',content:'Want to know more about your ancestors, and relatives? Come view the family tree,  special dates, share photos and keep in touch.'},
-      { name: 'og:image', content:''},
-      { name: 'twitter:card', content:'summary_large_image'},
-      { name: 'twitter:url', content:'https://www.res01.com/'},
-      { name: 'twitter:title', content:'Family Tree - Learn about your Genealogy - Res01.com'},
-      { name: 'twitter:description', content:'Want to know more about your ancestors, and relatives? Come view the family tree,  special dates, share photos and keep in touch.'},
-      { name: 'twitter:image', content:''}
+      { name: 'og:type', content: 'website' },
+      { name: 'og:url', content: 'https://www.res01.com/' },
+      { name: 'og:title', content: 'Family Tree - Learn about your Genealogy - Res01.com' },
+      { name: 'og:description', content: 'Want to know more about your ancestors, and relatives? Come view the family tree,  special dates, share photos and keep in touch.' },
+      { name: 'og:image', content: '' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:url', content: 'https://www.res01.com/' },
+      { name: 'twitter:title', content: 'Family Tree - Learn about your Genealogy - Res01.com' },
+      { name: 'twitter:description', content: 'Want to know more about your ancestors, and relatives? Come view the family tree,  special dates, share photos and keep in touch.' },
+      { name: 'twitter:image', content: '' }
 
     ]);
 
     if (isPlatformServer(this.platformId)) {
+      this.state.set(STATE_KEY_ENDPOINT, process.env.GENEALOGY_API);
 
       const fs = require('fs');
       const cacheFile = path.join(__dirname, `../../../cache/personList.json`);
@@ -85,19 +87,12 @@ export class MainComponent implements OnInit, AfterContentInit {
         let data = JSON.parse(rawdata);
         this.images = data;
       }
-  
-
-     }
-
-  
-  
+    }
   }
 
   randomPhotos() {
-    this.configurationService.getApiEndpoint()
-      .then(endpoint => {
-        return this.graphQLService.getPhotosRandom(endpoint);
-      })
+    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+    this.graphQLService.getPhotosRandom(endpoint)
       .then(res =>
         this.images = res);
   }
@@ -106,29 +101,19 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.search();
     this.randomPhotos();
 
-    this.configurationService.getApiEndpoint()
-      .then(endpoint => {
-        return this.graphQLService.getAuditLastEntries(endpoint);
-      })
+    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+    this.graphQLService.getAuditLastEntries(endpoint)
       .then(res =>
         this.audit = res);
 
-    this.configurationService.getApiEndpoint()
-      .then(endpoint => {
-        const res = this.graphQLService.getTodaysEvents(endpoint);
-        console.log(JSON.stringify(res));
-        return res;
-      })
+    this.graphQLService.getTodaysEvents(endpoint)
       .then(res =>
         this.events = res);
   }
 
   search() {
-
-    this.configurationService.getApiEndpoint()
-      .then(endpoint => {
-        return this.graphQLService.getPersonList(endpoint, 0, new Date(2010,1,1).toISOString());
-      })
+    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+    this.graphQLService.getPersonList(endpoint, 0, new Date(2010, 1, 1).toISOString())
       .then(res => {
 
         console.log(JSON.stringify(res));

@@ -12,6 +12,7 @@ import { isPlatformServer } from '@angular/common';
 import * as path from 'path';
 
 const STATE_KEY_ITEMS = makeStateKey('items');
+const STATE_KEY_ENDPOINT = makeStateKey('endpoint');
 
 @Component({
   selector: 'app-person-component',
@@ -41,59 +42,48 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
 
     this.ngOnChanges();
   }
+
   privateData: any;
   photos: any[];
-
   refreshing = false;
-
   profile;
-
   id: any = undefined;
   data: any = {};
-  
 
   isConnected() {
     return this.auth.isConnected();
   }
 
   getProfileId(profileId: string) {
-    return this.rest.getApiEndpoint()
-      .then(endpoint => {
-        return this.api.getProfileId(endpoint, profileId);
-      });
+    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+    return this.api.getProfileId(endpoint, profileId);
   }
 
   getProfileById(id: string) {
 
-    let cacheData:any = this.state.get(STATE_KEY_ITEMS, {});
-   // let cache = localStorage.getItem('profile_' + id);
-  //  let cacheData
+    let cacheData: any = this.state.get(STATE_KEY_ITEMS, {});
+    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+    console.log(endpoint);
     if (cacheData != null) {
-     // cacheData = JSON.parse(cache);
       this.id = cacheData?.currentPerson?._id;
       this.setTitle(cacheData?.currentPerson);
       this.data = cacheData;
       const svg = d3.select('.familyTree');
       new TreeDraw().draw(svg, cacheData);
-
     }
-    // if (cacheData == undefined || cacheData.timestamp < new Date(new Date().getTime() - 10 * 60000).toJSON()) {
-      this.rest.getApiEndpoint()
-        .then(endpoint => {
-          return this.api.getProfile(endpoint, id);
-        })
-        .then(data => {
-          this.id = data.currentPerson._id;
-          this.setTitle(data.currentPerson);
-          this.setMeta(data);
-          this.data = data;
-          const svg = d3.select('.familyTree');
-          new TreeDraw().draw(svg, data);
-        });
-    // }
 
+    this.api.getProfile(endpoint, id)
+      .then(data => {
+        this.id = data.currentPerson._id;
+        this.setTitle(data.currentPerson);
+        this.setMeta(data);
+        this.data = data;
+        const svg = d3.select('.familyTree');
+        new TreeDraw().draw(svg, data);
+      });
 
   }
+
   setTitle(person: any) {
     this.titleService.setTitle(`${person.firstName} ${person.lastName}'s profile`);
   }
@@ -104,10 +94,9 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     this.metaService.updateTag({ content: `${person.firstName}, ${person.lastName}, profile` }, 'name="keywords"');
   }
   getProfilePrivateById(id: string) {
-    this.rest.getApiEndpoint()
-      .then(endpoint => {
-        return this.api.getPrivateInfo(endpoint, id);
-      })
+    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+
+    this.api.getPrivateInfo(endpoint, id)
       .then(data => {
         this.privateData = data;
       });
@@ -131,11 +120,13 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
   }
 
   ngOnInit() {
-    
+
     if (isPlatformServer(this.platformId)) {
 
       this.profile = this.route.snapshot.paramMap.get('profile');
       const fs = require('fs');
+
+      this.state.set(STATE_KEY_ENDPOINT, process.env.GENEALOGY_API);
 
       const cacheFile = path.join(__dirname, `../../../cache/profile_${this.profile}.json`);
       if (fs.existsSync(cacheFile)) {
@@ -143,13 +134,13 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
         this.data = JSON.parse(rawdata).data;
         this.state.set(STATE_KEY_ITEMS, this.data);
         this.id = this.data.currentPerson._id;
- 
+
         this.setMeta(this.data);
         const person = this.data.currentPerson;
         this.titleService.setTitle(`${person.firstName} ${person.lastName}'s profile`);
         this.metaService.addTags([
           { name: 'keywords', content: `${person.firstName} ${person.lastName},${person.firstName},${person.lastName},profile` },
-          { name: 'description', content:  `${person.firstName} ${person.lastName}'s profile` },
+          { name: 'description', content: `${person.firstName} ${person.lastName}'s profile` },
           { name: 'robots', content: 'index, follow' }
         ]);
       }
@@ -158,7 +149,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
         this.titleService.setTitle(`profile ${this.profile}`);
         this.metaService.addTags([
           { name: 'keywords', content: `profile ${this.profile}` },
-          { name: 'description', content:  `profile ${this.profile}` },
+          { name: 'description', content: `profile ${this.profile}` },
           { name: 'robots', content: 'index, follow' }
         ]);
       }

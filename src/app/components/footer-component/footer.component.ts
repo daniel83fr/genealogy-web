@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, APP_ID } from '@angular/core';
 import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { isPlatformServer } from '@angular/common';
+
+const STATE_KEY_VERSION = makeStateKey('version');
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-
 
 export class FooterComponent implements OnInit {
 
@@ -16,23 +19,12 @@ export class FooterComponent implements OnInit {
   version: string;
 
   constructor(
-    private configurationService: ConfigurationService,
+    private state: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private auth: AuthenticationService) {
-
-    this.configurationService.getEnvironnement()
-      .then(env => {
-        this.environnement = env;
-      });
-
-    this.configurationService.getApiEndpoint()
-      .then(endpoint => {
-        this.endpoint = endpoint;
-      });
-
-    this.configurationService.getVersion()
-      .then(version => {
-        this.version = version;
-      });
+    
+    this.version = this.state.get(STATE_KEY_VERSION, '');
   }
 
   isConnected() {
@@ -49,6 +41,9 @@ export class FooterComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if (isPlatformServer(this.platformId)) {
+      this.state.set(STATE_KEY_VERSION, process.env.VERSION);
+    }
   }
 
   ngAfterContentInit() {
