@@ -93,10 +93,6 @@ export class PersonProfileComponent implements OnInit {
 
   getBiography(data: any){
     return this.biographyService.Generate(data);
-    // const currentPerson = data.currentPerson;
-    // if(data.father != null )
-
-    // return `${data.currentPerson.gender == 'Male' ? 'Son': 'Daughter'} of ${data.father.firstName} and ${data.mother.firstName}`;
   }
 
   getDisplayName(person: any) {

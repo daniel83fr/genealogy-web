@@ -121,7 +121,7 @@ justify-content: center;">
         <ng-container matColumnDef="link">
           <th mat-header-cell *matHeaderCellDef> Link </th>
           <td mat-cell *matCellDef="let element">
-            <a mat-button [routerLink]="'person/'+element.profileId" [title]="getTitle(element)" aria-label="view">
+            <a mat-button [href]="'person/'+element.profileId" [title]="getTitle(element)" aria-label="view">
               view</a>
         </ng-container>
 
@@ -142,7 +142,10 @@ justify-content: center;">
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <img loading="lazy" alt="Random images" *ngFor="let image of images" [src]="image.url" style="margin:5px" />
+      <a [href]="'person/'+image.persons[0].profileId" *ngFor="let image of images">
+        <img loading="lazy" [alt]="image.persons[0].firstName"  [src]="image.url" style="margin:5px" />
+      </a>
+      
     </mat-card-content>
   </mat-card>
 

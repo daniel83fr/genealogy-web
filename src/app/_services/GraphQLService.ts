@@ -202,6 +202,24 @@ query Register {
           }
           children{
             ...PersonInfo
+          },
+          grandParents{
+            ...PersonInfo
+          }
+          grandChildren{
+            ...PersonInfo
+          }
+          grandGrandChildren{
+            ...PersonInfo
+          }
+          piblings{
+            ...PersonInfo
+          }
+          niblings{
+            ...PersonInfo
+          }
+          cousins{
+            ...PersonInfo
           }
           photos{
             url
@@ -439,6 +457,11 @@ query Register {
         photos: getPhotosRandom(number: 5) {
           url
           _id
+          persons {
+            profileId
+            firstName
+            lastName
+          }
         }
       }`
     }).then(res => {
