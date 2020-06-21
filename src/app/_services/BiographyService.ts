@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+const numberToText = require('number-to-text')
+require('number-to-text/converters/en-us'); 
+ 
+
 
 @Injectable({
   providedIn: 'root',
@@ -64,7 +68,11 @@ export class BiographyService {
     const currentPerson = data.currentPerson;
     const siblings: any[] = data.siblings;
     if( siblings != null && siblings.length > 0) {
-      res.push(`${heShe} has ${siblings.length} siblings. `);
+      res.push(`${heShe} has ${numberToText.convertToText(siblings.length, {case:"lowerCase"}) } sibling`);
+      if(siblings.length > 1){
+        res.push('s');
+      }
+      res.push('. ');
 
       siblings.forEach((element, index) => {
         res.push(element.firstName + ' (' + element.yearOfBirth + ')' );
@@ -115,7 +123,11 @@ export class BiographyService {
     const currentPerson = data.currentPerson;
     const children: any[] = data.children;
     if( children != null && children.length > 0) {
-      res.push(`${heShe} has ${children.length} children. `);
+      res.push(`${heShe} has ${numberToText.convertToText(children.length, {case:"lowerCase"}) } child`);
+      if(children.length > 1){
+        res.push('ren');
+      }
+      res.push('. ');
 
       children.forEach((element, index) => {
         res.push(element.firstName + ' (' + element.yearOfBirth + ')' );
@@ -140,7 +152,11 @@ export class BiographyService {
     const currentPerson = data.currentPerson;
     const children: any[] = data.grandChildren;
     if( children != null && children.length > 0) {
-      res.push(`${heShe} has ${children.length} grand children. `);
+      res.push(`${heShe} has ${numberToText.convertToText(children.length, {case:"lowerCase"}) } grand child`);
+      if(children.length > 1){
+        res.push('ren');
+      }
+      res.push('. ');
 
       children.forEach((element, index) => {
         res.push(element.firstName + ' (' + element.yearOfBirth + ')' );
@@ -165,7 +181,11 @@ export class BiographyService {
     const currentPerson = data.currentPerson;
     const children: any[] = data.grandGrandChildren;
     if( children != null && children.length > 0) {
-      res.push(`${heShe} has ${children.length} grand grand children. `);
+      res.push(`${heShe} has ${numberToText.convertToText(children.length, {case:"lowerCase"}) } grand grand child`);
+      if(children.length > 1){
+        res.push('ren');
+      }
+      res.push('. ');
 
       children.forEach((element, index) => {
         res.push(element.firstName + ' (' + element.yearOfBirth + ')' );
@@ -191,7 +211,12 @@ export class BiographyService {
     const currentPerson = data.currentPerson;
     const cousins: any[] = data.cousins;
     if( cousins != null && cousins.length > 0) {
-      res.push(`${heShe} has ${cousins.length} cousins. `);
+      res.push(`${heShe} has ${numberToText.convertToText(cousins.length, {case:"lowerCase"}) } cousin`);
+      if(cousins.length > 1){
+        res.push('s');
+      }
+      res.push('. ');
+
 
       cousins.forEach((element, index) => {
         res.push(element.firstName + ' ' + element.lastName + ' (' + element.yearOfBirth + ')' );
@@ -217,7 +242,7 @@ export class BiographyService {
     const currentPerson = data.currentPerson;
     const niblings: any[] = data.niblings;
     if( niblings != null && niblings.length > 0) {
-      res.push(`${heShe} has ${niblings.length} nephews/nices. `);
+      res.push(`${heShe} has ${numberToText.convertToText(niblings.length, {case:"lowerCase"}) } nephews/nices. `);
 
       niblings.forEach((element, index) => {
         res.push(element.firstName + ' ' + element.lastName + ' (' + element.yearOfBirth + ')' );
@@ -242,7 +267,7 @@ export class BiographyService {
     const currentPerson = data.currentPerson;
     const piblings: any[] = data.piblings;
     if( piblings != null && piblings.length > 0) {
-      res.push(`${heShe} has ${piblings.length} uncles/aunts. `);
+      res.push(`${heShe} has ${numberToText.convertToText(piblings.length, {case:"lowerCase"}) } uncles/aunts. `);
 
       piblings.forEach((element, index) => {
         res.push(element.firstName + ' ' + element.lastName );

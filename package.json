@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "postinstall": "ng build --prod && ng run frontEnd:server:production",
+    "postinstall2": "ng build && ng run frontEnd:server",
     "start": "node server.js",
     "devBuild": "ng build --watch",
     "dev": "npm-run-all -p devBuild start",
@@ -47,6 +48,7 @@
     "localstorage-polyfill": "^1.0.1",
     "ngx-socket-io": "^3.0.1",
     "npm-run-all": "^4.1.5",
+    "number-to-text": "^0.3.8",
     "rxjs": "~6.5.4",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",

@@ -64,7 +64,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     let cacheData: any = this.state.get(STATE_KEY_ITEMS, {});
     let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
     console.log(endpoint);
-    if (cacheData != null) {
+    if (cacheData?.currentPerson != null) {
       this.id = cacheData?.currentPerson?._id;
       this.setTitle(cacheData?.currentPerson);
       this.data = cacheData;
