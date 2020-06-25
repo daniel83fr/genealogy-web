@@ -10,7 +10,7 @@ import { ClientCacheService } from 'src/app/_services/ClientCacheService';
 import LoggerService from 'src/app/_services/logger_service';
 import { Inject } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
-import path from 'path';
+
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 
 const STATE_KEY_ENDPOINT = makeStateKey('endpoint');
@@ -74,13 +74,33 @@ export class MainComponent implements OnInit, AfterContentInit {
       this.state.set(STATE_KEY_ENDPOINT, process.env.GENEALOGY_API);
 
       const fs = require('fs');
+      const path = require('path')
       const cacheFile = path.join(__dirname, `../../../cache/personList.json`);
+      console.log(cacheFile)
+
+      let now = new Date(2010, 1, 1).toISOString();
+      let count = 0;
       if (fs.existsSync(cacheFile)) {
         const rawdata = fs.readFileSync(cacheFile);
-        let data = JSON.parse(rawdata).data;
-        this.fillGrid(data);
+        let data = JSON.parse(rawdata);
+        count = data.data.length;
+        now = data.timestamp;
+        this.fillGrid(data.data);
       }
 
+        this.graphQLService.getPersonList( process.env.GENEALOGY_API, count, now)
+      .then(res => {
+
+        if (!res.isUpToDate) {
+          console.log(`Write cache to ${cacheFile}`)
+          let cacheObj =  new ClientCacheService().createCacheObject(res.users);
+          const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(cacheObj) );
+          this.fillGrid(res.users);
+        }
+      });
+      
+
+      console.log(cacheFile)
       const photosCacheFile = path.join(__dirname, `../../../cache/randomPhotos.json`);
       if (fs.existsSync(photosCacheFile)) {
         const rawdata = fs.readFileSync(photosCacheFile);
@@ -112,17 +132,14 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   search() {
-    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
-    this.graphQLService.getPersonList(endpoint, 0, new Date(2010, 1, 1).toISOString())
-      .then(res => {
-
-        console.log(JSON.stringify(res));
-        if (!res.isUpToDate) {
-          this.logger.info('cache updated');
-          this.fillGrid(res.users);
-          this.logger.info('search refreshed');
-        }
-      });
+    // let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+    // console.log(endpoint)
+    // this.graphQLService.getPersonList(endpoint, 0, new Date(2010, 1, 1).toISOString())
+    //   .then(res => {
+    //       this.fillGrid(res.users); 
+    //   }).catch(err=>{
+    //     console.log(err)
+    //   });
   }
 
   private fillGrid(data: any) {
