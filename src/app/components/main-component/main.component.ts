@@ -14,6 +14,8 @@ import { isPlatformServer } from '@angular/common';
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 
 const STATE_KEY_ENDPOINT = makeStateKey('endpoint');
+const STATE_KEY_USERLIST = makeStateKey('userlist')
+const STATE_KEY_PHOTOS = makeStateKey('photos')
 
 @Component({
   selector: 'app-main',
@@ -85,6 +87,7 @@ export class MainComponent implements OnInit, AfterContentInit {
         let data = JSON.parse(rawdata);
         count = data.data.length;
         now = data.timestamp;
+        this.state.set(STATE_KEY_USERLIST, data.data);
         this.fillGrid(data.data);
       }
 
@@ -95,6 +98,7 @@ export class MainComponent implements OnInit, AfterContentInit {
           console.log(`Write cache to ${cacheFile}`)
           let cacheObj =  new ClientCacheService().createCacheObject(res.users);
           const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(cacheObj) );
+          this.state.set(STATE_KEY_USERLIST, res.users);
           this.fillGrid(res.users);
         }
       });
@@ -105,16 +109,25 @@ export class MainComponent implements OnInit, AfterContentInit {
       if (fs.existsSync(photosCacheFile)) {
         const rawdata = fs.readFileSync(photosCacheFile);
         let data = JSON.parse(rawdata);
+        this.state.set(STATE_KEY_PHOTOS, data.data);
         this.images = data;
       }
-    }
+
+      let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+      this.graphQLService.getPhotosRandom(endpoint)
+        .then(res =>
+          {
+            let cacheObj =  new ClientCacheService().createCacheObject(res);
+            const rawdata = fs.writeFileSync(photosCacheFile, JSON.stringify(cacheObj) );
+            
+          }
+          );
+
+      }
   }
 
   randomPhotos() {
-    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
-    this.graphQLService.getPhotosRandom(endpoint)
-      .then(res =>
-        this.images = res);
+    this.images =  this.state.get(STATE_KEY_PHOTOS, []);
   }
 
   ngAfterContentInit() {
@@ -132,14 +145,8 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   search() {
-    // let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
-    // console.log(endpoint)
-    // this.graphQLService.getPersonList(endpoint, 0, new Date(2010, 1, 1).toISOString())
-    //   .then(res => {
-    //       this.fillGrid(res.users); 
-    //   }).catch(err=>{
-    //     console.log(err)
-    //   });
+    let cacheData: any = this.state.get(STATE_KEY_USERLIST, {});
+    this.fillGrid(cacheData)
   }
 
   private fillGrid(data: any) {
