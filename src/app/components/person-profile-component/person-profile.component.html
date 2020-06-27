@@ -15,6 +15,10 @@
   {{ getBiography(data)}}
 </p>
 
+<a *ngIf="editable" href="https://m.me/daniel.manuelpillai" target="_blank">Send Message</a>
+<a *ngIf="editable" href="https://www.geni.com/people/daniel-manuelpillai/6000000116531469834" target="_blank">Geni profile</a>
+
+
 <span *ngIf="!editable && data && data.currentPerson.profileId == data.currentPerson._id">
   <app-login-register [id]="data?.currentPerson?._id"></app-login-register>
 </span>

@@ -10,6 +10,7 @@ import { Title, Meta, TransferState, makeStateKey } from '@angular/platform-brow
 import { Inject } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import * as path from 'path';
+import { ClientCacheService } from 'src/app/_services/ClientCacheService';
 
 const STATE_KEY_ITEMS = makeStateKey('items');
 const STATE_KEY_ENDPOINT = makeStateKey('endpoint');
@@ -60,10 +61,8 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
   }
 
   getProfileById(id: string) {
-
     let cacheData: any = this.state.get(STATE_KEY_ITEMS, {});
     let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
-    console.log(endpoint);
     if (cacheData?.currentPerson != null) {
       this.id = cacheData?.currentPerson?._id;
       this.setTitle(cacheData?.currentPerson);
@@ -71,18 +70,19 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       const svg = d3.select('.familyTree');
       new TreeDraw().draw(svg, cacheData);
     }
-
-    this.api.getProfile(endpoint, id)
+    
+      this.api.getProfile(endpoint, id)
       .then(data => {
         this.id = data.currentPerson._id;
         this.setTitle(data.currentPerson);
         this.setMeta(data);
         this.data = data;
         const svg = d3.select('.familyTree');
-        new TreeDraw().draw(svg, data);
+      new TreeDraw().draw(svg, data);
+  
       });
-
-  }
+    }
+    
 
   setTitle(person: any) {
     this.titleService.setTitle(`${person.firstName} ${person.lastName}'s profile`);
@@ -152,6 +152,15 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
           { name: 'description', content: `profile ${this.profile}` },
           { name: 'robots', content: 'index, follow' }
         ]);
+
+        this.api.getProfile(process.env.GENEALOGY_API, this.profile)
+        .then(data => {
+          console.log(`Write cache to ${cacheFile}`)
+          let cacheObj =  new ClientCacheService().createCacheObject(data);
+          const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(cacheObj) );
+
+        });
+  
       }
     }
   }
