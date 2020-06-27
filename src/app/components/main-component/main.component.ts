@@ -89,20 +89,34 @@ export class MainComponent implements OnInit, AfterContentInit {
         now = data.timestamp;
         this.state.set(STATE_KEY_USERLIST, data.data);
         this.fillGrid(data.data);
+
+        let sitemapFile = '../frontEnd/browser/sitemap.xml';
+
+        var file = [];
+        file.push("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">")
+        data.data.forEach(element => {
+          file.push(`<url><loc>https://www.res01.com/person/${element.profileId}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`)
+        });
+        file.push('</urlset>')
+        const rawdata2 = fs.writeFileSync(sitemapFile, file.join(''));
+
       }
 
-        this.graphQLService.getPersonList( process.env.GENEALOGY_API, count, now)
-      .then(res => {
 
-        if (!res.isUpToDate) {
-          console.log(`Write cache to ${cacheFile}`)
-          let cacheObj =  new ClientCacheService().createCacheObject(res.users);
-          const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(cacheObj) );
-          this.state.set(STATE_KEY_USERLIST, res.users);
-          this.fillGrid(res.users);
-        }
-      });
-      
+
+
+      this.graphQLService.getPersonList(process.env.GENEALOGY_API, count, now)
+        .then(res => {
+
+          if (!res.isUpToDate) {
+            console.log(`Write cache to ${cacheFile}`)
+            let cacheObj = new ClientCacheService().createCacheObject(res.users);
+            const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(cacheObj));
+            this.state.set(STATE_KEY_USERLIST, res.users);
+            this.fillGrid(res.users);
+          }
+        });
+
 
       console.log(cacheFile)
       const photosCacheFile = path.join(__dirname, `../../../cache/randomPhotos.json`);
@@ -115,19 +129,18 @@ export class MainComponent implements OnInit, AfterContentInit {
 
       let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
       this.graphQLService.getPhotosRandom(endpoint)
-        .then(res =>
-          {
-            let cacheObj =  new ClientCacheService().createCacheObject(res);
-            const rawdata = fs.writeFileSync(photosCacheFile, JSON.stringify(cacheObj) );
-            
-          }
-          );
+        .then(res => {
+          let cacheObj = new ClientCacheService().createCacheObject(res);
+          const rawdata = fs.writeFileSync(photosCacheFile, JSON.stringify(cacheObj));
 
-      }
+        }
+        );
+
+    }
   }
 
   randomPhotos() {
-    this.images =  this.state.get(STATE_KEY_PHOTOS, []);
+    this.images = this.state.get(STATE_KEY_PHOTOS, []);
   }
 
   ngAfterContentInit() {
