@@ -12,8 +12,10 @@ export class BiographyService {
   GenerateGrandParents(data: any){
     const res = [];
     const currentPerson = data.currentPerson;
-    const grandParents: any[] = data.grandParents;
-    if( grandParents != null && grandParents.length > 0) {
+    let grandParents: any[] = data.grandParents ?? [];
+    grandParents = grandParents.filter(x => x.firstName != "" || x.lastName != "");
+        
+    if(grandParents.length > 0) {
       res.push(currentPerson.gender == 'Male' ? 'Grand son ' : 'Grand daughter');
       res.push(' of ');
 
@@ -38,10 +40,10 @@ export class BiographyService {
     const res = [];
     const currentPerson = data.currentPerson;
     const parents: any = [];
-    if (data.father != null) {
+    if (data.father != null && (data.father.firstName != "" && data.father.lastName != "")) {
       parents.push(data.father);
     }
-    if (data.mother != null) {
+    if (data.mother != null && (data.mother.firstName != "" && data.mother.lastName != "")) {
       parents.push(data.mother);
     }
 
@@ -75,7 +77,11 @@ export class BiographyService {
       res.push('. ');
 
       siblings.forEach((element, index) => {
-        res.push(element.firstName + ' (' + element.yearOfBirth + ')' );
+        res.push(element.firstName);
+        if(element.yearOfBirth != "")
+        {
+          res.push(' (' + element.yearOfBirth + ')' );
+        } 
 
         if (index != siblings.length - 2 && siblings.length > 2) {
           res.push(', ');
@@ -97,8 +103,9 @@ export class BiographyService {
     const heShe = data.currentPerson.gender == "Male" ? 'He' : 'She';
     const res = [];
     const currentPerson = data.currentPerson;
-    const spouses: any[] = data.spouses;
-    if( spouses != null && spouses.length > 0) {
+    let spouses: any[] = data.spouses ?? [];
+    spouses = spouses.filter(x=> x.firstName != "" || x.lastName != "");
+    if(spouses.length > 0) {
       res.push(`${heShe} married `);
       spouses.forEach((element, index) => {
         res.push(element.firstName + ' ' + element.lastName );
@@ -130,7 +137,10 @@ export class BiographyService {
       res.push('. ');
 
       children.forEach((element, index) => {
-        res.push(element.firstName + ' (' + element.yearOfBirth + ')' );
+        res.push(element.firstName)
+        if(element.yearOfBirth != ""){
+          res.push(' (' + element.yearOfBirth + ')' );
+        } 
 
         if (index != children.length - 2 && children.length > 2) {
           res.push(', ');
@@ -150,7 +160,8 @@ export class BiographyService {
     const heShe = data.currentPerson.gender == "Male" ? 'He' : 'She';
     const res = [];
     const currentPerson = data.currentPerson;
-    const children: any[] = data.grandChildren;
+    let children: any[] = data.grandChildren ?? "";
+    children = children.filter(x => x.firstName != "" || x.lastName != "");
     if( children != null && children.length > 0) {
       res.push(`${heShe} has ${numberToText.convertToText(children.length, {case:"lowerCase"}) } grand child`);
       if(children.length > 1){
@@ -159,7 +170,10 @@ export class BiographyService {
       res.push('. ');
 
       children.forEach((element, index) => {
-        res.push(element.firstName + ' (' + element.yearOfBirth + ')' );
+        res.push(element.firstName)
+        if(element.yearOfBirth != ""){
+          res.push( ' (' + element.yearOfBirth + ')' );
+        }
 
         if (index != children.length - 2 && children.length > 2) {
           res.push(', ');
@@ -179,7 +193,9 @@ export class BiographyService {
     const heShe = data.currentPerson.gender == "Male" ? 'He' : 'She';
     const res = [];
     const currentPerson = data.currentPerson;
-    const children: any[] = data.grandGrandChildren;
+    let children: any[] = data.grandGrandChildren ?? [];
+    children = children.filter(x => x.firstName != "" || x.lastName != "");
+
     if( children != null && children.length > 0) {
       res.push(`${heShe} has ${numberToText.convertToText(children.length, {case:"lowerCase"}) } grand grand child`);
       if(children.length > 1){
@@ -188,7 +204,10 @@ export class BiographyService {
       res.push('. ');
 
       children.forEach((element, index) => {
-        res.push(element.firstName + ' (' + element.yearOfBirth + ')' );
+        res.push(element.firstName);
+        if(element.yearOfBirth != ""){
+         res.push(' (' + element.yearOfBirth + ')' );
+        } 
 
         if (index != children.length - 2 && children.length > 2) {
           res.push(', ');
@@ -209,8 +228,9 @@ export class BiographyService {
     const heShe = data.currentPerson.gender == "Male" ? 'He' : 'She';
     const res = [];
     const currentPerson = data.currentPerson;
-    const cousins: any[] = data.cousins;
-    if( cousins != null && cousins.length > 0) {
+    let cousins: any[] = data.cousins ?? [];
+    cousins = cousins.filter(x => x.firstName != "" || x.lastName != "");
+    if( cousins.length > 0) {
       res.push(`${heShe} has ${numberToText.convertToText(cousins.length, {case:"lowerCase"}) } cousin`);
       if(cousins.length > 1){
         res.push('s');
@@ -219,7 +239,10 @@ export class BiographyService {
 
 
       cousins.forEach((element, index) => {
-        res.push(element.firstName + ' ' + element.lastName + ' (' + element.yearOfBirth + ')' );
+        res.push(element.firstName + ' ' + element.lastName);
+        if(element.yearOfBirth != ""){
+          res.push( ' (' + element.yearOfBirth + ')' );
+        }
 
         if (index != cousins.length - 2 && cousins.length > 2) {
           res.push(', ');
@@ -240,12 +263,17 @@ export class BiographyService {
     const heShe = data.currentPerson.gender == "Male" ? 'He' : 'She';
     const res = [];
     const currentPerson = data.currentPerson;
-    const niblings: any[] = data.niblings;
+    let niblings: any[] = data.niblings ?? [];
+    
+    niblings = niblings.filter(x => x.firstName != "" || x.lastName != "");
     if( niblings != null && niblings.length > 0) {
       res.push(`${heShe} has ${numberToText.convertToText(niblings.length, {case:"lowerCase"}) } nephews/nices. `);
 
       niblings.forEach((element, index) => {
-        res.push(element.firstName + ' ' + element.lastName + ' (' + element.yearOfBirth + ')' );
+        res.push(element.firstName + ' ' + element.lastName)
+        if(element.yearOfBirth != ""){
+          res.push(' (' + element.yearOfBirth + ')' );
+        } 
 
         if (index != niblings.length - 2 && niblings.length > 2) {
           res.push(', ');
@@ -261,11 +289,40 @@ export class BiographyService {
     return [];
   }
 
+  GenerateBirthInfo(data: any){
+    const res = [];
+    const currentPerson = data.currentPerson;
+    res.push(`${currentPerson.firstName} was born`)
+    if(currentPerson.yearOfBirth!= ""){
+      res.push(` in ${currentPerson.yearOfBirth}`)
+    }
+    res.push(". ")
+    return res;
+  }
+
+  GenerateDeathInfo(data: any){
+    const res = [];
+    const currentPerson = data.currentPerson;
+    const heShe = currentPerson.gender == "Male" ? 'He' : 'She';
+    const isAlive = !currentPerson.isDead;
+
+    if(!isAlive){
+      res.push(`${heShe} died`);
+      if(currentPerson.yearOfDeath!= ""){
+        res.push(` in ${currentPerson.yearOfDeath}`)
+      }
+      res.push(". ")
+    }
+    return res;
+  }
+
+ 
   GeneratePiblings(data: any){
     const heShe = data.currentPerson.gender == "Male" ? 'He' : 'She';
     const res = [];
     const currentPerson = data.currentPerson;
-    const piblings: any[] = data.piblings;
+    let piblings: any[] = data.piblings ?? [];
+    piblings = piblings.filter(x => x.firstName != "" || x.lastName != "");
     if( piblings != null && piblings.length > 0) {
       res.push(`${heShe} has ${numberToText.convertToText(piblings.length, {case:"lowerCase"}) } uncles/aunts. `);
 
@@ -294,7 +351,7 @@ export class BiographyService {
 
     bio = bio.concat(this.GenerateGrandParents(data));
     bio = bio.concat(this.GenerateParents(data));
-    bio = bio.concat([`${currentPerson.firstName} was born in ${currentPerson.yearOfBirth}. `]);
+    bio = bio.concat(this.GenerateBirthInfo(data));
     bio = bio.concat(this.GenerateSiblings(data));
     bio = bio.concat(this.GenerateSpouses(data));
     bio = bio.concat(this.GenerateChildren(data));
@@ -303,11 +360,7 @@ export class BiographyService {
     bio = bio.concat(this.GeneratePiblings(data));
     bio = bio.concat(this.GenerateGrandChildren(data));
     bio = bio.concat(this.GenerateGrandGrandChildren(data));
-  
-
-    if(!isAlive){
-      bio.push(`${heShe} died in ${currentPerson.yearOfDeath}.`);
-    }
+    bio = bio.concat(this.GenerateDeathInfo(data));
 
     return bio.join('');
   }

@@ -159,14 +159,14 @@ export class TreeDraw {
     let style = {};
     if (person.gender === 'Male') {
       style = manStyle;
-    } else {
+    } else if (person.gender === 'Female'){
       style = womanStyle;
     }
 
     if (person.profileId === currentPersonId) {
       if (person.gender === 'Male') {
         style = currentUserMan;
-      } else {
+      } else if (person.gender === 'Female') {
         style = currentUserWoman;
       }
 
