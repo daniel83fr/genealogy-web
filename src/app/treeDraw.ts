@@ -135,9 +135,9 @@ export class TreeDraw {
   }
 
   drawPerson(svg: any, x: number, y: number, person: any, currentPersonId: string) {
-
+    const unknown = { fill: '#A5A6A6', foreground: '#FFFFFF', stroke: '#000000' };
     if (!person) {
-      const unknown = { fill: '#A5A6A6', foreground: '#FFFFFF', stroke: '#000000' };
+      
       const g1 = svg.append('g');
       g1.append('rect')
         .attr('x', x)
@@ -156,7 +156,7 @@ export class TreeDraw {
     const manStyle = { fill: '#53a7fc', foreground: '#000000', stroke: '#000000' };
     const womanStyle = { fill: '#ffaaff', foreground: '#000000', stroke: '#000000' };
 
-    let style = {};
+    let style = unknown;
     if (person.gender === 'Male') {
       style = manStyle;
     } else if (person.gender === 'Female'){

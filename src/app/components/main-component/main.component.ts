@@ -127,8 +127,7 @@ export class MainComponent implements OnInit, AfterContentInit {
         this.images = data;
       }
 
-      let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
-      this.graphQLService.getPhotosRandom(endpoint)
+      this.graphQLService.getPhotosRandom(process.env.GENEALOGY_API)
         .then(res => {
           let cacheObj = new ClientCacheService().createCacheObject(res);
           const rawdata = fs.writeFileSync(photosCacheFile, JSON.stringify(cacheObj));
