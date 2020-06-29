@@ -118,8 +118,8 @@ export class MainComponent implements OnInit, AfterContentInit {
         });
 
 
-      console.log(cacheFile)
       const photosCacheFile = path.join(__dirname, `../../../cache/randomPhotos.json`);
+      console.log(`Write cache to ${photosCacheFile}`)
       if (fs.existsSync(photosCacheFile)) {
         const rawdata = fs.readFileSync(photosCacheFile);
         let data = JSON.parse(rawdata);
@@ -147,6 +147,10 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.randomPhotos();
 
     let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+    this.graphQLService.getPhotosRandom(endpoint)
+      .then(res =>
+        this.images = res);
+
     this.graphQLService.getAuditLastEntries(endpoint)
       .then(res =>
         this.audit = res);
