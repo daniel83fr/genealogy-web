@@ -80,8 +80,9 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   }
 
   addLink() {
-    console.log(this.linkId);
-    if((this.linkId ?? ''  == '') || (this.id ??'' == '')){
+    console.log(`id: ${this.id}`);
+    console.log(`LinkId: ${this.linkId}`);
+    if(this.linkId == null){
       this.notif.showError('please fill up the link.');
       return;
     }

@@ -160,7 +160,7 @@ export class BiographyService {
     const heShe = data.currentPerson.gender == "Male" ? 'He' : 'She';
     const res = [];
     const currentPerson = data.currentPerson;
-    let children: any[] = data.grandChildren ?? "";
+    let children: any[] = data.grandChildren ?? [];
     children = children.filter(x => x.firstName != "" || x.lastName != "");
     if( children != null && children.length > 0) {
       res.push(`${heShe} has ${numberToText.convertToText(children.length, {case:"lowerCase"}) } grand child`);
