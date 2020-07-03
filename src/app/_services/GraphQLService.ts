@@ -68,35 +68,31 @@ query Register {
   }
 
 
-  getPersonList(endpoint: string, itemCount: number, cacheDate: string) {
+  getPersonList(endpoint: string) {
     const fetch = createApolloFetch({
       uri: endpoint,
     });
     return fetch({
-      query: `query SearchAllPersons($cacheCount: Int, $cacheDate: String) {
-            data: getPersonList(cacheCount: $cacheCount, cacheDate: $cacheDate) {
-              users{
-                _id
-                firstName
-                lastName
-                maidenName,
-                gender,
-                yearOfBirth,
-                yearOfDeath,
-                isDead,
-                profileId
-              },
-              isUpToDate
+      query: `query SearchAllPersons {
+            data: getPersonList {
+              _id
+              firstName
+              lastName
+              maidenName,
+              gender,
+              yearOfBirth,
+              yearOfDeath,
+              isDead,
+              profileId
             }
           }
-          `,
-      variables: { cacheCount: itemCount, cacheDate: cacheDate }
+          `
     }).then(res => {
 
       // if (!res.data.data.isUpToDate) {
       //   this.cacheService.personsList = this.cacheService.createCacheObject(res.data.data.users);
       // }
-      return res.data.data;
+      return res.data;
     });
 
   }

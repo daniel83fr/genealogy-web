@@ -6,7 +6,7 @@ var fs = require('fs');
 class admin_tasks{
   GenerateCache(res: any){
     const graphQLService = new GraphQLService(new ClientCacheService(), new EncryptionService());
-    graphQLService.getPersonList(process.env.GENEALOGY_API, 0, '2010-06-10T17:58:41.016Z')
+    graphQLService.getPersonList(process.env.GENEALOGY_API)
     .then((persons:any) => {
       
       persons.users.forEach(person => {

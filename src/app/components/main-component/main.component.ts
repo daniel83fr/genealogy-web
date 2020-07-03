@@ -98,6 +98,7 @@ export class MainComponent implements OnInit, AfterContentInit {
           file.push(`<url><loc>https://www.res01.com/person/${element.profileId}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`)
         });
         file.push('</urlset>')
+        console.log(`Write sitemap to ${sitemapFile}`);
         const rawdata2 = fs.writeFileSync(sitemapFile, file.join(''));
 
       }
@@ -105,16 +106,15 @@ export class MainComponent implements OnInit, AfterContentInit {
 
 
 
-      this.graphQLService.getPersonList(process.env.GENEALOGY_API, count, now)
+      this.graphQLService.getPersonList(process.env.GENEALOGY_API)
         .then(res => {
 
-          if (!res.isUpToDate) {
             console.log(`Write cache to ${cacheFile}`)
-            let cacheObj = new ClientCacheService().createCacheObject(res.users);
+            let cacheObj = new ClientCacheService().createCacheObject(res.data);
             const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(cacheObj));
-            this.state.set(STATE_KEY_USERLIST, res.users);
-            this.fillGrid(res.users);
-          }
+            this.state.set(STATE_KEY_USERLIST, res.data);
+            this.fillGrid(res.data);
+          
         });
 
 
