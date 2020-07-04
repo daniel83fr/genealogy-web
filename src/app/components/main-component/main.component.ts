@@ -84,12 +84,12 @@ export class MainComponent implements OnInit, AfterContentInit {
         this.state.set(STATE_KEY_USERLIST, data);
         this.fillGrid(data);
 
-        let sitemapFile = path.join(__dirname, '../frontEnd/browser/sitemap.xml');
+        let sitemapFile = path.join(__dirname, '../browser/sitemap.xml');
         console.log(`Sitemap: ${path.resolve(sitemapFile)}`);
 
         var file = [];
         file.push("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">")
-        data.data.forEach(element => {
+        data.forEach(element => {
           file.push(`<url><loc>https://www.res01.com/person/${element.profileId}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`)
         });
         file.push('</urlset>')
