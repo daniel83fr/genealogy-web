@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, AfterContentInit, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit, OnChanges, Inject, PLATFORM_ID, APP_ID } from '@angular/core';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { NotificationService } from 'src/app/_services/NotificationService';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
 
+const STATE_KEY_API = makeStateKey('api');
 
 @Component({
   selector: 'app-photo',
@@ -12,12 +13,16 @@ import { NotificationService } from 'src/app/_services/NotificationService';
 
 export class PhotoComponent implements OnInit, OnChanges {
 
+  endpoint: string;
+
   constructor(
-    public configService: ConfigurationService,
+    private state: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private graphQlService: GraphQLService,
     private notification: NotificationService
-    ) {
-
+  ) {
+    this.endpoint = this.state.get(STATE_KEY_API, '');
   }
 
   switchEdit() {
@@ -29,7 +34,7 @@ export class PhotoComponent implements OnInit, OnChanges {
   @Input() photos: any[];
   editMode = false;
 
- 
+
 
 
   photoIndex = 0;
@@ -86,10 +91,8 @@ export class PhotoComponent implements OnInit, OnChanges {
         const link = result.data.link;
         const deletehash = result.data.deletehash;
 
-        return this.configService.getApiEndpoint()
-        .then(endpoint => {
-        return this.graphQlService.addPhoto(endpoint, link, deletehash, [this.id]);
-        });
+        return this.graphQlService.addPhoto(this.endpoint, link, deletehash, [this.id]);
+
       })
       .then(res => {
         this.notification.showSuccess('Photo added');
@@ -106,36 +109,30 @@ export class PhotoComponent implements OnInit, OnChanges {
     const picture = this.photos[this.photoIndex]._id;
     const user = this.id;
 
-    this.configService.getApiEndpoint()
-        .then(endpoint => {
-        return this.graphQlService.setProfilePicture(endpoint, user, picture);
-        })
-        .catch(err => {
-          this.notification.showError('Something went wrong. please check logs for detail.');
-          console.log(err);
-          throw Error(err);
-        })
-        .then(res => {
-          this.notification.showSuccess('Profile picture changed.');
-          window.location.reload();
-        })
-        ;
+    this.graphQlService.setProfilePicture(this.endpoint, user, picture)
+      .catch(err => {
+        this.notification.showError('Something went wrong. please check logs for detail.');
+        console.log(err);
+        throw Error(err);
+      })
+      .then(res => {
+        this.notification.showSuccess('Profile picture changed.');
+        window.location.reload();
+      })
+      ;
   }
 
   removeTag(tag: string, photo: string) {
-    this.configService.getApiEndpoint()
-    .then(endpoint => {
-    return this.graphQlService.removePhotoTag(endpoint, tag, photo);
-    })
-    .catch(err => {
-      this.notification.showError('Something went wrong. please check logs for detail.');
-      console.log(err);
-      throw Error(err);
-    })
-    .then(res => {
-      this.notification.showSuccess('Tag removed');
-      window.location.reload();
-    });
+    this.graphQlService.removePhotoTag(this.endpoint, tag, photo)
+      .catch(err => {
+        this.notification.showError('Something went wrong. please check logs for detail.');
+        console.log(err);
+        throw Error(err);
+      })
+      .then(res => {
+        this.notification.showSuccess('Tag removed');
+        window.location.reload();
+      });
   }
 
   addTag(tag: string, photo: string) {
@@ -145,20 +142,17 @@ export class PhotoComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.configService.getApiEndpoint()
-        .then(endpoint => {
-        return this.graphQlService.addPhotoTag(endpoint, tag, photo);
-        })
-        .catch(err => {
-          this.notification.showError('Something went wrong. please check logs for detail.');
-          console.log(err);
-          throw Error(err);
-        })
-        .then(res => {
-          this.notification.showSuccess('Tag added');
-          this.linkId = '';
-          window.location.reload();
-        });
+    this.graphQlService.addPhotoTag(this.endpoint, tag, photo)
+      .catch(err => {
+        this.notification.showError('Something went wrong. please check logs for detail.');
+        console.log(err);
+        throw Error(err);
+      })
+      .then(res => {
+        this.notification.showSuccess('Tag added');
+        this.linkId = '';
+        window.location.reload();
+      });
   }
 
   next() {
@@ -187,45 +181,29 @@ export class PhotoComponent implements OnInit, OnChanges {
     const picture = this.photos[this.photoIndex]._id;
 
 
-    this.configService.getApiEndpoint()
-        .then(endpoint => {
-        return this.graphQlService.deletePhoto(endpoint, picture);
-        })
-        .catch(err => {
-          this.notification.showError('Something went wrong. please check logs for detail.');
-          console.log(err);
-          throw Error(err);
-        })
-        .then(res => {
-          this.notification.showSuccess('Photo deleted.');
-          window.location.reload();
-        })
-        ;
+    this.graphQlService.deletePhoto(this.endpoint, picture)
+      .catch(err => {
+        this.notification.showError('Something went wrong. please check logs for detail.');
+        console.log(err);
+        throw Error(err);
+      })
+      .then(res => {
+        this.notification.showSuccess('Photo deleted.');
+        window.location.reload();
+      });
   }
 
   getProfileImage(id: string) {
-
-    this.configService.getApiEndpoint()
-    .then(endpoint => {
-      return this.graphQlService.getProfilePhoto(endpoint, id);
-    })
-    .then(data => {
-        this.profile =  data?._id;
-    });
-
+    this.graphQlService.getProfilePhoto(this.endpoint, id)
+      .then(data => {
+        this.profile = data?._id;
+      });
   }
 
-
-
-
   getPhotos(id: string) {
-    this.configService.getApiEndpoint()
-      .then(endpoint => {
-        return this.graphQlService.getProfile(endpoint, id);
-      })
+    this.graphQlService.getProfile(this.endpoint, id)
       .then(data => {
         this.photos = data.photos;
       });
   }
 }
-

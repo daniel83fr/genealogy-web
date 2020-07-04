@@ -1,10 +1,11 @@
 import { Component, OnInit, PLATFORM_ID, Inject, APP_ID } from '@angular/core';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformServer } from '@angular/common';
 
 const STATE_KEY_VERSION = makeStateKey('version');
+const STATE_KEY_API = makeStateKey('api');
+const STATE_KEY_ENV = makeStateKey('env');
 
 @Component({
   selector: 'app-footer',
@@ -25,6 +26,7 @@ export class FooterComponent implements OnInit {
     private auth: AuthenticationService) {
     
     this.version = this.state.get(STATE_KEY_VERSION, '');
+    this.endpoint = this.state.get(STATE_KEY_API, '');
   }
 
   isConnected() {
@@ -43,11 +45,9 @@ export class FooterComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformServer(this.platformId)) {
       this.state.set(STATE_KEY_VERSION, process.env.VERSION);
+      this.state.set(STATE_KEY_API, process.env.GENEALOGY_API);
+      this.state.set(STATE_KEY_ENV, process.env.NODE_ENV);
     }
-  }
-
-  ngAfterContentInit() {
-
   }
 }
 

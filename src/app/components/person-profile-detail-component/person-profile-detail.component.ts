@@ -1,10 +1,12 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
+import { Component, OnInit, Input, OnChanges, Inject, PLATFORM_ID, APP_ID } from '@angular/core';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { NotificationService } from 'src/app/_services/NotificationService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+const STATE_KEY_API = makeStateKey('api');
 
 @Component({
   selector: 'app-person-profile-detail',
@@ -19,11 +21,14 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
   @Input() data: any = {};
   @Input() privateData: any = {};
   @Input() editable = false;
+  endpoint: string;
 
   personEditForm: FormGroup = null;
   editMode = false;
   constructor(
-    public rest: ConfigurationService,
+    private state: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private api: GraphQLService,
     private fb: FormBuilder,
     private notif: NotificationService,
@@ -39,13 +44,16 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
       yearOfDeath: '',
       deathDate: '',
       isDead: '',
-      currentLocation: '',
-      birthLocation: '',
-      deathLocation: '',
+      currentLocationCountry: '',
+      birthLocationCountry: '',
+      deathLocationCountry: '',
+      currentLocationCity: '',
+      birthLocationCity: '',
+      deathLocationCity: '',
       email: '',
       phone: '',
     });
-
+    this.endpoint = this.state.get(STATE_KEY_API, '');
 
 
   }
@@ -60,9 +68,12 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
       yearOfDeath: this.data?.yearOfDeath,
       deathDate: this.privateData?.deathDate,
       isDead: this.data?.isDead ?? false,
-      currentLocation: this.privateData?.currentLocation,
-      birthLocation: this.privateData?.birthLocation,
-      deathLocation: this.privateData?.deathLocation,
+      currentLocationCountry: this.privateData?.currentLocationCountry,
+      birthLocationCountry: this.privateData?.birthLocationCountry,
+      deathLocationCountry: this.privateData?.deathLocationCountry,
+      currentLocationCity: this.privateData?.currentLocationCity,
+      birthLocationCity: this.privateData?.birthLocationCity,
+      deathLocationCity: this.privateData?.deathLocationCity,
       email: this.privateData?.email,
       phone: this.privateData?.phone,
     });
@@ -117,16 +128,28 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
       privateChanges.deathDate = this.personEditForm.get('deathDate').value;
     }
 
-    if (this.personEditForm.get('currentLocation').value !== this.data.privateData?.currentLocation && this.personEditForm.get('currentLocation').value) {
-      privateChanges.currentLocation = this.personEditForm.get('currentLocation').value;
+    if (this.personEditForm.get('currentLocationCountry').value !== this.data.privateData?.currentLocationCountry && this.personEditForm.get('currentLocationCountry').value) {
+      privateChanges.currentLocationCountry = this.personEditForm.get('currentLocationCountry').value;
     }
 
-    if (this.personEditForm.get('birthLocation').value !== this.data.privateData?.birthLocation && this.personEditForm.get('birthLocation').value) {
-      privateChanges.birthLocation = this.personEditForm.get('birthLocation').value;
+    if (this.personEditForm.get('currentLocationCity').value !== this.data.privateData?.currentLocationCity && this.personEditForm.get('currentLocationCity').value) {
+      privateChanges.currentLocationCity = this.personEditForm.get('currentLocationCity').value;
     }
 
-    if (this.personEditForm.get('deathLocation').value !== this.data.privateData?.deathLocation && this.personEditForm.get('deathLocation').value) {
-      privateChanges.deathLocation = this.personEditForm.get('deathLocation').value;
+    if (this.personEditForm.get('birthLocationCountry').value !== this.data.privateData?.birthLocationCountry && this.personEditForm.get('birthLocationCountry').value) {
+      privateChanges.birthLocationCountry = this.personEditForm.get('birthLocationCountry').value;
+    }
+
+    if (this.personEditForm.get('birthLocationCity').value !== this.data.privateData?.birthLocationCity && this.personEditForm.get('birthLocationCity').value) {
+      privateChanges.birthLocationCity = this.personEditForm.get('birthLocationCity').value;
+    }
+
+    if (this.personEditForm.get('deathLocationCountry').value !== this.data.privateData?.deathLocationCountry && this.personEditForm.get('deathLocationCountry').value) {
+      privateChanges.deathLocationCountry = this.personEditForm.get('deathLocationCountry').value;
+    }
+
+    if (this.personEditForm.get('deathLocationCity').value !== this.data.privateData?.deathLocationCity && this.personEditForm.get('deathLocationCity').value) {
+      privateChanges.deathLocationCity = this.personEditForm.get('deathLocationCity').value;
     }
 
     if (this.personEditForm.get('phone').value !== this.data.privateData?.phone && this.personEditForm.get('phone').value) {
@@ -141,9 +164,7 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
     Object.keys(privateChanges).length === 0 && privateChanges.constructor === Object) {
 
     } else {
-      this.rest.getApiEndpoint().then((endpoint) => {
         this.updateProfile(this.id, changes, privateChanges);
-      });
     }
   }
 
@@ -156,10 +177,7 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
     if (r === true) {
       // OK
 
-      this.rest.getApiEndpoint()
-        .then((endpoint) => {
-          return this.api.deleteProfile(endpoint.toString(), this.id);
-        })
+      return this.api.deleteProfile(this.endpoint, this.id)
         .then(res => {
           console.log(res.data);
           this.notif.showSuccess(res.data.removeProfile);
@@ -190,10 +208,7 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
 
   updateProfile(id: string, changes: any, privateChanges: any) {
 
-    this.rest.getApiEndpoint()
-      .then((endpoint) => {
-        return this.api.updateProfile(endpoint, id, changes, privateChanges, this.auth.getConnectedProfile());
-      })
+    this.api.updateProfile(this.endpoint, id, changes, privateChanges, this.auth.getConnectedProfile())
       .then(res => {
         this.notif.showSuccess('Profile updated.');
         location.reload();

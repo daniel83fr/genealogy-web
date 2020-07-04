@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit, Inject, PLATFORM_ID, APP_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
-
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { Router } from '@angular/router';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+const STATE_KEY_API = makeStateKey('api');
 
 @Component({
   selector: 'app-person-link',
@@ -13,6 +14,8 @@ import { Router } from '@angular/router';
 })
 
 export class PersonLinkComponent implements OnInit, AfterContentInit {
+
+  endpoint: string;
 
   @Input() id = '';
 
@@ -26,9 +29,11 @@ export class PersonLinkComponent implements OnInit, AfterContentInit {
   personEditForm: FormGroup = null;
 
   constructor(
+    private state: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private http: HttpClient,
     private fb: FormBuilder,
-    public rest: ConfigurationService,
     private graphQLService: GraphQLService,
     private router: Router
   ) {
@@ -39,12 +44,13 @@ export class PersonLinkComponent implements OnInit, AfterContentInit {
       gender: this.person.gender,
       birthDate: this.person.yearOfBirth,
     });
+    this.endpoint = this.state.get(STATE_KEY_API, '');
   }
 
-  onClick(){
+  onClick() {
     this.router.navigateByUrl('person/' + this.person.profileId);
   }
-  
+
   ngOnInit(): void {
   }
 
@@ -61,20 +67,16 @@ export class PersonLinkComponent implements OnInit, AfterContentInit {
   }
 
   removeSiblingLink() {
-    this.rest.getApiEndpoint()
-      .then((endpoint) => {
-        return this.graphQLService.removeSiblingLink(endpoint, this.id, this.person._id);
-      }).then(res => {
+    this.graphQLService.removeSiblingLink(this.endpoint, this.id, this.person._id)
+      .then(res => {
         console.log(res);
         location.reload();
       });
   }
 
   removeDirectLink() {
-    this.rest.getApiEndpoint()
-      .then((endpoint) => {
-        return this.graphQLService.removeLink(endpoint, this.id, this.person._id);
-      }).then(res => {
+    this.graphQLService.removeLink(this.endpoint, this.id, this.person._id)
+      .then(res => {
         console.log(res);
         location.reload();
       });

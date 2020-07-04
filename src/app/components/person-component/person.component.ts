@@ -1,19 +1,17 @@
-import { Component, OnInit, AfterContentInit, OnChanges, Input, PLATFORM_ID, APP_ID } from '@angular/core';
-import { ActivatedRoute, Router, ParamMap, NavigationEnd, NavigationStart, ActivationEnd, ActivationStart } from '@angular/router';
+import { Component, OnInit, AfterContentInit, OnChanges, PLATFORM_ID, APP_ID } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as d3 from 'd3';
 
 import { TreeDraw } from '../../treeDraw';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { Title, Meta, TransferState, makeStateKey } from '@angular/platform-browser';
 import { Inject } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import * as path from 'path';
-import { ClientCacheService } from 'src/app/_services/ClientCacheService';
 
 const STATE_KEY_ITEMS = makeStateKey('items');
-const STATE_KEY_ENDPOINT = makeStateKey('endpoint');
+const STATE_KEY_API = makeStateKey('api');
 
 @Component({
   selector: 'app-person-component',
@@ -23,17 +21,21 @@ const STATE_KEY_ENDPOINT = makeStateKey('endpoint');
 
 export class PersonComponentComponent implements OnInit, AfterContentInit, OnChanges {
 
+  endpoint: string;
+
   constructor(
     private state: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(APP_ID) private appId: string,
-    public rest: ConfigurationService,
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthenticationService,
     private api: GraphQLService,
     private titleService: Title,
     private metaService: Meta) {
+
+    this.endpoint = this.state.get(STATE_KEY_API, '');
+
     this.router.events.subscribe((val) => {
       if (this.profile != this.route.snapshot.paramMap.get('profile')) {
         this.profile = this.route.snapshot.paramMap.get('profile');
@@ -55,14 +57,9 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     return this.auth.isConnected();
   }
 
-  getProfileId(profileId: string) {
-    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
-    return this.api.getProfileId(endpoint, profileId);
-  }
-
   getProfileById(id: string) {
     let cacheData: any = this.state.get(STATE_KEY_ITEMS, {});
-    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+
     if (cacheData?.currentPerson != null) {
       this.id = cacheData?.currentPerson?._id;
       this.setTitle(cacheData?.currentPerson);
@@ -71,7 +68,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       new TreeDraw().draw(svg, cacheData);
     }
     
-      this.api.getProfile(endpoint, id)
+      this.api.getProfile(this.endpoint, id)
       .then(data => {
         this.id = data.currentPerson._id;
         this.setTitle(data.currentPerson);
@@ -94,13 +91,12 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     this.metaService.updateTag({ content: `${person.firstName}, ${person.lastName}, profile` }, 'name="keywords"');
   }
   getProfilePrivateById(id: string) {
-    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
-
-    this.api.getPrivateInfo(endpoint, id)
+    this.api.getPrivateInfo(this.endpoint, id)
       .then(data => {
         this.privateData = data;
       });
   }
+
   ngAfterContentInit() {
 
   }
@@ -126,12 +122,13 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       this.profile = this.route.snapshot.paramMap.get('profile');
       const fs = require('fs');
 
-      this.state.set(STATE_KEY_ENDPOINT, process.env.GENEALOGY_API);
-
-      const cacheFile = path.join(__dirname, `../../../cache/profile_${this.profile}.json`);
+      this.state.set(STATE_KEY_API, process.env.GENEALOGY_API);
+      
+      const cacheFile = path.join(__dirname, `../../../../cache/profile_${this.profile}.json`);
+      console.log(`Cache file: ${cacheFile}`)
       if (fs.existsSync(cacheFile)) {
         const rawdata = fs.readFileSync(cacheFile);
-        this.data = JSON.parse(rawdata).data;
+        this.data = JSON.parse(rawdata);
         this.state.set(STATE_KEY_ITEMS, this.data);
         this.id = this.data.currentPerson._id;
 
@@ -153,14 +150,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
           { name: 'robots', content: 'index, follow' }
         ]);
 
-        this.api.getProfile(process.env.GENEALOGY_API, this.profile)
-        .then(data => {
-          console.log(`Write cache to ${cacheFile}`)
-          let cacheObj =  new ClientCacheService().createCacheObject(data);
-          const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(cacheObj) );
-
-        });
-  
+        this.api.getProfile(process.env.GENEALOGY_API, this.profile);
       }
     }
   }

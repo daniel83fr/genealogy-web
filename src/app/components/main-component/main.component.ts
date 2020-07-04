@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, AfterContentInit, PLATFORM_ID, APP_ID } f
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { Router } from '@angular/router';
@@ -43,7 +42,6 @@ export class MainComponent implements OnInit, AfterContentInit {
     private state: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(APP_ID) private appId: string,
-    private configurationService: ConfigurationService,
     private graphQLService: GraphQLService,
     private router: Router,
     private auth: AuthenticationService,
@@ -77,20 +75,17 @@ export class MainComponent implements OnInit, AfterContentInit {
 
       const fs = require('fs');
       const path = require('path')
-      const cacheFile = path.join(__dirname, `../../../cache/personList.json`);
+      const cacheFile = path.join(__dirname, `../../../../cache/personList.json`);
       console.log(cacheFile)
 
-      let now = new Date(2010, 1, 1).toISOString();
-      let count = 0;
       if (fs.existsSync(cacheFile)) {
         const rawdata = fs.readFileSync(cacheFile);
         let data = JSON.parse(rawdata);
-        count = data.data.length;
-        now = data.timestamp;
-        this.state.set(STATE_KEY_USERLIST, data.data);
-        this.fillGrid(data.data);
+        this.state.set(STATE_KEY_USERLIST, data);
+        this.fillGrid(data);
 
-        let sitemapFile = '../frontEnd/browser/sitemap.xml';
+        let sitemapFile = path.join(__dirname, '../frontEnd/browser/sitemap.xml');
+        console.log(`Sitemap: ${path.resolve(sitemapFile)}`);
 
         var file = [];
         file.push("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">")
@@ -108,18 +103,12 @@ export class MainComponent implements OnInit, AfterContentInit {
 
       this.graphQLService.getPersonList(process.env.GENEALOGY_API)
         .then(res => {
-
-            console.log(`Write cache to ${cacheFile}`)
-            let cacheObj = new ClientCacheService().createCacheObject(res.data);
-            const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(cacheObj));
-            this.state.set(STATE_KEY_USERLIST, res.data);
-            this.fillGrid(res.data);
-          
+            this.fillGrid(res);
         });
 
 
-      const photosCacheFile = path.join(__dirname, `../../../cache/randomPhotos.json`);
-      console.log(`Write cache to ${photosCacheFile}`)
+      const photosCacheFile = path.join(__dirname, `../../../../cache/randomPhotos.json`);
+      console.log(`Write cache to ${photosCacheFile}`);
       if (fs.existsSync(photosCacheFile)) {
         const rawdata = fs.readFileSync(photosCacheFile);
         let data = JSON.parse(rawdata);

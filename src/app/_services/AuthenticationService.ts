@@ -1,22 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, APP_ID } from '@angular/core';
 import { GraphQLService } from './GraphQLService';
-import { ConfigurationService } from './ConfigurationService';
 import { Router } from '@angular/router';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+const STATE_KEY_API = makeStateKey('api');
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthenticationService {
+
+  endpoint: string;
+
   constructor(
-    private rest: ConfigurationService,
+    private state: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private api: GraphQLService,
     private router: Router
   ) {
+    this.endpoint = this.state.get(STATE_KEY_API, '');
   }
 
   login(login: string, password: string) {
-    return new Promise((resolve, reject) => this.rest.getApiEndpoint()
-      .then((endpoint) => this.api.login(endpoint.toString(), login, password))
+    return new Promise((resolve, reject) => this.api.login(this.endpoint.toString(), login, password)
       .then((auth) => {
         if (auth.success === true) {
           localStorage.setItem('token', auth.token.toString());
@@ -32,8 +40,7 @@ export class AuthenticationService {
   }
 
   register(id: string, login: string, email: string, password: string) {
-    return new Promise((resolve, reject) => this.rest.getApiEndpoint()
-      .then((endpoint) => this.api.register(endpoint.toString(), id, login, email, password))
+    return new Promise((resolve, reject) => this.api.register(this.endpoint, id, login, email, password)
       .then((res) => {
         resolve(res);
       })

@@ -79,9 +79,15 @@
   </mat-form-field>
 
   <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>BirthLocation</mat-label>
-    <input matInput type="text" placeholder="birthLocation" [value]="privateData?.birthLocation" [readonly]="!canEdit()"
-      formControlName="birthLocation">
+    <mat-label>BirthCountry</mat-label>
+    <input matInput type="text" placeholder="birthLocationCountry" [value]="privateData?.birthLocationCountry" [readonly]="!canEdit()"
+      formControlName="birthLocationCountry">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="editable" appearance="standard">
+    <mat-label>BirthCity</mat-label>
+    <input matInput type="text" placeholder="birthLocationCity" [value]="privateData?.birthLocationCity" [readonly]="!canEdit()"
+      formControlName="birthLocationCity">
   </mat-form-field>
 
   <div *ngIf="data?.isDead">
@@ -93,9 +99,15 @@
   </mat-form-field>
 
   <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>DeathLocation</mat-label>
-    <input matInput type="text" placeholder="deathLocation" [value]="privateData?.deathLocation" [readonly]="!canEdit()"
-      formControlName="deathLocation">
+    <mat-label>DeathCountry</mat-label>
+    <input matInput type="text" placeholder="deathLocationCountry" [value]="privateData?.deathLocationCountry" [readonly]="!canEdit()"
+      formControlName="deathLocationCountry">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="editable" appearance="standard">
+    <mat-label>DeathCity</mat-label>
+    <input matInput type="text" placeholder="deathLocationCity" [value]="privateData?.deathLocationCountry" [readonly]="!canEdit()"
+      formControlName="deathLocationCity">
   </mat-form-field>
 
   </div>
@@ -105,9 +117,15 @@
 
  
   <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>Location</mat-label>
-    <input matInput type="text" placeholder="currentLocation" [value]="privateData?.currentLocation" [readonly]="!canEdit()"
-      formControlName="currentLocation">
+    <mat-label>Location Country</mat-label>
+    <input matInput type="text" placeholder="currentLocationCountry" [value]="privateData?.currentLocationCountry" [readonly]="!canEdit()"
+      formControlName="currentLocationCountry">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="editable" appearance="standard">
+    <mat-label>Location City</mat-label>
+    <input matInput type="text" placeholder="currentLocationCity" [value]="privateData?.currentLocationCity" [readonly]="!canEdit()"
+      formControlName="currentLocationCity">
   </mat-form-field>
 
   <mat-form-field *ngIf="editable" appearance="standard">

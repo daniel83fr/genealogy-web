@@ -88,10 +88,6 @@ query Register {
           }
           `
     }).then(res => {
-
-      // if (!res.data.data.isUpToDate) {
-      //   this.cacheService.personsList = this.cacheService.createCacheObject(res.data.data.users);
-      // }
       return res.data;
     });
 
@@ -135,6 +131,10 @@ query Register {
   getPrivateInfo(endpoint: string, id: string) {
 
     const token = localStorage.getItem('token');
+    if(token == null){
+      console.log("token is null");
+      return null;
+    }
     const fetch = createApolloFetch({
       uri: endpoint
     });
@@ -154,9 +154,12 @@ query Register {
           birthDate
           deathDate
           isDead
-          currentLocation
-          birthLocation
-          deathLocation
+          currentLocationCountry
+          birthLocationCountry
+          deathLocationCountry
+          currentLocationCity
+          birthLocationCity
+          deathLocationCity
           email
           phone
           _id
@@ -249,31 +252,9 @@ query Register {
     })
     .then(res=>{
       let profile = res.data.profile;
-      // let cacheObject = this.cacheService.createCacheObject(profile);
-      // localStorage.setItem("profile_"+ id, JSON.stringify( cacheObject));
       return profile;
 
     });
-  }
-
-  getProfileId(endpoint: string, id: string) {
-    const fetch = createApolloFetch({
-      uri: endpoint,
-    });
-    return fetch({
-      query: `query GetProfileId($id: String!) {
-              getProfileId(_id: $id)
-            }
-            `,
-      variables: { id }
-    })
-      .then(res => {
-        console.log(JSON.stringify(res));
-        return res?.data?.getProfileId ?? id;
-      })
-      .catch(err => {
-        return id;
-      });
   }
 
   deleteProfile(endpoint: string, id: string) {
@@ -329,9 +310,12 @@ query Register {
                 _id
                 birthDate
                 deathDate
-                currentLocation
-                birthLocation
-                deathLocation
+                currentLocationCountry
+                birthLocationCountry
+                deathLocationCountry
+                currentLocationCity
+                birthLocationCity
+                deathLocationCityy
                 email
                 phone
               },

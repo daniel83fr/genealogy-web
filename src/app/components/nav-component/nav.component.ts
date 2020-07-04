@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { Router } from '@angular/router';
@@ -18,7 +17,6 @@ export class NavComponent implements OnInit, AfterContentInit {
   profileLink = '/';
 
   constructor(
-    private configurationService: ConfigurationService,
     private graphQLService: GraphQLService,
     public auth: AuthenticationService,
     private router: Router) {

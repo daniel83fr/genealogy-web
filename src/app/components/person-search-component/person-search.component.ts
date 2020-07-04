@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, AfterContentInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit, Output, EventEmitter, Inject, PLATFORM_ID, APP_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { ClientCacheService } from 'src/app/_services/ClientCacheService';
+import { TransferState, makeStateKey } from '@angular/platform-browser';
 
 
 export interface User {
@@ -15,6 +15,7 @@ export interface User {
   lastName: string;
   maidenName: string;
 }
+const STATE_KEY_API = makeStateKey('api');
 
 @Component({
   selector: 'app-person-search',
@@ -31,16 +32,19 @@ export class PersonSearchComponent implements OnInit, AfterContentInit {
   filteredOptions: Observable<User[]>;
 
 
+  endpoint: string;
 
   constructor(
+    private state: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private http: HttpClient,
     private fb: FormBuilder,
-    public configurationService: ConfigurationService,
     private graphQLService: GraphQLService,
     private router: Router,
     private cacheService: ClientCacheService
   ) {
-
+    this.endpoint = this.state.get(STATE_KEY_API, '');
   }
 
   optionSelected(id: any) {
@@ -53,10 +57,7 @@ export class PersonSearchComponent implements OnInit, AfterContentInit {
 
   getPersonList() {
 
-    this.configurationService.getApiEndpoint()
-      .then(endpoint => {
-        return this.graphQLService.getPersonList(endpoint);
-      })
+     this.graphQLService.getPersonList(this.endpoint)
       .then(res => {
           this.options = res.data;
       });

@@ -1,35 +1,36 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
+import { Component, OnInit, EventEmitter, Output, PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+const STATE_KEY_ENV = makeStateKey('env');
+const STATE_KEY_API = makeStateKey('api');
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit {
+
+
+export class AdminComponent {
   
   @Output() onSetTitle = new EventEmitter<string>();
   setTitle(){
      this.onSetTitle.emit('Admin Area');
+    
   }
   
   environnement: string;
   endpoint: string;
 
   constructor(
-    private configurationService: ConfigurationService,
+    private state: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private auth: AuthenticationService) {
 
-    this.configurationService.getEnvironnement()
-      .then(env => {
-        this.environnement = env;
-      });
-
-    this.configurationService.getApiEndpoint()
-      .then(endpoint => {
-        this.endpoint = endpoint;
-      });
+    this.environnement = this.state.get(STATE_KEY_ENV, '');
+    this.endpoint = this.state.get(STATE_KEY_API, '');
   }
 
   isConnected() {
@@ -42,13 +43,5 @@ export class AdminComponent implements OnInit {
 
   connectedProfile() {
     return this.auth.getConnectedProfile();
-  }
-
-
-  ngOnInit(): void {
-  }
-
-  ngAfterContentInit() {
-   
   }
 }

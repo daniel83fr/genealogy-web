@@ -1,9 +1,11 @@
-import { Component, OnInit, Input, AfterContentInit, APP_ID } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit, APP_ID, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { NotificationService } from 'src/app/_services/NotificationService';
+import { TransferState, makeStateKey } from '@angular/platform-browser';
+
+const STATE_KEY_API = makeStateKey('api');
 
 @Component({
   selector: 'app-person-links',
@@ -12,6 +14,8 @@ import { NotificationService } from 'src/app/_services/NotificationService';
 })
 
 export class PersonLinksComponent implements OnInit, AfterContentInit {
+
+  endpoint: string;
 
   @Input() title = '';
 
@@ -34,9 +38,11 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   personEditForm: FormGroup = null;
 
   constructor(
+    private state: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private http: HttpClient,
     private fb: FormBuilder,
-    public rest: ConfigurationService,
     private graphQLService: GraphQLService,
     private notif: NotificationService,
   ) {
@@ -47,6 +53,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
       gender: this.person.Gender,
       birthDate: this.person.YearOfBirth,
     });
+    this.endpoint = this.state.get(STATE_KEY_API, '');
   }
 
   ngOnInit(): void {
@@ -60,18 +67,15 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   createPersonAndLink() {
 
     const changes: any = {};
-    changes.firstName = this.firstName??'';
-    changes.lastName = this.lastName??'';
+    changes.firstName = this.firstName ?? '';
+    changes.lastName = this.lastName ?? '';
 
-    if(changes.firstName == '' && changes.lastName == ''){
+    if (changes.firstName == '' && changes.lastName == '') {
       this.notif.showError('please fill up the name.');
       return;
     }
 
-    this.rest.getApiEndpoint()
-      .then(endpoint => {
-        return this.graphQLService.createPerson(endpoint, changes);
-      })
+    this.graphQLService.createPerson(this.endpoint, changes)
       .then(res => {
         this.notif.showSuccess('Person created');
         this.linkId = res;
@@ -82,7 +86,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   addLink() {
     console.log(`id: ${this.id}`);
     console.log(`LinkId: ${this.linkId}`);
-    if(this.linkId == null){
+    if (this.linkId == null) {
       this.notif.showError('please fill up the link.');
       return;
     }
@@ -106,10 +110,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   }
 
   removeLink() {
-    this.rest.getApiEndpoint()
-      .then((endpoint) => {
-        return this.graphQLService.removeLink(endpoint, this.id, this.person._id);
-      })
+   this.graphQLService.removeLink(this.endpoint, this.id, this.person._id)
       .then(res => {
         console.log(res.data);
         this.notif.showSuccess('Link removed');
@@ -118,10 +119,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   }
 
   linkParent() {
-    this.rest.getApiEndpoint()
-      .then((endpoint) => {
-        return this.graphQLService.linkParent(endpoint, this.id, this.linkId);
-      })
+    this.graphQLService.linkParent(this.endpoint, this.id, this.linkId)
       .then(res => {
         this.notif.showSuccess('Link added');
         location.reload();
@@ -129,10 +127,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   }
 
   linkChild() {
-    this.rest.getApiEndpoint()
-      .then((endpoint) => {
-        return this.graphQLService.linkChild(endpoint, this.id, this.linkId);
-      })
+    this.graphQLService.linkChild(this.endpoint, this.id, this.linkId)
       .then(res => {
         this.notif.showSuccess('Link added');
         location.reload();
@@ -140,10 +135,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   }
 
   linkSpouse() {
-    this.rest.getApiEndpoint()
-      .then((endpoint) => {
-        return this.graphQLService.linkSpouse(endpoint, this.id, this.linkId);
-      })
+   this.graphQLService.linkSpouse(this.endpoint, this.id, this.linkId)
       .then(res => {
         this.notif.showSuccess('Link added');
         location.reload();
@@ -151,10 +143,7 @@ export class PersonLinksComponent implements OnInit, AfterContentInit {
   }
 
   linkSibling() {
-    this.rest.getApiEndpoint()
-      .then((endpoint) => {
-        return this.graphQLService.linkSibling(endpoint, this.id, this.linkId);
-      })
+    this.graphQLService.linkSibling(this.endpoint, this.id, this.linkId)
       .then(res => {
         this.notif.showSuccess('Link added');
         location.reload();

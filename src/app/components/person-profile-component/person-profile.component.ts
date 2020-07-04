@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { ConfigurationService } from 'src/app/_services/ConfigurationService';
+import { Component, OnInit, Input, OnChanges, Inject, PLATFORM_ID, APP_ID } from '@angular/core';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { NotificationService } from 'src/app/_services/NotificationService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { BiographyService } from 'src/app/_services/BiographyService';
-
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+const STATE_KEY_API = makeStateKey('api');
 @Component({
   selector: 'app-person-profile',
   templateUrl: './person-profile.component.html',
@@ -14,8 +14,13 @@ import { BiographyService } from 'src/app/_services/BiographyService';
 })
 
 export class PersonProfileComponent implements OnInit {
+
+  endpoint: string;
+
   constructor(
-    public configService: ConfigurationService,
+    private state: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string,
     private api: GraphQLService,
     private fb: FormBuilder,
     private notif: NotificationService,
@@ -30,6 +35,7 @@ export class PersonProfileComponent implements OnInit {
       yearOfBirth: '',
       birthDate: ''
     });
+    this.endpoint = this.state.get(STATE_KEY_API, '');
   }
 
   @Input() id = '';
@@ -52,10 +58,7 @@ export class PersonProfileComponent implements OnInit {
 
   getImage() {
 
-    this.configService.getApiEndpoint()
-    .then(endpoint => {
-      return this.api.getProfilePhoto(endpoint, this.id);
-    })
+    this.api.getProfilePhoto(this.endpoint, this.id)
     .then(data => {
       if (data != null) {
         this.image =  data.url;

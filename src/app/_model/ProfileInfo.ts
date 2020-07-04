@@ -3,12 +3,14 @@ interface ProfileInfo extends ProfileSummary {
     BirthDate: Date
     BirthDateVisible: boolean
 
-    BirthLocation: string
+    BirthLocationCountry: string
+    BirthLocationCity:string
     DeathDate: Date
-    DeathLocation: string
+    DeathLocationCountry: string
+    DeathLocationCity: string
     Language: string
-    CurrentLocation: string
-
+    CurrentLocationCity: string
+    CurrentLocationCountry: string
     Email: string
     Facebook: string
     Instagram: string
