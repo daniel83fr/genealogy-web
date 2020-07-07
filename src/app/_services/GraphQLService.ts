@@ -455,23 +455,25 @@ query Register {
     });
 
     return fetch({
-      query: `query getTodayMarriagedays {
-        birthday: getTodayBirthdays{
-         ...usr
-        },
-        deathday: getTodayDeathdays{
-         ...usr
-        },
-        marriage: getTodayMarriagedays{
-         ...usr
+      query: `query GetEvents($date1:String!,$date2:String) {
+        getEvents( date1: $date1 ,date2: $date2) {
+          date
+    			person {
+    			  profileId
+    			  firstName
+    			  lastName
+    			}
+          person2 {
+    			  profileId
+    			  firstName
+    			  lastName
+    			}
+          type,
+    			anniversary
         }
-      }
-      fragment usr on User{
-           _id
-          firstName
-          lastName
-      }
-      `
+}
+      `,
+      variables: { date1: new Date().toISOString(), date2: undefined }
     }).then(res => {
       return res.data;
     });

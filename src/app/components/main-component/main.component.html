@@ -155,10 +155,13 @@ justify-content: center;">
       <mat-card-title>
         <h2>Events</h2>
       </mat-card-title>
-      <mat-card-subtitle>TODAY's events2</mat-card-subtitle>
+      <mat-card-subtitle>TODAY's events</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
 
+      <pre>
+        {{events | json}}
+      </pre>
       <!-- <mat-form-field>
         <mat-label>Date</mat-label>
         <input matInput [matDatepicker]="picker" [value]="date.value"> 
@@ -166,24 +169,10 @@ justify-content: center;">
         <mat-datepicker #picker></mat-datepicker> 
       </mat-form-field> -->
 
-      <div *ngIf="events?.birthday?.length>0" style="font-weight: bold;">Birthday:</div>
-      <div *ngFor="let b of events?.birthday">
-        {{b.firstName}} {{b.lastName}}
+      <div *ngFor="let b of events">
+        {{b.type}} - {{b.person?.firstName}} {{b.person?.lastName}} 
+        {{b.person2?.firstName}} {{b.person2?.lastName}} - {{b.anniversary}} Anniversary
       </div>
-
-      <div *ngIf="events?.deathday?.length>0" style="font-weight: bold;">Dead Anniversary:</div>
-      <div *ngFor="let b of events?.deathday">
-        {{b.firstName}} {{b.lastName}}
-      </div>
-
-      <div *ngIf="events?.marriage?.length>0" style="font-weight: bold;">Wedding Anniversary:</div>
-      <div *ngFor="let b of events?.marriage">
-        {{b.firstName}} {{b.lastName}}
-      </div>
-
-
-
-
 
     </mat-card-content>
 
