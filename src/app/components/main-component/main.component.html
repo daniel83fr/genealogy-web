@@ -159,15 +159,7 @@ justify-content: center;">
     </mat-card-header>
     <mat-card-content>
 
-      <pre>
-        {{events | json}}
-      </pre>
-      <!-- <mat-form-field>
-        <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="picker" [value]="date.value"> 
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker> 
-      </mat-form-field> -->
+    
 
       <div *ngFor="let b of events">
         {{b.type}} - {{b.person?.firstName}} {{b.person?.lastName}} 

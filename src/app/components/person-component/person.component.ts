@@ -47,6 +47,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
   }
 
   privateData: any;
+  relations: any[];
   photos: any[];
   refreshing = false;
   profile;
@@ -97,6 +98,14 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       });
   }
 
+  getRelation(id: string, id2: string) {
+    console.log(`Get relation ${id} - ${id2}`)
+    this.api.getRelation(this.endpoint, id, id2)
+      .then(data => {
+        this.relations = data;
+      });
+  }
+
   ngAfterContentInit() {
 
   }
@@ -112,6 +121,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     this.getProfileById(this.profile);
     if (this.isConnected()) {
       this.getProfilePrivateById(this.profile);
+      this.getRelation(this.profile, this.auth.getConnectedProfile());
     }
   }
 

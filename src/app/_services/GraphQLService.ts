@@ -177,6 +177,55 @@ query Register {
       );
   }
 
+  getRelation(endpoint: string, id: string, id2: string) {
+
+    const token = localStorage.getItem('token');
+    if(token == null){
+      console.log("token is null");
+      return null;
+    }
+    const fetch = createApolloFetch({
+      uri: endpoint
+    });
+
+    fetch.use(({ request, options }, next) => {
+
+      if (!options.headers) {
+        options.headers = {};
+      }
+      options.headers['authorization'] = `Bearer ${token}`;
+      next();
+    });
+
+    return fetch({
+      query: `query GetRelation($_id: String!, $_id2: String!) {
+        data:getRelation( _id1 : $_id, _id2 : $_id2)
+        {
+          link
+          person1 {
+            firstName
+            lastName
+            profileId
+          }
+          person2 {
+            firstName
+            lastName
+            profileId
+          }
+        }
+      }
+      `,
+      variables: { _id: id, _id2: id2 }
+    })
+      .catch(err => {
+        throw Error(err);
+      })
+      .then(res => {
+        return res.data.data;
+      }
+      );
+  }
+
   getProfile(endpoint: string, id: string) {
     const fetch = createApolloFetch({
       uri: endpoint,
@@ -456,7 +505,7 @@ query Register {
 
     return fetch({
       query: `query GetEvents($date1:String!,$date2:String) {
-        getEvents( date1: $date1 ,date2: $date2) {
+        data: getEvents( date1: $date1 ,date2: $date2) {
           date
     			person {
     			  profileId
@@ -475,7 +524,7 @@ query Register {
       `,
       variables: { date1: new Date().toISOString(), date2: undefined }
     }).then(res => {
-      return res.data;
+      return res.data.data;
     });
 
   }

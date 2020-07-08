@@ -78,6 +78,26 @@
   </mat-card-content>
 </mat-card>
 
+<mat-card *ngIf="isConnected()">
+  <mat-card-header>
+
+  </mat-card-header> 
+  <mat-card-content style="padding:16px;">
+    <mat-card-title>Relation <mat-icon>link</mat-icon></mat-card-title>
+    
+    <div *ngFor="let x of relations">
+      <a [href]="'person/'+x.person1.profileId">
+        {{ x.person1.firstName}} {{x.person1.lastName}}
+      </a>
+
+       -  <a [href]="'person/'+x.person2.profileId">
+        {{ x.person2.firstName}} {{x.person2.lastName}}
+      </a> -  {{x.link}}
+    </div>
+   
+  </mat-card-content>
+</mat-card>
+
 </div>
 
 
