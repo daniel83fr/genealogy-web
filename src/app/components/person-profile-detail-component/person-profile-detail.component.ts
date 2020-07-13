@@ -52,6 +52,9 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
       deathLocationCity: '',
       email: '',
       phone: '',
+      weddingDate: '',
+      weddingLocationCountry: '',
+      weddingLocationCity: ''
     });
     this.endpoint = this.state.get(STATE_KEY_API, '');
 
@@ -76,6 +79,9 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
       deathLocationCity: this.privateData?.deathLocationCity,
       email: this.privateData?.email,
       phone: this.privateData?.phone,
+      weddingDate: this.privateData?.weddingDate,
+      weddingLocationCountry: this.privateData?.weddingLocationCountry,
+      weddingLocationCity: this.privateData?.weddingLocationCity,
     });
   }
 
@@ -158,6 +164,17 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
 
     if (this.personEditForm.get('email').value !== this.data.privateData?.email && this.personEditForm.get('email').value) {
       privateChanges.email = this.personEditForm.get('email').value;
+    }
+
+    if (this.personEditForm.get('weddingDate').value !== this.data.privateData?.weddingDate && this.personEditForm.get('weddingDate').value) {
+      privateChanges.weddingDate = this.personEditForm.get('weddingDate').value;
+    }
+    if (this.personEditForm.get('weddingLocationCountry').value !== this.data.privateData?.weddingLocationCountry && this.personEditForm.get('weddingLocationCountry').value) {
+      privateChanges.weddingLocationCountry = this.personEditForm.get('weddingLocationCountry').value;
+    }
+
+    if (this.personEditForm.get('weddingLocationCity').value !== this.data.privateData?.weddingLocationCity && this.personEditForm.get('weddingLocationCity').value) {
+      privateChanges.weddingLocationCity = this.personEditForm.get('weddingLocationCity').value;
     }
 
     if (Object.keys(changes).length === 0 && changes.constructor === Object &&

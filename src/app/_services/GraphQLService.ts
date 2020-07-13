@@ -153,12 +153,15 @@ query Register {
         profile: getPrivateProfile( profileId : $_id) {
           birthDate
           deathDate
+          weddingDate
           isDead
           currentLocationCountry
           birthLocationCountry
+          weddingLocationCountry
           deathLocationCountry
           currentLocationCity
           birthLocationCity
+          weddingLocationCity
           deathLocationCity
           email
           phone
@@ -359,12 +362,15 @@ query Register {
                 _id
                 birthDate
                 deathDate
+                weddingDate
                 currentLocationCountry
                 birthLocationCountry
                 deathLocationCountry
+                weddingLocationCountry
                 currentLocationCity
                 birthLocationCity
-                deathLocationCityy
+                deathLocationCity
+                weddingLocationCity
                 email
                 phone
               },

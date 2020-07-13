@@ -140,6 +140,24 @@
     <input matInput type="email" placeholder="email" [value]="privateData?.email" [readonly]="!canEdit()"
       formControlName="email">
   </mat-form-field>
+
+  <mat-form-field *ngIf="editable" appearance="standard">
+    <mat-label>Wedding Date</mat-label>
+    <input matInput type="date" placeholder="weddingDate" [value]="privateData?.weddingDate" [readonly]="!canEdit()"
+      formControlName="weddingDate">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="editable" appearance="standard">
+    <mat-label>WeddingCountry</mat-label>
+    <input matInput type="text" placeholder="weddingLocationCountry" [value]="privateData?.weddingLocationCountry" [readonly]="!canEdit()"
+      formControlName="weddingLocationCountry">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="editable" appearance="standard">
+    <mat-label>WeddingCity</mat-label>
+    <input matInput type="text" placeholder="weddingLocationCity" [value]="privateData?.weddingLocationCity" [readonly]="!canEdit()"
+      formControlName="weddingLocationCity">
+  </mat-form-field>
 </div>
 
 
