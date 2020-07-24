@@ -74,7 +74,7 @@
 
   <mat-form-field *ngIf="editable" appearance="standard">
     <mat-label>BirthDate</mat-label>
-    <input matInput type="date" placeholder="birthDate" [value]="privateData?.birthDate" [readonly]="!canEdit()"
+    <input matInput type="text" placeholder="birthDate" [value]="privateData?.birthDate" [readonly]="!canEdit()"
       formControlName="birthDate">
   </mat-form-field>
 
@@ -94,7 +94,7 @@
 
   <mat-form-field *ngIf="editable" appearance="standard">
     <mat-label>DeathDate</mat-label>
-    <input matInput type="date" placeholder="deathDate" [value]="privateData?.deathDate" [readonly]="!canEdit()"
+    <input matInput type="text" placeholder="deathDate" [value]="privateData?.deathDate" [readonly]="!canEdit()"
       formControlName="deathDate">
   </mat-form-field>
 
@@ -143,7 +143,7 @@
 
   <mat-form-field *ngIf="editable" appearance="standard">
     <mat-label>Wedding Date</mat-label>
-    <input matInput type="date" placeholder="weddingDate" [value]="privateData?.weddingDate" [readonly]="!canEdit()"
+    <input matInput type="text" placeholder="weddingDate" [value]="privateData?.weddingDate" [readonly]="!canEdit()"
       formControlName="weddingDate">
   </mat-form-field>
 
