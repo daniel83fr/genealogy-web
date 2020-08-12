@@ -1,10 +1,12 @@
-import { Component, OnInit, Input, OnChanges, Inject, PLATFORM_ID, APP_ID } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Inject, PLATFORM_ID, APP_ID, SimpleChange, SimpleChanges } from '@angular/core';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { NotificationService } from 'src/app/_services/NotificationService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { Console } from 'console';
+import Logger from 'src/app/utils/logger';
 
 const STATE_KEY_API = makeStateKey('api');
 
@@ -20,11 +22,13 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
 
   @Input() data: any = {};
   @Input() privateData: any = {};
+  @Input() profileData: any = {};
   @Input() editable = false;
   endpoint: string;
 
   personEditForm: FormGroup = null;
   editMode = false;
+
   constructor(
     private state: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -34,6 +38,9 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
     private notif: NotificationService,
     private auth: AuthenticationService
   ) {
+
+   
+
     this.personEditForm = this.fb.group({
       id: '',
       firstName: '',
@@ -56,11 +63,27 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
       weddingLocationCountry: '',
       weddingLocationCity: ''
     });
+    
     this.endpoint = this.state.get(STATE_KEY_API, '');
 
 
   }
-  ngOnChanges(changes: any): void {
+ 
+  public returnZero() {
+    return 0;
+  }
+
+  public getPropertyTitle(str: string): string {
+    const str2 =  str.split(/(?=[A-Z])/).join(' ');
+    return str2.charAt(0).toUpperCase() + str2.slice(1);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const currentItem: SimpleChange = changes.profileData;
+    if(currentItem.currentValue){
+      this.profileData = Object.assign(changes.profileData.currentValue);
+    }
+  
     this.personEditForm = this.fb.group({
       id: this.data?._id,
       firstName: this.data?.firstName,

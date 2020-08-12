@@ -3,21 +3,26 @@
 </button>
 
  <div class="row" style="padding:16px;">
-
-
-
     <div class="column">
-
 
       <div class="row">
         <mat-card-title>Info</mat-card-title>
         <mat-icon>face</mat-icon>
       </div>
 
-
-
       <br>
-      <form [formGroup]="personEditForm" (ngSubmit)="onSubmit()">
+
+      <div *ngIf="!editMode">
+        <div *ngFor="let item of profileData | keyvalue: returnZero">
+          <mat-form-field *ngIf="item.value">
+            <mat-label>{{getPropertyTitle(item.key)}}</mat-label>
+            <input matInput readonly [value]="item.value">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div *ngIf="editMode">
+        <form [formGroup]="personEditForm" (ngSubmit)="onSubmit()">
 
           <!-- Standard Info -->
           <mat-form-field appearance="standard">
@@ -41,11 +46,9 @@
   
           <mat-form-field appearance="standard">
             <mat-label>Gender</mat-label>
-            <mat-select formControlName="gender" placeholder="gender" [value]="data?.gender" [disabled]="!canEdit()">
-              <mat-option value="Female">Female</mat-option>
-              <mat-option value="Male">Male</mat-option>
-            </mat-select>
+            <input matInput placeholder="gender" [value]="data?.gender" [readonly]="!canEdit()">
           </mat-form-field>
+
   
           <br>
 
@@ -62,7 +65,7 @@
           </div>
         
   
-          <mat-form-field *ngIf="!editable && data?.yearOfDate" appearance="standard">
+          <mat-form-field *ngIf="!editable && data?.yearOfDeath" appearance="standard">
             <mat-label>Death</mat-label>
   
             <input matInput type="string" placeholder="yearOfDeath" [value]="data?.yearOfDeath" readonly
@@ -97,7 +100,7 @@
     <input matInput type="text" placeholder="deathDate" [value]="privateData?.deathDate" [readonly]="!canEdit()"
       formControlName="deathDate">
   </mat-form-field>
-
+ 
   <mat-form-field *ngIf="editable" appearance="standard">
     <mat-label>DeathCountry</mat-label>
     <input matInput type="text" placeholder="deathLocationCountry" [value]="privateData?.deathLocationCountry" [readonly]="!canEdit()"
@@ -173,6 +176,9 @@
       </form>
       <br>
       <button *ngIf="canEdit()" mat-button color="warn" (click)="deleteProfile()">Delete Profile</button>
+      </div>
+
+     
     </div>
   </div>
 <div>

@@ -25,7 +25,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
 
   constructor(
     private state: TransferState,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: object,
     @Inject(APP_ID) private appId: string,
     private route: ActivatedRoute,
     private router: Router,
@@ -47,6 +47,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
   }
 
   privateData: any;
+  profileData: any;
   relations: any[];
   photos: any[];
   refreshing = false;
@@ -65,6 +66,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       this.id = cacheData?.currentPerson?._id;
       this.setTitle(cacheData?.currentPerson);
       this.data = cacheData;
+      this.updateProfileData();
       const svg = d3.select('.familyTree');
       new TreeDraw().draw(svg, cacheData);
     }
@@ -75,6 +77,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
         this.setTitle(data.currentPerson);
         this.setMeta(data);
         this.data = data;
+        this.updateProfileData();
         const svg = d3.select('.familyTree');
       new TreeDraw().draw(svg, data);
   
@@ -95,6 +98,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     this.api.getPrivateInfo(this.endpoint, id)
       .then(data => {
         this.privateData = data;
+        this.updateProfileData();
       });
   }
 
@@ -122,7 +126,37 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
     if (this.isConnected()) {
       this.getProfilePrivateById(this.profile);
       this.getRelation(this.profile, this.auth.getConnectedProfile());
+      
     }
+    this.updateProfileData();
+    
+  }
+
+  updateProfileData(){
+
+    const obj : any = {};
+    obj.firstName = this.data?.currentPerson?.firstName;
+    obj.lastName = this.data?.currentPerson?.lastName;
+    obj.gender =  this.data?.currentPerson?.gender;
+    obj.yearOfBirth =  this.data?.currentPerson?.yearOfBirth;
+    obj.birthDate =  this.privateData?.currentPerson?.birthDate;
+    obj.yearOfDeath =  this.data?.currentPerson?.yearOfDeath;
+    obj.deathDate =  this.privateData?.currentPerson?.deathDate;
+    obj.isDead =  this.data?.currentPerson?.isDead ?? false;
+    obj.currentLocationCountry =  this.privateData?.currentLocationCountry;
+    obj.birthLocationCountry =  this.privateData?.birthLocationCountry;
+    obj.deathLocationCountry =  this.privateData?.deathLocationCountry;
+    obj.currentLocationCity =  this.privateData?.currentLocationCity;
+    obj.birthLocationCity =  this.privateData?.birthLocationCity;
+    obj.deathLocationCity = this.privateData?.deathLocationCity;
+    obj.email =  this.privateData?.email;
+    obj.phone = this.privateData?.phone;
+    obj.weddingDate = this.privateData?.weddingDate;
+    obj.weddingLocationCountry = this.privateData?.weddingLocationCountry;
+    obj.weddingLocationCity = this.privateData?.weddingLocationCity;
+
+
+    this.profileData = obj;
   }
 
   ngOnInit() {
@@ -139,6 +173,7 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
       if (fs.existsSync(cacheFile)) {
         const rawdata = fs.readFileSync(cacheFile);
         this.data = JSON.parse(rawdata);
+        this.updateProfileData();
         this.state.set(STATE_KEY_ITEMS, this.data);
         this.id = this.data.currentPerson._id;
 
