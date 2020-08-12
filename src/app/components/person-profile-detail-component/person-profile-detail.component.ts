@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { Console } from 'console';
 import Logger from 'src/app/utils/logger';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 const STATE_KEY_API = makeStateKey('api');
 
@@ -23,15 +24,17 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
   @Input() data: any = {};
   @Input() privateData: any = {};
   @Input() profileData: any = {};
+  profileDataNew: any = {};
   @Input() editable = false;
   endpoint: string;
+  changes: any = {};
 
   personEditForm: FormGroup = null;
   editMode = false;
 
   constructor(
     private state: TransferState,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: object,
     @Inject(APP_ID) private appId: string,
     private api: GraphQLService,
     private fb: FormBuilder,
@@ -65,7 +68,7 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
     });
     
     this.endpoint = this.state.get(STATE_KEY_API, '');
-
+    this.onValueChanges();
 
   }
  
@@ -82,30 +85,33 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
     const currentItem: SimpleChange = changes.profileData;
     if(currentItem.currentValue){
       this.profileData = Object.assign(changes.profileData.currentValue);
+      this.profileDataNew = Object.assign({}, changes.profileData.currentValue);
+      
     }
   
     this.personEditForm = this.fb.group({
       id: this.data?._id,
-      firstName: this.data?.firstName,
-      lastName: this.data?.lastName,
-      gender: this.data?.gender,
-      yearOfBirth: this.data?.yearOfBirth,
-      birthDate: this.privateData?.birthDate,
-      yearOfDeath: this.data?.yearOfDeath,
-      deathDate: this.privateData?.deathDate,
-      isDead: this.data?.isDead ?? false,
-      currentLocationCountry: this.privateData?.currentLocationCountry,
-      birthLocationCountry: this.privateData?.birthLocationCountry,
-      deathLocationCountry: this.privateData?.deathLocationCountry,
-      currentLocationCity: this.privateData?.currentLocationCity,
-      birthLocationCity: this.privateData?.birthLocationCity,
-      deathLocationCity: this.privateData?.deathLocationCity,
-      email: this.privateData?.email,
-      phone: this.privateData?.phone,
-      weddingDate: this.privateData?.weddingDate,
-      weddingLocationCountry: this.privateData?.weddingLocationCountry,
-      weddingLocationCity: this.privateData?.weddingLocationCity,
+      firstName: this.profileDataNew?.firstName,
+      lastName: this.profileDataNew?.lastName,
+      gender: this.profileDataNew?.gender,
+      yearOfBirth: this.profileDataNew?.yearOfBirth,
+      birthDate: this.profileDataNew?.birthDate,
+      yearOfDeath: this.profileDataNew?.yearOfDeath,
+      deathDate: this.profileDataNew?.deathDate,
+      isDead: this.profileDataNew?.isDead ?? false,
+      currentLocationCountry: this.profileDataNew?.currentLocationCountry,
+      birthLocationCountry: this.profileDataNew?.birthLocationCountry,
+      deathLocationCountry: this.profileDataNew?.deathLocationCountry,
+      currentLocationCity: this.profileDataNew?.currentLocationCity,
+      birthLocationCity: this.profileDataNew?.birthLocationCity,
+      deathLocationCity: this.profileDataNew?.deathLocationCity,
+      email: this.profileDataNew?.email,
+      phone: this.profileDataNew?.phone,
+      weddingDate: this.profileDataNew?.weddingDate,
+      weddingLocationCountry: this.profileDataNew?.weddingLocationCountry,
+      weddingLocationCity: this.profileDataNew?.weddingLocationCity,
     });
+    this.onValueChanges();
   }
 
   getImage(): string {
@@ -128,8 +134,51 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
     return false;
   }
 
+
+  public syncChanges():void{
+
+    for (var key in this.profileDataNew) {
+      if(this.profileData[key] != this.personEditForm.get(key).value){
+        console.log(key)
+        this.changes[key] = this.personEditForm.get(key).value;
+      }
+      else{
+        delete this.changes[key];
+      }
+    }
+  }
+
+  onValueChanges(): void {
+  //   this.personEditForm.valueChanges
+  //   .pipe(
+  //     debounceTime(2000),
+  //     distinctUntilChanged()
+  // )
+  // .subscribe(val=>{
+  //       for (var key in this.profileDataNew) {
+  //         if(this.profileData[key] != val[key]){
+  //           console.log(key)
+  //           this.changes[key] = val[key];
+  //         }
+  //       }})
+  }
+
   ngOnInit(): void {
 
+    
+
+// this.personEditForm.valueChanges.subscribe(x => {
+
+//   //this.changes = [];
+//   const keys = Object.keys(this.profileDataNew);
+//   for (var key in keys) {
+//     if(this.profileData[key] != this.profileDataNew[key]){
+//       this.changes[key] = this.profileDataNew[key];
+//     }
+//   }
+// }
+
+//)
   }
 
   onSubmit() {

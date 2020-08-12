@@ -22,158 +22,22 @@
       </div>
 
       <div *ngIf="editMode">
+        <pre>{{changes | json}}</pre>
+        
         <form [formGroup]="personEditForm" (ngSubmit)="onSubmit()">
 
-          <!-- Standard Info -->
-          <mat-form-field appearance="standard">
-            <mat-label>FirstName</mat-label>
-            <input matInput placeholder="firstName" [value]="data?.firstName" [readonly]="!canEdit()"
-              formControlName="firstName">
+          <mat-form-field *ngFor="let item of profileDataNew | keyvalue: returnZero" appearance="standard">
+            <mat-label>{{getPropertyTitle(item.key)}}</mat-label>
+            <input matInput [placeholder]="item.key" [readonly]="!canEdit()"
+              [formControlName]="item.key" (focusout)="syncChanges()">
           </mat-form-field>
-  
-          <mat-form-field appearance="standard">
-            <mat-label>LastName</mat-label>
-            <input matInput placeholder="lastName" [value]="data?.lastName" [readonly]="!canEdit()"
-              formControlName="lastName">
-          </mat-form-field>
-  
-          <mat-form-field *ngIf="data?.maidenName!=''" appearance="standard">
-            <mat-label>MaidenName</mat-label>
-            <input matInput placeholder="maidenName" [value]="data?.maidenName" [readonly]="!canEdit()">
-          </mat-form-field>
-  
-          <br>
-  
-          <mat-form-field appearance="standard">
-            <mat-label>Gender</mat-label>
-            <input matInput placeholder="gender" [value]="data?.gender" [readonly]="!canEdit()">
-          </mat-form-field>
-
-  
-          <br>
-
-          <mat-form-field *ngIf="!editable" appearance="standard">
-            <mat-label>Birth</mat-label>
-            <input matInput type="string" placeholder="yearOfBirth" [value]="data?.yearOfBirth" readonly
-              formControlName="yearOfBirth">
-          </mat-form-field>
-
-          <br>
-          <div *ngIf="data?.isDead">
-            <mat-checkbox placeholder="isDead" [checked]="data?.isDead" [disabled]="!canEdit()">Died</mat-checkbox>
-            <br>
-          </div>
-        
-  
-          <mat-form-field *ngIf="!editable && data?.yearOfDeath" appearance="standard">
-            <mat-label>Death</mat-label>
-  
-            <input matInput type="string" placeholder="yearOfDeath" [value]="data?.yearOfDeath" readonly
-              formControlName="yearOfDeath">
-          </mat-form-field>
-
-
-  <!-- Private Info (only if connected)-->
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>BirthDate</mat-label>
-    <input matInput type="text" placeholder="birthDate" [value]="privateData?.birthDate" [readonly]="!canEdit()"
-      formControlName="birthDate">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>BirthCountry</mat-label>
-    <input matInput type="text" placeholder="birthLocationCountry" [value]="privateData?.birthLocationCountry" [readonly]="!canEdit()"
-      formControlName="birthLocationCountry">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>BirthCity</mat-label>
-    <input matInput type="text" placeholder="birthLocationCity" [value]="privateData?.birthLocationCity" [readonly]="!canEdit()"
-      formControlName="birthLocationCity">
-  </mat-form-field>
-
-  <div *ngIf="data?.isDead">
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>DeathDate</mat-label>
-    <input matInput type="text" placeholder="deathDate" [value]="privateData?.deathDate" [readonly]="!canEdit()"
-      formControlName="deathDate">
-  </mat-form-field>
- 
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>DeathCountry</mat-label>
-    <input matInput type="text" placeholder="deathLocationCountry" [value]="privateData?.deathLocationCountry" [readonly]="!canEdit()"
-      formControlName="deathLocationCountry">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>DeathCity</mat-label>
-    <input matInput type="text" placeholder="deathLocationCity" [value]="privateData?.deathLocationCountry" [readonly]="!canEdit()"
-      formControlName="deathLocationCity">
-  </mat-form-field>
-
-  </div>
-
-  <!-- Contact Info (only if alive / and connected) --> 
-  <div *ngIf="!data?.isDead">
-
- 
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>Location Country</mat-label>
-    <input matInput type="text" placeholder="currentLocationCountry" [value]="privateData?.currentLocationCountry" [readonly]="!canEdit()"
-      formControlName="currentLocationCountry">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>Location City</mat-label>
-    <input matInput type="text" placeholder="currentLocationCity" [value]="privateData?.currentLocationCity" [readonly]="!canEdit()"
-      formControlName="currentLocationCity">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>Phone</mat-label>
-    <input matInput type="text" placeholder="Phone" [value]="privateData?.phone" [readonly]="!canEdit()"
-      formControlName="phone">
-  </mat-form-field>
-
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>Email</mat-label>
-    <input matInput type="email" placeholder="email" [value]="privateData?.email" [readonly]="!canEdit()"
-      formControlName="email">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>Wedding Date</mat-label>
-    <input matInput type="text" placeholder="weddingDate" [value]="privateData?.weddingDate" [readonly]="!canEdit()"
-      formControlName="weddingDate">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>WeddingCountry</mat-label>
-    <input matInput type="text" placeholder="weddingLocationCountry" [value]="privateData?.weddingLocationCountry" [readonly]="!canEdit()"
-      formControlName="weddingLocationCountry">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="editable" appearance="standard">
-    <mat-label>WeddingCity</mat-label>
-    <input matInput type="text" placeholder="weddingLocationCity" [value]="privateData?.weddingLocationCity" [readonly]="!canEdit()"
-      formControlName="weddingLocationCity">
-  </mat-form-field>
-</div>
-
-
-      
-
-
-
-    
-
-
         <br>
         <button *ngIf="canEdit()" mat-stroked-button color="primary" [disabled]="!personEditForm.valid">Save</button>
       </form>
+
+
+
+      
       <br>
       <button *ngIf="canEdit()" mat-button color="warn" (click)="deleteProfile()">Delete Profile</button>
       </div>
