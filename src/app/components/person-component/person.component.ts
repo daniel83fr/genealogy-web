@@ -135,25 +135,25 @@ export class PersonComponentComponent implements OnInit, AfterContentInit, OnCha
   updateProfileData(){
 
     const obj : any = {};
-    obj.firstName = this.data?.currentPerson?.firstName;
-    obj.lastName = this.data?.currentPerson?.lastName;
-    obj.gender =  this.data?.currentPerson?.gender;
-    obj.yearOfBirth =  this.data?.currentPerson?.yearOfBirth;
-    obj.birthDate =  this.privateData?.currentPerson?.birthDate;
-    obj.yearOfDeath =  this.data?.currentPerson?.yearOfDeath;
-    obj.deathDate =  this.privateData?.currentPerson?.deathDate;
-    obj.isDead =  this.data?.currentPerson?.isDead ?? false;
-    obj.currentLocationCountry =  this.privateData?.currentLocationCountry;
-    obj.birthLocationCountry =  this.privateData?.birthLocationCountry;
-    obj.deathLocationCountry =  this.privateData?.deathLocationCountry;
-    obj.currentLocationCity =  this.privateData?.currentLocationCity;
-    obj.birthLocationCity =  this.privateData?.birthLocationCity;
-    obj.deathLocationCity = this.privateData?.deathLocationCity;
-    obj.email =  this.privateData?.email;
-    obj.phone = this.privateData?.phone;
-    obj.weddingDate = this.privateData?.weddingDate;
-    obj.weddingLocationCountry = this.privateData?.weddingLocationCountry;
-    obj.weddingLocationCity = this.privateData?.weddingLocationCity;
+    obj.firstName = this.data?.currentPerson?.firstName ?? '';
+    obj.lastName = this.data?.currentPerson?.lastName ?? '';
+    obj.gender =  this.data?.currentPerson?.gender ?? '';
+    obj.yearOfBirth =  this.data?.yearOfBirth ??  '';
+    obj.birthDate =  this.privateData?.birthDate ?? '';
+    obj.yearOfDeath =  this.data?.currentPerson?.yearOfDeath ?? '';
+    obj.deathDate =  this.privateData?.deathDate ?? '';
+    obj.isDead =  this.data?.currentPerson?.isDead ?? '';
+    obj.currentLocationCountry =  this.privateData?.currentLocationCountry ?? '';
+    obj.birthLocationCountry =  this.privateData?.birthLocationCountry ?? '';
+    obj.deathLocationCountry =  this.privateData?.deathLocationCountry ?? '';
+    obj.currentLocationCity =  this.privateData?.currentLocationCity ?? '';
+    obj.birthLocationCity =  this.privateData?.birthLocationCity ?? '';
+    obj.deathLocationCity = this.privateData?.deathLocationCity ?? '';
+    obj.email =  this.privateData?.email ?? '';
+    obj.phone = this.privateData?.phone ?? '';
+    obj.weddingDate = this.privateData?.weddingDate ?? '';
+    obj.weddingLocationCountry = this.privateData?.weddingLocationCountry ?? '';
+    obj.weddingLocationCity = this.privateData?.weddingLocationCity ?? '';
 
 
     this.profileData = obj;

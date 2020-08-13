@@ -131,7 +131,7 @@ query Register {
   getPrivateInfo(endpoint: string, id: string) {
 
     const token = localStorage.getItem('token');
-    if(token == null){
+    if (token == null){
       console.log("token is null");
       return null;
     }
@@ -183,7 +183,7 @@ query Register {
   getRelation(endpoint: string, id: string, id2: string) {
 
     const token = localStorage.getItem('token');
-    if(token == null){
+    if (token == null){
       console.log("token is null");
       return null;
     }
@@ -302,7 +302,7 @@ query Register {
             `,
       variables: { id }
     })
-    .then(res=>{
+    .then(res => {
       let profile = res.data.profile;
       return profile;
 
@@ -325,21 +325,18 @@ query Register {
     });
   }
 
-  updateProfile(endpoint: string, id: string, changes: any, privateChange: any, updateUser: string) {
+  updateProfile(endpoint: string, id: string, changes: any, updateUser: string) {
     const token = localStorage.getItem('token');
 
-    if(changes!= {})
+    if (changes != {})
     {
       changes['updatedBy'] = updateUser;
     }
 
-    if(privateChange!= {})
-    {
-      privateChange['updatedBy'] = updateUser;
-    }
+   
 
     const patchString = this.generatePatch(changes);
-    const privatePatchString = this.generatePatch(privateChange);
+    const privatePatchString = this.generatePrivatePatch(changes);
 
 
     const fetch = createApolloFetch({
@@ -383,7 +380,9 @@ query Register {
   }
 
   private generatePatch(changes: any) {
-    const objectKeys = Object.keys(changes);
+    let objectKeys = Object.keys(changes);
+    const fields = [ 'firstName', 'lastName', 'maidenName', 'gender', 'isDead'];
+    objectKeys = objectKeys.filter(value => fields.includes(value));
     let patchString = '{';
     objectKeys.forEach(i => {
       patchString += i;
@@ -394,6 +393,24 @@ query Register {
     patchString += '}';
     return patchString;
   }
+
+  private generatePrivatePatch(changes: any) {
+    let objectKeys = Object.keys(changes);
+    const fields = [  'birthDate', 'deathDate', 'weddingDate', 'currentLocationCountry', 'birthLocationCountry',
+    'deathLocationCountry', 'weddingLocationCountry', 'currentLocationCity', 'birthLocationCity', 'deathLocationCity',
+    'weddingLocationCity', 'email', 'phone'];
+    objectKeys = objectKeys.filter(value => fields.includes(value));
+    let patchString = '{';
+    objectKeys.forEach(i => {
+      patchString += i;
+      patchString += ':';
+      patchString += '"' + changes[i] + '"';
+      patchString += ',';
+    });
+    patchString += '}';
+    return patchString;
+  }
+
 
   createPerson(endpoint: string, changes: any) {
     const fetch = createApolloFetch({

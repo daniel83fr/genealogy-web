@@ -11,10 +11,9 @@
       </div>
 
       <br>
-
       <div *ngIf="!editMode">
         <div *ngFor="let item of profileData | keyvalue: returnZero">
-          <mat-form-field *ngIf="item.value">
+          <mat-form-field *ngIf="item.value && item.value != ''">
             <mat-label>{{getPropertyTitle(item.key)}}</mat-label>
             <input matInput readonly [value]="item.value">
           </mat-form-field>
@@ -26,10 +25,10 @@
         
         <form [formGroup]="personEditForm" (ngSubmit)="onSubmit()">
 
-          <mat-form-field *ngFor="let item of profileDataNew | keyvalue: returnZero" appearance="standard">
+          <mat-form-field *ngFor="let item of profileDataNew | keyvalue: returnZero" appearance="standard" >
             <mat-label>{{getPropertyTitle(item.key)}}</mat-label>
-            <input matInput [placeholder]="item.key" [readonly]="!canEdit()"
-              [formControlName]="item.key" (focusout)="syncChanges()">
+            <input matInput [placeholder]="item.key" 
+              [formControlName]="item.key" (focusout)="syncChanges()" [readonly]="item.key == 'yearOfBirth' || item.key == 'yearOfDeath'">
           </mat-form-field>
         <br>
         <button *ngIf="canEdit()" mat-stroked-button color="primary" [disabled]="!personEditForm.valid">Save</button>
