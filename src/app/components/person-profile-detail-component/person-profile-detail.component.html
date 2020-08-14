@@ -56,13 +56,28 @@
         <input matInput readonly [value]="profileData.birthLocationCity">
       </mat-form-field>
 
-      <!-- yearOfDeath: string;
-      deathDate: string;
+      Death:<br>
+      <mat-form-field>
+        <mat-label>Year</mat-label>
+        <input matInput readonly [value]="profileData.yearOfDeath">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Date</mat-label>
+        <input matInput readonly [value]="profileData.deathDate">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Country</mat-label>
+        <input matInput readonly [value]="profileData.deathLocationCountry">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>City</mat-label>
+        <input matInput readonly [value]="profileData.deathLocationCity">
+      </mat-form-field>
+      <!-- 
+     
       isDead: string;
       currentLocationCountry: string;
-      deathLocationCountry: string;
       currentLocationCity: string;
-      deathLocationCity: string;
       email: string;
       phone: string;
       weddingDate: string;
