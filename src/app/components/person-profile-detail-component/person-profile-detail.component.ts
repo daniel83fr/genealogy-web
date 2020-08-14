@@ -25,8 +25,6 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
   personEditForm: FormGroup = null;
   editMode = false;
 
-  @Input() data: any = {};
-  @Input() privateData: any = {};
   @Input() editable = false;
 
   constructor(
@@ -55,18 +53,8 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
     if(currentItem.currentValue){
       this.profileData = Object.assign(changes.profileData.currentValue);
       this.profileDataNew = Object.assign({}, changes.profileData.currentValue);
-      
     }
-  
-   
     this.personEditForm = this.fb.group(this.profileDataNew);
-  }
-
-  getImage(): string {
-    if (this.data?.gender === 'Female') {
-      return '../../../assets/img/profile_female.jpg';
-    }
-    return '../../../assets/img/profile_male.jpg';
   }
 
   getRole(user): string {
@@ -114,7 +102,7 @@ export class PersonProfileDetailComponent implements OnInit, OnChanges {
   }
 
   deleteProfile() {
-    const r = confirm(`Delete ${this.data._id}?`);
+    const r = confirm(`Delete ${this.id}?`);
     if (r === true) {
       // OK
 
