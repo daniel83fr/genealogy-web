@@ -30,7 +30,8 @@
 
       <div>
         <mat-divider></mat-divider>
-        Birth:<br>
+        Birth:
+        <mat-divider></mat-divider>
         <mat-form-field *ngIf="profileData.yearOfBirth != ''">
           <mat-label>Year</mat-label>
           <input matInput readonly [value]="profileData.yearOfBirth">
@@ -52,7 +53,8 @@
       
       <div *ngIf="profileData.isDead">
         <mat-divider></mat-divider>
-        Death:<br>
+        Death:
+        <mat-divider></mat-divider>
         <mat-form-field *ngIf="profileData.yearOfDeath != ''">
           <mat-label>Year</mat-label>
           <input matInput readonly [value]="profileData.yearOfDeath">
@@ -73,7 +75,8 @@
 
       <div *ngIf="!profileData.isDead && (profileData.currentLocationCountry != '' || profileData.currentLocationCity != '')">
         <mat-divider></mat-divider>
-        CurrentLocation:<br>
+        CurrentLocation:
+        <mat-divider></mat-divider>
         <mat-form-field *ngIf="profileData.currentLocationCountry != ''">
           <mat-label>Country</mat-label>
           <input matInput readonly [value]="profileData.currentLocationCountry">
@@ -86,7 +89,8 @@
 
       <div *ngIf="profileData.weddingDate != '' || profileData.weddingLocationCountry != '' || profileData.weddingLocationCity != ''">
         <mat-divider></mat-divider>
-        Wedding:<br>
+        Wedding:
+        <mat-divider></mat-divider>
         <mat-form-field *ngIf="profileData.weddingDate != ''">
           <mat-label>Date</mat-label>
           <input matInput readonly [value]="profileData.weddingDate">
@@ -103,7 +107,8 @@
      
       <div *ngIf="profileData.email != '' || profileData.phone != ''">
         <mat-divider></mat-divider>
-        Personal Info:<br>
+        Personal Info:
+        <mat-divider></mat-divider>
         <mat-form-field *ngIf="profileData.email != ''">
           <mat-label>Email</mat-label>
           <input matInput readonly [value]="profileData.email">
