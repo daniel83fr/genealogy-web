@@ -7,7 +7,7 @@
   <div class="column">
 
     <div class="row">
-      <mat-card-title>Info2</mat-card-title>
+      <mat-card-title>Info</mat-card-title>
       <mat-icon>face</mat-icon>
     </div>
 
@@ -28,26 +28,30 @@
         <input matInput readonly [value]="profileData.gender">
       </mat-form-field>
 
-      <br>
-      Birth:<br>
-      <mat-form-field *ngIf="profileData.yearOfBirth != ''">
-        <mat-label>Year</mat-label>
-        <input matInput readonly [value]="profileData.yearOfBirth">
-      </mat-form-field>
-      <mat-form-field *ngIf="profileData.birthDate != ''">
-        <mat-label>Date</mat-label>
-        <input matInput readonly [value]="profileData.birthDate">
-      </mat-form-field>
-      <mat-form-field *ngIf="profileData.birthLocationCountry != ''">
-        <mat-label>Country</mat-label>
-        <input matInput readonly [value]="profileData.birthLocationCountry">
-      </mat-form-field>
-      <mat-form-field *ngIf="profileData.birthLocationCity != ''">
-        <mat-label>City</mat-label>
-        <input matInput readonly [value]="profileData.birthLocationCity">
-      </mat-form-field>
-      <br>
+      <div>
+        <mat-divider></mat-divider>
+        Birth:<br>
+        <mat-form-field *ngIf="profileData.yearOfBirth != ''">
+          <mat-label>Year</mat-label>
+          <input matInput readonly [value]="profileData.yearOfBirth">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.birthDate != ''">
+          <mat-label>Date</mat-label>
+          <input matInput readonly [value]="profileData.birthDate">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.birthLocationCountry != ''">
+          <mat-label>Country</mat-label>
+          <input matInput readonly [value]="profileData.birthLocationCountry">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.birthLocationCity != ''">
+          <mat-label>City</mat-label>
+          <input matInput readonly [value]="profileData.birthLocationCity">
+        </mat-form-field>
+      </div>
+      
+      
       <div *ngIf="profileData.isDead">
+        <mat-divider></mat-divider>
         Death:<br>
         <mat-form-field *ngIf="profileData.yearOfDeath != ''">
           <mat-label>Year</mat-label>
@@ -67,8 +71,8 @@
         </mat-form-field>
       </div>
 
-      <br>
-      <div *ngIf="!profileData.isDead">
+      <div *ngIf="!profileData.isDead && (profileData.currentLocationCountry != '' || profileData.currentLocationCity != '')">
+        <mat-divider></mat-divider>
         CurrentLocation:<br>
         <mat-form-field *ngIf="profileData.currentLocationCountry != ''">
           <mat-label>Country</mat-label>
@@ -80,31 +84,36 @@
         </mat-form-field>
       </div>
 
-      <br>
-      Wedding:<br>
-      <mat-form-field *ngIf="profileData.weddingDate != ''">
-        <mat-label>Date</mat-label>
-        <input matInput readonly [value]="profileData.weddingDate">
-      </mat-form-field>
-      <mat-form-field *ngIf="profileData.weddingLocationCountry != ''">
-        <mat-label>Country</mat-label>
-        <input matInput readonly [value]="profileData.weddingLocationCountry">
-      </mat-form-field>
-      <mat-form-field *ngIf="profileData.weddingLocationCity != ''">
-        <mat-label>City</mat-label>
-        <input matInput readonly [value]="profileData.weddingLocationCity">
-      </mat-form-field>
-
-      <br>
-      Personal Info:<br>
-      <mat-form-field *ngIf="profileData.email != ''">
-        <mat-label>Email</mat-label>
-        <input matInput readonly [value]="profileData.email">
-      </mat-form-field>
-      <mat-form-field *ngIf="profileData.phone != ''">
-        <mat-label>Phone</mat-label>
-        <input matInput readonly [value]="profileData.phone">
-      </mat-form-field>
+      <div *ngIf="profileData.weddingDate != '' || profileData.weddingLocationCountry != '' || profileData.weddingLocationCity != ''">
+        <mat-divider></mat-divider>
+        Wedding:<br>
+        <mat-form-field *ngIf="profileData.weddingDate != ''">
+          <mat-label>Date</mat-label>
+          <input matInput readonly [value]="profileData.weddingDate">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.weddingLocationCountry != ''">
+          <mat-label>Country</mat-label>
+          <input matInput readonly [value]="profileData.weddingLocationCountry">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.weddingLocationCity != ''">
+          <mat-label>City</mat-label>
+          <input matInput readonly [value]="profileData.weddingLocationCity">
+        </mat-form-field>
+      </div>
+     
+      <div *ngIf="profileData.email != '' || profileData.phone != ''">
+        <mat-divider></mat-divider>
+        Personal Info:<br>
+        <mat-form-field *ngIf="profileData.email != ''">
+          <mat-label>Email</mat-label>
+          <input matInput readonly [value]="profileData.email">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.phone != ''">
+          <mat-label>Phone</mat-label>
+          <input matInput readonly [value]="profileData.phone">
+        </mat-form-field>
+      </div>
+      
 
     </div>
     <br />
