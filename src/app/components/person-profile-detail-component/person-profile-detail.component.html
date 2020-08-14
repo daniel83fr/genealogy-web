@@ -13,17 +13,7 @@
 
     <br>
 
-    <!-- <div *ngIf="!editMode">
-      <div *ngFor="let item of ['firstName', 'lastName']">
-        <h1>{{item}}</h1>
-        <mat-form-field *ngIf="profileData[item] && profileData[item] != ''">
-          <mat-label>{{getPropertyTitle(profileData[item])}}</mat-label>
-          <input matInput readonly [value]="profileData[item]">
-        </mat-form-field>
-      </div>
-    </div> -->
-
-   
+    <div *ngIf="!editMode">
       <mat-form-field>
         <mat-label>Firstname</mat-label>
         <input matInput readonly [value]="profileData.firstName">
@@ -32,59 +22,92 @@
         <mat-label>Lastname</mat-label>
         <input matInput readonly [value]="profileData.lastName">
       </mat-form-field>
+      <br>
       <mat-form-field>
         <mat-label>Gender</mat-label>
         <input matInput readonly [value]="profileData.gender">
       </mat-form-field>
 
-
+      <br>
       Birth:<br>
-      <mat-form-field>
+      <mat-form-field *ngIf="profileData.yearOfBirth != ''">
         <mat-label>Year</mat-label>
         <input matInput readonly [value]="profileData.yearOfBirth">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="profileData.birthDate != ''">
         <mat-label>Date</mat-label>
         <input matInput readonly [value]="profileData.birthDate">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="profileData.birthLocationCountry != ''">
         <mat-label>Country</mat-label>
         <input matInput readonly [value]="profileData.birthLocationCountry">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="profileData.birthLocationCity != ''">
         <mat-label>City</mat-label>
         <input matInput readonly [value]="profileData.birthLocationCity">
       </mat-form-field>
+      <br>
+      <div *ngIf="profileData.isDead">
+        Death:<br>
+        <mat-form-field *ngIf="profileData.yearOfDeath != ''">
+          <mat-label>Year</mat-label>
+          <input matInput readonly [value]="profileData.yearOfDeath">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.deathDate != ''">
+          <mat-label>Date</mat-label>
+          <input matInput readonly [value]="profileData.deathDate">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.deathLocationCountry != ''">
+          <mat-label>Country</mat-label>
+          <input matInput readonly [value]="profileData.deathLocationCountry">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.deathLocationCity != ''">
+          <mat-label>City</mat-label>
+          <input matInput readonly [value]="profileData.deathLocationCity">
+        </mat-form-field>
+      </div>
 
-      Death:<br>
-      <mat-form-field>
-        <mat-label>Year</mat-label>
-        <input matInput readonly [value]="profileData.yearOfDeath">
-      </mat-form-field>
-      <mat-form-field>
+      <br>
+      <div *ngIf="!profileData.isDead">
+        CurrentLocation:<br>
+        <mat-form-field *ngIf="profileData.currentLocationCountry != ''">
+          <mat-label>Country</mat-label>
+          <input matInput readonly [value]="profileData.currentLocationCountry">
+        </mat-form-field>
+        <mat-form-field *ngIf="profileData.currentLocationCity != ''">
+          <mat-label>City</mat-label>
+          <input matInput readonly [value]="profileData.currentLocationCity">
+        </mat-form-field>
+      </div>
+
+      <br>
+      Wedding:<br>
+      <mat-form-field *ngIf="profileData.weddingDate != ''">
         <mat-label>Date</mat-label>
-        <input matInput readonly [value]="profileData.deathDate">
+        <input matInput readonly [value]="profileData.weddingDate">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="profileData.weddingLocationCountry != ''">
         <mat-label>Country</mat-label>
-        <input matInput readonly [value]="profileData.deathLocationCountry">
+        <input matInput readonly [value]="profileData.weddingLocationCountry">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="profileData.weddingLocationCity != ''">
         <mat-label>City</mat-label>
-        <input matInput readonly [value]="profileData.deathLocationCity">
+        <input matInput readonly [value]="profileData.weddingLocationCity">
       </mat-form-field>
-      <!-- 
-     
-      isDead: string;
-      currentLocationCountry: string;
-      currentLocationCity: string;
-      email: string;
-      phone: string;
-      weddingDate: string;
-      weddingLocationCountry: string;
-      weddingLocationCity: string; -->
 
-<br/>
+      <br>
+      Personal Info:<br>
+      <mat-form-field *ngIf="profileData.email != ''">
+        <mat-label>Email</mat-label>
+        <input matInput readonly [value]="profileData.email">
+      </mat-form-field>
+      <mat-form-field *ngIf="profileData.phone != ''">
+        <mat-label>Phone</mat-label>
+        <input matInput readonly [value]="profileData.phone">
+      </mat-form-field>
+
+    </div>
+    <br />
 
     <div *ngIf="editMode">
       <pre>{{changes | json}}</pre>
