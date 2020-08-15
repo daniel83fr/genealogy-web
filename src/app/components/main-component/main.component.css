@@ -34,3 +34,14 @@
   td, th {
     width: 25%;
   }
+
+  .events {
+    width: 100%;
+    margin: 5px;
+  }
+
+  .recent-activity {
+    width: 100%;
+    margin: 5px;
+  }
+
