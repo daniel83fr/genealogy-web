@@ -7,10 +7,14 @@ import { HelpComponent } from './components/help-component/help.component';
 
 import { LoginComponent } from './components/login-component/login.component';
 import { ErrorComponent } from './components/error-component/error.component';
+import { AboutComponent } from './components/about-component/about.component';
 
 const routes: Routes = [
   {
     path: 'admin',      component: AdminComponent
+  },
+  {
+    path: 'about',      component: AboutComponent
   },
   {
     path: 'help',      component: HelpComponent

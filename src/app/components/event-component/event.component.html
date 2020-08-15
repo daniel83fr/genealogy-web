@@ -1,0 +1,9 @@
+<div>
+  <div *ngIf="events.length == 0">
+    No event found.
+  </div>
+        <div *ngFor="let b of events">
+          {{b.type}} - {{b.person?.firstName}} {{b.person?.lastName}} 
+          {{b.person2?.firstName}} {{b.person2?.lastName}} - {{b.anniversary}} Anniversary
+        </div>
+</div>

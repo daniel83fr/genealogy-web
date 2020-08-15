@@ -1,5 +1,7 @@
 import { LoginComponent } from './components/login-component/login.component';
-import { AdminComponent } from './components/admin-component/admin.component';;
+import { AdminComponent } from './components/admin-component/admin.component';
+import { AboutComponent } from './components/about-component/about.component';
+import { EventComponent } from './components/event-component/event.component';
 import { FooterComponent } from './components/footer-component/footer.component';
 import { PersonLinkComponent } from './components/person-link-component/person-link.component';
 import { PersonLinksComponent } from './components/person-links-component/person-links.component';
@@ -20,6 +22,7 @@ export default [
     ErrorComponent,
     MainComponent,
     AdminComponent,
+    AboutComponent,
     NavComponent,
     HelpComponent,
     LoginComponent,
@@ -31,5 +34,6 @@ export default [
     PersonProfileComponent,
     PersonProfileDetailComponent,
     PhotoComponent,
-    PersonSearchComponent
+    PersonSearchComponent,
+    EventComponent
 ]

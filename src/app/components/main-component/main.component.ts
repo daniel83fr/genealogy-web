@@ -34,7 +34,6 @@ export class MainComponent implements OnInit, AfterContentInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   images: any[];
   audit: any[];
-  events: any;
   inputMessage = '';
   messages = '';
 
@@ -144,9 +143,7 @@ export class MainComponent implements OnInit, AfterContentInit {
       .then(res =>
         this.audit = res);
 
-    this.graphQLService.getTodaysEvents(endpoint)
-      .then(res =>
-        this.events = res);
+   
   }
 
   search() {
