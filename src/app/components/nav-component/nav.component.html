@@ -1,37 +1,49 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
 
-    <button mat-flat-button color="primary" routerLink="/" aria-label="Home">
+  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/">
+    <picture   height="40" class="hidden-on-mobile">
+      <source srcset="../../assets/img/logo.webp" type="image/webp">
+      <source srcset="../../../assets/img/logo.png" type="image/png">
+      <img src="../../../assets/img/logo.png" alt="Logo" loading="lazy" height="40">
+    </picture>
 
-      <picture   height="40" class="hidden-on-mobile">
-        <source srcset="../../assets/img/logo.webp" type="image/webp">
-        <source srcset="../../../assets/img/logo.png" type="image/png">
-        <img src="../../../assets/img/logo.png" alt="Logo" loading="lazy" height="40">
-      </picture>
+    Res01.com</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-      
-      <span class="hidden-on-mobile">www.res01.com</span>
-    </button>
 
-    <span style="flex: auto;"></span>
-    <button *ngIf="!isConnected()" mat-raised-button color="primary" routerLink="/login" aria-label="Login">Login</button>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
 
-    <button *ngIf="isConnected()" mat-icon-button aria-label="my profile" [matMenuTriggerFor]="menu" aria-label="My profile">
-      <mat-icon>person</mat-icon>
-    </button>
-    <mat-label *ngIf="isConnected()" style="font-size:10px">Connected as {{getConnectedLogin()}}</mat-label>
 
-    <mat-menu  #menu="matMenu">
-      <button mat-menu-item (click)="getConnectedProfile()" aria-label="profile">Profile</button>
-      <button mat-menu-item routerLink="/admin" aria-label="admin" >Admin</button>
-      <button mat-menu-item routerLink="/login" aria-label="change credentials" >Change credentials</button>
-      <button mat-menu-item (click)="logout()" aria-label="logout">Logout</button>
-    </mat-menu>
+  <span style="flex: auto;"></span>
+  
 
-    <button mat-icon-button routerLink="/help">
-      <mat-icon>help_outline</mat-icon>
-    </button>
 
-    <button *ngIf="environnement!='production'" mat-raised-button color="warn" aria-label="env">{{environnement}}</button>
-  </mat-toolbar-row>
-</mat-toolbar>
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+
+      <a  *ngIf="!isConnected()" class="btn btn-primary" href="/login" role="button">Login</a>
+
+     </li>
+  </ul>
+
+  <button *ngIf="isConnected()" mat-icon-button aria-label="my profile" [matMenuTriggerFor]="menu" aria-label="My profile">
+    <mat-icon>person</mat-icon>
+  </button>
+  <mat-label *ngIf="isConnected()" style="font-size:10px">Connected as {{getConnectedLogin()}}</mat-label>
+
+  <mat-menu  #menu="matMenu">
+    <button mat-menu-item (click)="getConnectedProfile()" aria-label="profile">Profile</button>
+    <button mat-menu-item routerLink="/admin" aria-label="admin" >Admin</button>
+    <button mat-menu-item routerLink="/login" aria-label="change credentials" >Change credentials</button>
+    <button mat-menu-item (click)="logout()" aria-label="logout">Logout</button>
+  </mat-menu>
+
+  <button mat-icon-button routerLink="/help">
+    <mat-icon>help_outline</mat-icon>
+  </button>
+
+  <button *ngIf="environnement!='production'" mat-raised-button color="warn" aria-label="env">{{environnement}}</button>
+
+</nav>
