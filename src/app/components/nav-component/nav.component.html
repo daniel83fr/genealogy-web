@@ -29,9 +29,9 @@
   </ul>
 
   <button *ngIf="isConnected()" mat-icon-button aria-label="my profile" [matMenuTriggerFor]="menu" aria-label="My profile">
-    <mat-icon>person</mat-icon>
+    <mat-icon color="primary">person</mat-icon>
   </button>
-  <mat-label *ngIf="isConnected()" style="font-size:10px">Connected as {{getConnectedLogin()}}</mat-label>
+  <mat-label *ngIf="isConnected()" style="font-size:10px; color:white">Connected as {{getConnectedLogin()}}</mat-label>
 
   <mat-menu  #menu="matMenu">
     <button mat-menu-item (click)="getConnectedProfile()" aria-label="profile">Profile</button>
@@ -41,7 +41,7 @@
   </mat-menu>
 
   <button mat-icon-button routerLink="/help">
-    <mat-icon>help_outline</mat-icon>
+    <mat-icon color="primary">help_outline</mat-icon>
   </button>
 
   <button *ngIf="environnement!='production'" mat-raised-button color="warn" aria-label="env">{{environnement}}</button>
