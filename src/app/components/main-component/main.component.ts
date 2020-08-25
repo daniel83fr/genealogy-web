@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ClientCacheService } from 'src/app/_services/ClientCacheService';
 import LoggerService from 'src/app/_services/logger_service';
 import { Inject } from '@angular/core';
@@ -26,6 +26,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   logger: LoggerService = new LoggerService('main');
 
+  data: any = [];
   dataSource: any;
   displayedColumns = [];
   date;
@@ -36,12 +37,15 @@ export class MainComponent implements OnInit, AfterContentInit {
   audit: any[];
   inputMessage = '';
   messages = '';
+  query: any;
+  page: string;
 
   constructor(
     private state: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(APP_ID) private appId: string,
     private graphQLService: GraphQLService,
+    private route: ActivatedRoute,
     private router: Router,
     private auth: AuthenticationService,
     private cacheService: ClientCacheService,
@@ -69,6 +73,8 @@ export class MainComponent implements OnInit, AfterContentInit {
 
     ]);
 
+    this.query =  this.route.snapshot.paramMap.get('query');
+    this.page = this.route.snapshot.paramMap.get('page');
     if (isPlatformServer(this.platformId)) {
       this.state.set(STATE_KEY_ENDPOINT, process.env.GENEALOGY_API);
 
@@ -79,7 +85,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
       if (fs.existsSync(cacheFile)) {
         const rawdata = fs.readFileSync(cacheFile);
-        let data = JSON.parse(rawdata);
+        let data:any[] = JSON.parse(rawdata);
         this.state.set(STATE_KEY_USERLIST, data);
         this.fillGrid(data);
 
@@ -103,6 +109,7 @@ export class MainComponent implements OnInit, AfterContentInit {
       this.graphQLService.getPersonList(process.env.GENEALOGY_API)
         .then(res => {
             this.fillGrid(res);
+            const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(res.data));
         });
 
 
@@ -151,11 +158,26 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.fillGrid(cacheData)
   }
 
-  private fillGrid(data: any) {
-    this.dataSource = new MatTableDataSource(data);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.displayedColumns = ['firstName', 'lastName', 'link', 'gender'];
+  private filterValid(row:any, query: string) : boolean{
+    var keys = (query.toLocaleLowerCase()??"").split(' ');
+    for (const element of keys) {
+      if(!(row.firstName?.toLowerCase().includes(element)?? false) &&
+      !(row.lastName?.toLowerCase().includes(element)??false) &&
+      !(row.maidenName?.toLowerCase().includes(element)??false)){
+        return false;
+      }
+    }
+    return true;
+
+  }
+
+  private fillGrid(data: any[]) {
+    this.data = data.filter(x=>this.filterValid(x, this.query)).sort(() => Math.random() - Math.random()).slice(0, 20);
+
+    // this.dataSource = new MatTableDataSource(data);
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
+    // this.displayedColumns = ['firstName', 'lastName', 'link', 'gender'];
   }
 
   getTitle(element: any) {

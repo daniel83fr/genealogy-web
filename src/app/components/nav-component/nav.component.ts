@@ -15,6 +15,7 @@ export class NavComponent implements OnInit, AfterContentInit {
 
   connectedUser = '';
   profileLink = '/';
+  query='';
 
   constructor(
     private graphQLService: GraphQLService,

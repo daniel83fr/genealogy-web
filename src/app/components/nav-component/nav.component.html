@@ -13,9 +13,7 @@
   </button>
 
 
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-
-
+  
   <span style="flex: auto;"></span>
   
 
@@ -45,5 +43,9 @@
   </button>
 
   <button *ngIf="environnement!='production'" mat-raised-button color="warn" aria-label="env">{{environnement}}</button>
+  <input class="form-control form-control-dark w-100" type="text" [(ngModel)]="query" placeholder="Search" aria-label="Search">
+  <a [href]="'search/'+query">Search</a>
+
+  
 
 </nav>

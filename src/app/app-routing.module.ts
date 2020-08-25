@@ -26,6 +26,12 @@ const routes: Routes = [
     path: 'person/:profile',      component: PersonComponentComponent
   },
   {
+    path: 'search/:query/:page',      component: MainComponent
+  },
+  {
+    path: 'search/:query',      component: MainComponent
+  },
+  {
     path: '',      component: MainComponent
   },
   {

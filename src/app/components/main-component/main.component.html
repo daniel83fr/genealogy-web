@@ -1,4 +1,4 @@
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" class="hidden-on-mobile">
   <ol class="breadcrumb">
     <li class="breadcrumb-item active"><a href="/">Home</a></li>
   </ol>
@@ -29,74 +29,20 @@
     </div>
   </div>
   <br>
-  
+
+
+
   <div class="card" style="width: 800px;padding: 10px;border-top-width: 5px;">
     <h2 class="card-header"> <mat-icon>people</mat-icon> Search</h2>
     <div class="card-body">
-      <h5 class="card-title">Find a person by name.</h5>
-      <p class="card-text">
-        
-        <mat-card style="width: 100%;margin: 5px;">
-          <mat-card-header>
-            <mat-icon></mat-icon>
-            <mat-card-title>
-              <h2>Search</h2>
-            </mat-card-title>
-            <mat-card-subtitle></mat-card-subtitle>
-          </mat-card-header>
-          
-          <mat-card-content>
-      
-            <mat-form-field>
-              <mat-label>Filter</mat-label>
-              <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Daniel">
-            </mat-form-field>
-            <!-- class="mat-elevation-z8"  -->
-            <table style="display:block;" mat-table matSort [dataSource]="dataSource" matSortActive="FirstName"
-              matSortDirection="asc">
-      
-              <ng-container matColumnDef="firstName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> FirstName </th>
-                <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
-              </ng-container>
-      
-              <ng-container matColumnDef="lastName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> LastName </th>
-                <td mat-cell *matCellDef="let element" [innerHTML]="element.lastName 
-                  + (element.maidenName == '' ? '':' (')
-                  + element.maidenName 
-                  + (element.maidenName == '' ? '':')')
-                  "></td>
-              </ng-container>
-      
-              <ng-container matColumnDef="gender" style="display:none;">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header style="visibility:hidden;"> Gender </th>
-                <td mat-cell *matCellDef="let element" style="visibility:hidden;"> {{element.gender}} </td>
-              </ng-container>
-      
-              <ng-container matColumnDef="year">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Year </th>
-                <td mat-cell *matCellDef="let element"> {{element.yearOfBirth}} - {{element.yearOfDeath}}</td>
-              </ng-container>
-      
-              <ng-container matColumnDef="link">
-                <th mat-header-cell *matHeaderCellDef> Link </th>
-                <td mat-cell *matCellDef="let element">
-                  <a mat-button [href]="'person/'+element.profileId" [title]="getTitle(element)" aria-label="view">
-                    view</a>
-              </ng-container>
-      
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      
-      
-            </table>
-            <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
-          </mat-card-content>
-      
-      
-        </mat-card>
-      </p>
+      <h5 class="card-title">Result for {{query}} page {{page}}</h5>
+         <div *ngFor="let item of data" class="card" style="width: 18rem;">
+          <div class="card-body">
+            <p class="card-text">{{item.firstName}} {{item.lastName}}</p>
+            <a class="btn btn-primary btn-sm" [href]="'person/'+item.profileId" [title]="getTitle(item)" aria-label="view">
+              view</a>
+          </div>
+        </div> 
     </div>
   </div>
   <br>
@@ -130,7 +76,8 @@
 
 <br>
 
-<div style="color: grey; width:800px">
+
+<div class="card" style="width: 800px;padding: 10px;border-top-width: 5px;">
   Keywords:
   ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage
   blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors,
