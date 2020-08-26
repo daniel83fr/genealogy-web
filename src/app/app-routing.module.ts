@@ -8,6 +8,7 @@ import { HelpComponent } from './components/help-component/help.component';
 import { LoginComponent } from './components/login-component/login.component';
 import { ErrorComponent } from './components/error-component/error.component';
 import { AboutComponent } from './components/about-component/about.component';
+import { SearchComponent } from './components/search-component/search.component';
 
 const routes: Routes = [
   {
@@ -26,10 +27,10 @@ const routes: Routes = [
     path: 'person/:profile',      component: PersonComponentComponent
   },
   {
-    path: 'search/:query/:page',      component: MainComponent
+    path: 'search/:query/:page',      component: SearchComponent
   },
   {
-    path: 'search/:query',      component: MainComponent
+    path: 'search/:query',      component: SearchComponent
   },
   {
     path: '',      component: MainComponent

@@ -1,0 +1,47 @@
+.splashContent {
+  display: flex;
+  background-color: #131754;
+  flex-direction: row
+}
+
+  .no-webp .example-header-image {
+    background-image: url('../../../assets/img/logo.png');
+    background-size: cover;
+  }
+
+  .webp .example-header-image {
+    background-image: url('../../../assets/img/logo.webp');
+    background-size: cover;
+  }
+
+  .main-div{
+    min-width: 400;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    vertical-align: top;
+  }
+
+  table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 25%;
+  }
+
+  .events {
+    width: 100%;
+    margin: 5px;
+  }
+
+  .recent-activity {
+    width: 100%;
+    margin: 5px;
+  }
+

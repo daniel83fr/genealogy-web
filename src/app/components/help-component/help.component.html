@@ -1,45 +1,45 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Help</mat-card-title>
-  </mat-card-header>
+<nav aria-label="breadcrumb" class="hidden-on-mobile">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active"><a href="/login">Help</a></li>
+  </ol>
+</nav>
 
-  <pre>
 
-    The site is composed of two components:
-    - an API
-    - a frontEnd
-    
-    Both are available on github : 
-    <a href="https://github.com/daniel83fr/genealogy-api">genealogy-api</a>
-    <a href="https://github.com/daniel83fr/genealogy-web">genealogy-web</a>
-    
-    Feel free to contribute.
-    
-    <hr>
-    
-    They are currently hosted on aws.
-    
-    a build is triggered using travis-ci 
-    
-    <a href="https://travis-ci.com/github/daniel83fr/genealogy-api">travis - genealogy-api</a>
-    <a href="https://travis-ci.com/github/daniel83fr/genealogy-web">travis - genealogy-web</a>
-    
-    Once tests executed successfully, it is deployed manually
-    <a href="http://www.res01.com"> Res01.com</a>
-    
-    
-      </pre>
-</mat-card>
+<div class="main-div"
+  style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center; ">
+  <div class="card .mx-auto" style="width: 800px;margin-bottom: 5px;">
+    <h5 class="card-header">Info</h5>
+    <div class="card-body">
+      <p class="card-text">
+        The site is composed of two components:
+        - an API
+        - a frontEnd
 
-<mat-accordion>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Personal Data
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <pre>
-    By default, names and year of birth/death are visible to everyone.
+        Both are available on github : 
+        <a href="https://github.com/daniel83fr/genealogy-api">genealogy-api</a>
+        <a href="https://github.com/daniel83fr/genealogy-web">genealogy-web</a>
+        
+        Feel free to contribute.
+
+        They are currently hosted on aws.
+    
+        a build is triggered using travis-ci 
+        
+        <a href="https://travis-ci.com/github/daniel83fr/genealogy-api">travis - genealogy-api</a>
+        <a href="https://travis-ci.com/github/daniel83fr/genealogy-web">travis - genealogy-web</a>
+        
+        Once tests executed successfully, it is deployed manually
+        <a href="http://www.res01.com"> Res01.com</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="card .mx-auto" style="width: 800px;margin-bottom: 5px;">
+    <h5 class="card-header">Personal data</h5>
+    <div class="card-body">
+      <p class="card-text">
+        By default, names and year of birth/death are visible to everyone.
     Other informations are only visible logged users.
 
     To register, you should find your profile first (if it exists) and then
@@ -48,6 +48,8 @@
     Roles will be implemented later to avoid sharing all the informations with
     everyone.
 
-  </pre>
-  </mat-expansion-panel>
-</mat-accordion>
+      </p>
+    </div>
+  </div>
+
+</div>

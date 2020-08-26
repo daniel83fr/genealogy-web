@@ -16,6 +16,7 @@ import { PhotoComponent } from './components/photo-component/photo.component';
 import { PersonProfileDetailComponent } from './components/person-profile-detail-component/person-profile-detail.component';
 import { PersonSearchComponent } from './components/person-search-component/person-search.component';
 import { ErrorComponent } from './components/error-component/error.component';
+import { SearchComponent } from './components/search-component/search.component';
 
 export default [
     PersonComponentComponent,
@@ -35,5 +36,6 @@ export default [
     PersonProfileDetailComponent,
     PhotoComponent,
     PersonSearchComponent,
-    EventComponent
+    EventComponent,
+    SearchComponent
 ]

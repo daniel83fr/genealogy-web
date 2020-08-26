@@ -1,11 +1,16 @@
 
 
+
 <button mat-stroked-button color="primary" (click)="click()" aria-label="Claim profile">Claim profile</button>
 (This is your profile? Please claim the profile.)
       <br>
+      
+    
 
 
-<form *ngIf="edit" [formGroup]="registerForm" (ngSubmit)="onSubmit()" style="margin: 10px;" >
+<form  *ngIf="edit" [formGroup]="registerForm" (ngSubmit)="onSubmit()" style="margin: 10px;" >
+  <img class="mb-4" src="../assets/logo.png" alt="" width="72" height="72">
+  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 
   <mat-form-field>
     <mat-label>Profile Id</mat-label>

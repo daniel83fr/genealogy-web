@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, AfterContentInit, PLATFORM_ID, APP_ID } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
@@ -17,14 +16,14 @@ const STATE_KEY_USERLIST = makeStateKey('userlist')
 const STATE_KEY_PHOTOS = makeStateKey('photos')
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.css']
 })
 
-export class MainComponent implements OnInit, AfterContentInit {
+export class SearchComponent implements OnInit, AfterContentInit {
 
-  logger: LoggerService = new LoggerService('main');
+  logger: LoggerService = new LoggerService('search');
 
   data: any = [];
   dataSource: any;

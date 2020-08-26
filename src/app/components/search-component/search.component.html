@@ -1,0 +1,44 @@
+<nav aria-label="breadcrumb" class="hidden-on-mobile">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active"><a href="/">Home</a></li>
+  </ol>
+</nav>
+
+
+
+<div class="main-div"
+  style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center;
+   ">
+
+
+
+
+
+  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
+    <h2 class="card-header"> <mat-icon>people</mat-icon> Search</h2>
+    <div class="card-body">
+      <h5 class="card-title">Result for {{query}} page {{page}}</h5>
+         <div *ngFor="let item of data" class="card" >
+          <div class="card-body">
+            <p class="card-text">
+              
+              firstName:{{item.firstName}} <br>
+              lastName: {{item.lastName}}  <br>
+              maidenName: {{item.maidenName}} <br>
+              gender: {{item.gender}} <br>
+              birth: {{item.yearOfBirth}}  <br>
+              death: {{item.yearOfDeath}}
+            </p>
+
+            <a class="btn btn-primary btn-sm" [href]="'person/'+item.profileId" [title]="getTitle(item)" aria-label="view">
+              view</a>
+          </div>
+        </div> 
+    </div>
+  </div>
+  <br>
+
+</div>
+
+
+<br>

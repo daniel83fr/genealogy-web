@@ -18,10 +18,11 @@
 
 
 <div class="main-div"
-  style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center; ">
+  style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center;
+   ">
 
 
-  <div class="card" style="width: 800px;padding: 10px;border-top-width: 5px;">
+  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
     <h2 class="card-header"> <mat-icon>calendar_today</mat-icon> Events</h2>
     <div class="card-body">
       <h5 class="card-title">TODAY's events</h5>
@@ -32,13 +33,22 @@
 
 
 
-  <div class="card" style="width: 800px;padding: 10px;border-top-width: 5px;">
+  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
     <h2 class="card-header"> <mat-icon>people</mat-icon> Search</h2>
     <div class="card-body">
       <h5 class="card-title">Result for {{query}} page {{page}}</h5>
-         <div *ngFor="let item of data" class="card" style="width: 18rem;">
+         <div *ngFor="let item of data" class="card" >
           <div class="card-body">
-            <p class="card-text">{{item.firstName}} {{item.lastName}}</p>
+            <p class="card-text">
+              
+              firstName:{{item.firstName}} <br>
+              lastName: {{item.lastName}}  <br>
+              maidenName: {{item.maidenName}} <br>
+              gender: {{item.gender}} <br>
+              birth: {{item.yearOfBirth}}  <br>
+              death: {{item.yearOfDeath}}
+            </p>
+
             <a class="btn btn-primary btn-sm" [href]="'person/'+item.profileId" [title]="getTitle(item)" aria-label="view">
               view</a>
           </div>
@@ -47,7 +57,7 @@
   </div>
   <br>
 
-  <div class="card" style="width: 800px;padding: 10px;border-top-width: 5px;">
+  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
     <h2 class="card-header"> <mat-icon>camera_alt</mat-icon>Random Photos</h2>
     <div class="card-body">
       <h5 class="card-title">TODAY's events</h5>
@@ -62,7 +72,7 @@
   
   <br>
 
-  <div class="card" style="width: 800px;padding: 10px;border-top-width: 5px;">
+  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
     <h2 class="card-header"> <mat-icon>assignment</mat-icon> Recent Activities</h2>
     <div class="card-body">
       <div class="card-text">
@@ -72,18 +82,21 @@
       </div>
     </div>
   </div>
-</div>
 
-<br>
+  <br>
 
 
-<div class="card" style="width: 800px;padding: 10px;border-top-width: 5px;">
+<div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
   Keywords:
   ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage
   blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors,
   birth, children, descendants, descent, dynasty, genealogy, generations, in-laws, network,
   pedigree, progenitors, progeny, relations, relationship, relatives, siblings,
 </div>
+
+
+</div>
+
 
 <script type="application/ld+json">
   {

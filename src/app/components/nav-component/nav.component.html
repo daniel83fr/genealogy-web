@@ -1,20 +1,20 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
 
   <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/">
-    <picture   height="40" class="hidden-on-mobile">
+    <picture   height="40" style="-webkit-filter: drop-shadow(2px 2px 2px #fff);filter: drop-shadow(2px 2px 2px #fff);" >
       <source srcset="../../assets/img/logo.webp" type="image/webp">
       <source srcset="../../../assets/img/logo.png" type="image/png">
       <img src="../../../assets/img/logo.png" alt="Logo" loading="lazy" height="40">
     </picture>
 
     Res01.com</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+  <!-- <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
-  </button>
+  </button> -->
 
 
   
-  <span style="flex: auto;"></span>
+
   
 
 
@@ -43,9 +43,30 @@
   </button>
 
   <button *ngIf="environnement!='production'" mat-raised-button color="warn" aria-label="env">{{environnement}}</button>
-  <input class="form-control form-control-dark w-100" type="text" [(ngModel)]="query" placeholder="Search" aria-label="Search">
-  <a [href]="'search/'+query">Search</a>
+  <span style="flex: auto;"></span>
+  <!-- <form class="form-inline"> -->
+    <input class="form-control form-control-dark w-50" type="text" [(ngModel)]="query" 
+  placeholder="Search" aria-label="Search"
+>
+  <a [href]="'search/'+query"  class="btn btn-outline-secondary btn-sm" type="submit">Search</a>
+
+   
+  <!-- </form> -->
+
+  
 
   
 
 </nav>
+
+<ul class="nav nav-tabs hidden-on-mobile">
+  <li class="nav-item">
+    <a class="nav-link" href="/">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/about">About</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/help">Help</a>
+  </li>
+</ul>
