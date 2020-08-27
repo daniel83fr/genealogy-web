@@ -1,20 +1,30 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Admin area</mat-card-title>
-  </mat-card-header>
-</mat-card>
+<nav aria-label="breadcrumb" class="hidden-on-mobile">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active"><a href="/admin">Admin</a></li>
+  </ol>
+</nav>
 
-<mat-tab-group>
-  <mat-tab label="Info"> 
-    <b>Env:</b> {{environnement}}<br>
-    <b>Endpoint:</b> {{endpoint}}<br>
-    <b>IsConnected:</b> {{isConnected()}}<br>
-    <b>Login:</b> {{connectedLogin()}}<br>
-    <b>Profile:</b> {{connectedProfile()}}
-  </mat-tab>
+<div class="main-div"
+  style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center; ">
 
-  
-</mat-tab-group>
+<div class="card .mx-auto" style="width: 800px;margin-bottom: 5px;">
+  <h5 class="card-header">Info</h5>
+  <div class="card-body">
+    <p class="card-text">      <b>Env:</b> {{environnement}}<br>
+      <b>Endpoint:</b> {{endpoint}}<br>
+      <b>IsConnected:</b> {{isConnected()}}<br>
+      <b>Login:</b> {{connectedLogin()}}<br>
+      <b>Profile:</b> {{connectedProfile()}}</p>
+  </div>
+</div>
+
+
+
+</div>
+
+
+
 
 
 

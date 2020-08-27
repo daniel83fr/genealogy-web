@@ -1,9 +1,9 @@
 <div>
   <b>{{title}}</b>:
 
-  <button *ngIf="editable" mat-icon-button [color]="edit?'warn':'primary'" (click)="switchEdit()" aria-label="edit" >
-    <mat-icon>edit</mat-icon>
-  </button>
+  <a *ngIf="editable" [class]="edit?'btn btn-warning':'btn btn-primary'" (click)="switchEdit()" aria-label="edit" >
+    <bi name="pencil"></bi>
+  </a>
 
   <app-person-link *ngIf="type=='parent'" [id]="id" [person]="person" [type]="type" [editable]="editable && edit"></app-person-link>
   
@@ -23,8 +23,8 @@
       <input matInput  [(ngModel)]= "lastName">
     </mat-form-field>
     
-    <button mat-icon-button color="primary" matTooltip="create Person and Link"   (click)="createPersonAndLink()" aria-label="create person and link">
-      <mat-icon>add</mat-icon>
+    <button color="primary" matTooltip="create Person and Link"   (click)="createPersonAndLink()" aria-label="create person and link">
+      <bi name="add"></bi>
     </button>
   </div>
   
@@ -32,8 +32,8 @@
     
     <app-person-search (personChanged)="setLink($event)"></app-person-search>
 
-    <button mat-icon-button color="primary" matTooltip="add link"  *ngIf="editable && edit && person?._id == null" (click)="addLink()" aria-label="add link">
-      <mat-icon>link</mat-icon>
+    <button color="primary" matTooltip="add link"  *ngIf="editable && edit && person?._id == null" (click)="addLink()" aria-label="add link">
+      <bi name="link"></bi>
     </button>
   </div>
 

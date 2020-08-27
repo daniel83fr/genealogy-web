@@ -48,7 +48,7 @@ export class PersonLinkComponent implements OnInit, AfterContentInit {
   }
 
   onClick() {
-    this.router.navigateByUrl('person/' + this.person.profileId);
+    this.router.navigateByUrl('profile/' + this.person.profileId);
   }
 
   ngOnInit(): void {

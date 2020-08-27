@@ -10,7 +10,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:4200/person/5e6556427af677179baf2e5f",
+            "url": "http://localhost:4200/profile/5e6556427af677179baf2e5f",
             "webRoot": "${workspaceFolder}"
         }
     ]

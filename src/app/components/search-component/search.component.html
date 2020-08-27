@@ -15,7 +15,7 @@
 
 
   <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
-    <h2 class="card-header"> <mat-icon>people</mat-icon> Search</h2>
+    <h2 class="card-header"> <bi name="people"></bi>  Search</h2>
     <div class="card-body">
       <h5 class="card-title">Result for {{query}} page {{page}}</h5>
          <div *ngFor="let item of data" class="card" >
@@ -30,7 +30,7 @@
               death: {{item.yearOfDeath}}
             </p>
 
-            <a class="btn btn-primary btn-sm" [href]="'person/'+item.profileId" [title]="getTitle(item)" aria-label="view">
+            <a class="btn btn-primary btn-sm" [href]="'profile/'+item.profileId" [title]="getTitle(item)" aria-label="view">
               view</a>
           </div>
         </div> 

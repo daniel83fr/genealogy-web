@@ -184,7 +184,7 @@ export class TreeDraw {
 
     g.append('title')
       .text(person.firstName);
-    const baseUrl = 'person/';
+    const baseUrl = 'profile/';
 
     if (person.profileId !== currentPersonId) {
       g = g.append('a')

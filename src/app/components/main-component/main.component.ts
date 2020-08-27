@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, AfterContentInit, PLATFORM_ID, APP_ID } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { GraphQLService } from 'src/app/_services/GraphQLService';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
@@ -95,7 +94,7 @@ export class MainComponent implements OnInit, AfterContentInit {
         var file = [];
         file.push("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">")
         data.forEach(element => {
-          file.push(`<url><loc>https://www.res01.com/person/${element.profileId}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`)
+          file.push(`<url><loc>https://www.res01.com/profile/${element.profileId}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`)
         });
         file.push('</urlset>')
         console.log(`Write sitemap to ${sitemapFile}`);

@@ -32,7 +32,7 @@
     align-items: center;
   }
 
-  svg.material-icons {
+  /* svg.material-icons {
     height: 24px;
     width: auto;
   }
@@ -43,7 +43,7 @@
 
   .card svg.material-icons path {
     fill: #888;
-  }
+  } */
 
   .card-container {
     display: flex;

@@ -94,7 +94,7 @@ export class SearchComponent implements OnInit, AfterContentInit {
         var file = [];
         file.push("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">")
         data.forEach(element => {
-          file.push(`<url><loc>https://www.res01.com/person/${element.profileId}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`)
+          file.push(`<url><loc>https://www.res01.com/profile/${element.profileId}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`)
         });
         file.push('</urlset>')
         console.log(`Write sitemap to ${sitemapFile}`);

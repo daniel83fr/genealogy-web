@@ -11,7 +11,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
@@ -41,7 +40,6 @@ export default [
     MatTooltipModule,
     MatExpansionModule,
     MatButtonModule,
-    MatIconModule,
     MatCardModule,
     MatChipsModule
 ];

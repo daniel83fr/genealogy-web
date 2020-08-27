@@ -1,13 +1,13 @@
 <div>
 
-  <a mat-flat-button [href]="'person/'+person.profileId">
+  <a mat-flat-button [href]="'profile/'+person.profileId">
     {{person?.firstName}}
     {{person?.lastName | uppercase }} </a>
 
 <button mat-flat-button (click)="onClick()"> </button>
 
     <span *ngIf="editable && person != null">({{person.profileId }})</span> 
-    <button mat-icon-button color="warn" matTooltip="Remove link"  *ngIf="editable && person != null" (click)="removeLink()" aria-label="remove link">
-      <mat-icon>link_off</mat-icon>
+    <button color="warn" matTooltip="Remove link"  *ngIf="editable && person != null" (click)="removeLink()" aria-label="remove link">
+      <bi name="link_off"> </bi>
     </button>
 </div>

@@ -40,7 +40,7 @@ export class NavComponent implements OnInit, AfterContentInit {
 
   getConnectedProfile() {
 
-    this.router.navigateByUrl('/person/' + this.getConnectedLogin());
+    this.router.navigateByUrl('/profile/' + this.getConnectedLogin());
   }
 
   ngAfterContentInit() {

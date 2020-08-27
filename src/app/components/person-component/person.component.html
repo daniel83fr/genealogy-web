@@ -31,7 +31,7 @@
   <mat-card-content style="padding:16px;">
 
     
-    <mat-card-title>Family Members <mat-icon>people_alt</mat-icon></mat-card-title>
+    <mat-card-title>Family Members <bi name="people_alt"></bi></mat-card-title>
 
     <app-person-links title="Father" [id]="id" [person]="data.father" type="parent" [editable]="isConnected()">
     </app-person-links>
@@ -90,18 +90,18 @@
 
   </mat-card-header> 
   <mat-card-content style="padding:16px;">
-    <mat-card-title>Relation <mat-icon>link</mat-icon></mat-card-title>
+    <mat-card-title>Relation <bi name="link"></bi> </mat-card-title>
     
      <div *ngFor="let x of relations">
       <div *ngIf="x.link=='self'">
         Yourself
       </div>
       <div *ngIf="x.link!='self'">
-        <a [href]="'person/'+x.person1.profileId">
+        <a [href]="'profile/'+x.person1.profileId">
           {{ x.person1.firstName}} {{x.person1.lastName}}
         </a>
   
-         -  <a [href]="'person/'+x.person2.profileId">
+         -  <a [href]="'profile/'+x.person2.profileId">
           {{ x.person2.firstName}} {{x.person2.lastName}}
         </a> -  {{x.link}}
       </div>

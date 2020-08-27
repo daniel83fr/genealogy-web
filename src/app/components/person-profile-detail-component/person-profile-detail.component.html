@@ -1,14 +1,15 @@
-<button *ngIf="editable" mat-icon-button style="float: right;" [color]="editMode?'warn':'primary'"
+<a *ngIf="editable" style="float: right;" [class]="editMode?'btn btn-warning':'btn btn-primary'"
   (click)="switchEdit()">
-  <mat-icon>edit</mat-icon>
-</button>
+  <bi name="pencil"></bi>
+</a>
 
 <div class="row" style="padding:16px;">
   <div class="column">
 
     <div class="row">
       <mat-card-title>Info</mat-card-title>
-      <mat-icon>face</mat-icon>
+      <bi name="face"></bi>/> 
+    
     </div>
 
     <br>

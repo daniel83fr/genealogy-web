@@ -29,7 +29,7 @@ export class AuthenticationService {
         if (auth.success === true) {
           localStorage.setItem('token', auth.token.toString());
           resolve(auth.token);
-          this.router.navigateByUrl('person/' + this.getConnectedProfile());
+          this.router.navigateByUrl('profile/' + this.getConnectedProfile());
           return;
         }
         throw new Error('Login failed.');

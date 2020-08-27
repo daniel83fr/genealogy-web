@@ -23,8 +23,12 @@ const routes: Routes = [
   {
     path: 'login',      component: LoginComponent
   },
+  { path: 'person/:profile', 
+      redirectTo: 'profile/:profile', 
+      pathMatch: 'full'
+  },
   {
-    path: 'person/:profile',      component: PersonComponentComponent
+    path: 'profile/:profile',      component: PersonComponentComponent
   },
   {
     path: 'search/:query/:page',      component: SearchComponent

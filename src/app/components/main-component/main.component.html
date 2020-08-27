@@ -1,8 +1,4 @@
-<nav aria-label="breadcrumb" class="hidden-on-mobile">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item active"><a href="/">Home</a></li>
-  </ol>
-</nav>
+
 
 <div class="jumbotron hidden-on-mobile" style="padding:15px;background-color:#e9f3f7; text-align: center;">
   <div>
@@ -14,8 +10,13 @@
   
   </div>
 </div>
-<div style="font-size:50px;color:black;padding:5px;" class="hidden-on-desktop">Family Tree</div>  
+<div  class="hidden-on-desktop" style="font-size:50px;height:60px;color:black;margin:5px">Family Tree</div>  
 
+<nav aria-label="breadcrumb" class="hidden-on-mobile">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">Home</li>
+  </ol>
+</nav>
 
 <div class="main-div"
   style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center;
@@ -23,7 +24,7 @@
 
 
   <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
-    <h2 class="card-header"> <mat-icon>calendar_today</mat-icon> Events</h2>
+    <h2 class="card-header"> <bi name="calendar"></bi> Events</h2>
     <div class="card-body">
       <h5 class="card-title">TODAY's events</h5>
       <p class="card-text"><app-event></app-event></p>
@@ -34,7 +35,10 @@
 
 
   <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
-    <h2 class="card-header"> <mat-icon>people</mat-icon> Search</h2>
+    <h2 class="card-header"> 
+      <bi name="people"></bi>
+      
+      Search</h2>
     <div class="card-body">
       <h5 class="card-title">Result for {{query}} page {{page}}</h5>
          <div *ngFor="let item of data" class="card" >
@@ -49,7 +53,7 @@
               death: {{item.yearOfDeath}}
             </p>
 
-            <a class="btn btn-primary btn-sm" [href]="'person/'+item.profileId" [title]="getTitle(item)" aria-label="view">
+            <a class="btn btn-primary btn-sm" [href]="'profile/'+item.profileId" [title]="getTitle(item)" aria-label="view">
               view</a>
           </div>
         </div> 
@@ -58,11 +62,11 @@
   <br>
 
   <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
-    <h2 class="card-header"> <mat-icon>camera_alt</mat-icon>Random Photos</h2>
+    <h2 class="card-header"> <bi name="camera-fill"></bi> Random Photos</h2>
     <div class="card-body">
       <h5 class="card-title">TODAY's events</h5>
       <p class="card-text">
-        <a [href]="'person/'+image.persons[0].profileId"  *ngFor="let image of images">
+        <a [href]="'profile/'+image.persons[0].profileId"  *ngFor="let image of images">
           <img loading="lazy" [alt]="image.persons[0].firstName"  [src]="image.url" 
           style="margin:5px; max-width: 200px; max-height: 200px;" />
         </a>
@@ -73,7 +77,7 @@
   <br>
 
   <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
-    <h2 class="card-header"> <mat-icon>assignment</mat-icon> Recent Activities</h2>
+    <h2 class="card-header"> <bi name="receipt"></bi>  Recent Activities</h2>
     <div class="card-body">
       <div class="card-text">
         <p  *ngFor="let auditEntry of audit">

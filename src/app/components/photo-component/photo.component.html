@@ -1,8 +1,8 @@
-<button *ngIf="editable" mat-icon-button style="float: right;" [color]="editMode?'warn':'primary'" (click)="switchEdit()">
-  <mat-icon>edit</mat-icon>
-</button>
+<a *ngIf="editable" style="float: right;" [class]="editMode?'btn btn-warning':'btn btn-primary'" (click)="switchEdit()">
+  <bi name="pencil"></bi> 
+</a>
 <div>
-  <mat-card-title>Photo Gallery<mat-icon>camera_alt</mat-icon></mat-card-title>
+  <mat-card-title>Photo Gallery<bi name="camera_alt"></bi></mat-card-title>
   
   <span *ngIf="photos?.length > 0" style="margin-left:20px">(Click on photo to enlarge.)</span>
   <span *ngIf="photos?.length == 0" style="margin-left:20px">No photos yet.</span>
@@ -12,15 +12,15 @@
   </a>
   <br>
   <div *ngIf="photos?.length > 0">
-    <button mat-icon-button aria-label="Previous" (click)="previous()">
-      <mat-icon>skip_previous</mat-icon>
+    <button aria-label="Previous" (click)="previous()">
+      <bi name="skip_previous"></bi> 
     </button>
   
   {{ photoIndex + 1}} / {{ photos?.length}}
-    <button mat-icon-button aria-label="Next" (click)="next()">
-      <mat-icon>skip_next</mat-icon>
+    <button aria-label="Next" (click)="next()">
+      <bi name="skip_next"></bi> 
     </button>
-    <button *ngIf="photos[photoIndex]._id != profile" mat-icon-button aria-label="Next" (click)="setProfilePicture()">
+    <button *ngIf="photos[photoIndex]._id != profile" aria-label="Next" (click)="setProfilePicture()">
       Set as Profile picture
     </button>
    
@@ -31,8 +31,8 @@
     Tags:
     <mat-chip *ngFor="let x of photos[photoIndex].persons">{{x.firstName}}
       
-      <button *ngIf="editMode" mat-icon-button color="primary" matTooltip="delete tag"  (click)="removeTag(x._id, photos[photoIndex]._id)">
-        <mat-icon>clear</mat-icon>
+      <button *ngIf="editMode" color="primary" matTooltip="delete tag"  (click)="removeTag(x._id, photos[photoIndex]._id)">
+        <bi name="clear"></bi>
       </button>
       </mat-chip>
   </mat-chip-list>
@@ -43,23 +43,23 @@
   <div *ngIf="photos?.length>0 && editMode">
      
    Add Tag: <app-person-search (personChanged)="setLink($event)"></app-person-search>
-    <button mat-icon-button color="primary" matTooltip="add tag"  (click)="addTag(linkId, photos[photoIndex]._id)">
-      <mat-icon>link</mat-icon>
+    <button color="primary" matTooltip="add tag"  (click)="addTag(linkId, photos[photoIndex]._id)">
+      <bi name="link"></bi>
     </button> 
   </div>
 
   
   <div *ngIf="editMode">
     <br>
-    <button *ngIf="photos?.length > 0" mat-icon-button color="warn" aria-label="Delete" (click)="deletePicture()">
+    <button *ngIf="photos?.length > 0" color="warn" aria-label="Delete" (click)="deletePicture()">
       Delete photo
     </button>
     <br>
     
       <input type="file" accept="image/*" (change)="changeListener($event)">
     
-      <button mat-icon-button aria-label="upload" (click)="upload()">
-        <mat-icon>cloud_upload</mat-icon>
+      <button aria-label="upload" (click)="upload()">
+        <bi name="cloud-upload"></bi>
       </button>
   </div>
 
