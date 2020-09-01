@@ -25,13 +25,10 @@ export class SearchComponent implements OnInit, AfterContentInit {
 
   logger: LoggerService = new LoggerService('search');
 
-  data: any = [];
+  data: any[] = [];
   dataSource: any;
   displayedColumns = [];
   date;
-
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   images: any[];
   audit: any[];
   inputMessage = '';
@@ -73,116 +70,28 @@ export class SearchComponent implements OnInit, AfterContentInit {
     ]);
 
     this.query =  this.route.snapshot.paramMap.get('query');
-    this.page = this.route.snapshot.paramMap.get('page');
+    this.page = this.route.snapshot.paramMap.get('page') ?? "1";
+
     if (isPlatformServer(this.platformId)) {
       this.state.set(STATE_KEY_ENDPOINT, process.env.GENEALOGY_API);
 
-      const fs = require('fs');
-      const path = require('path')
-      const cacheFile = path.join(__dirname, `../../../../cache/personList.json`);
-      console.log(cacheFile)
-
-      if (fs.existsSync(cacheFile)) {
-        const rawdata = fs.readFileSync(cacheFile);
-        let data:any[] = JSON.parse(rawdata);
-        this.state.set(STATE_KEY_USERLIST, data);
-        this.fillGrid(data);
-
-        let sitemapFile = path.join(__dirname, '../browser/sitemap.xml');
-        console.log(`Sitemap: ${path.resolve(sitemapFile)}`);
-
-        var file = [];
-        file.push("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">")
-        data.forEach(element => {
-          file.push(`<url><loc>https://www.res01.com/profile/${element.profileId}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`)
-        });
-        file.push('</urlset>')
-        console.log(`Write sitemap to ${sitemapFile}`);
-        const rawdata2 = fs.writeFileSync(sitemapFile, file.join(''));
-
-      }
-
-
-
-
-      this.graphQLService.getPersonList(process.env.GENEALOGY_API)
+      this.graphQLService.searchPerson(process.env.GENEALOGY_API, this.query, parseInt(this.page, 10), 20)
         .then(res => {
-            this.fillGrid(res);
-            const rawdata = fs.writeFileSync(cacheFile, JSON.stringify(res.data));
+            console.log(res.length);
+            this.data =  res.data;
         });
-
-
-      const photosCacheFile = path.join(__dirname, `../../../../cache/randomPhotos.json`);
-      console.log(`Write cache to ${photosCacheFile}`);
-      if (fs.existsSync(photosCacheFile)) {
-        const rawdata = fs.readFileSync(photosCacheFile);
-        let data = JSON.parse(rawdata);
-        this.state.set(STATE_KEY_PHOTOS, data.data);
-        this.images = data;
-      }
-
-      this.graphQLService.getPhotosRandom(process.env.GENEALOGY_API)
-        .then(res => {
-          let cacheObj = new ClientCacheService().createCacheObject(res);
-          const rawdata = fs.writeFileSync(photosCacheFile, JSON.stringify(cacheObj));
-
-        }
-        );
-
     }
-  }
-
-  randomPhotos() {
-    this.images = this.state.get(STATE_KEY_PHOTOS, []);
+    else {
+      let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
+      this.graphQLService.searchPerson(endpoint, this.query, parseInt(this.page, 10), 20)
+      .then(res => {
+          console.log(res.length);
+          this.data = res.data;
+      });
+    }
   }
 
   ngAfterContentInit() {
-    this.search();
-    this.randomPhotos();
-
-    let endpoint: string = this.state.get(STATE_KEY_ENDPOINT, '');
-    this.graphQLService.getPhotosRandom(endpoint)
-      .then(res =>
-        this.images = res);
-
-    this.graphQLService.getAuditLastEntries(endpoint)
-      .then(res =>
-        this.audit = res);
-
-   
-  }
-
-  search() {
-    let cacheData: any = this.state.get(STATE_KEY_USERLIST, {});
-    this.fillGrid(cacheData)
-  }
-
-  private filterValid(row:any, query: string) : boolean{
-    var keys = (query.toLocaleLowerCase()??"").split(' ');
-    for (const element of keys) {
-      if(!(row.firstName?.toLowerCase().includes(element)?? false) &&
-      !(row.lastName?.toLowerCase().includes(element)??false) &&
-      !(row.maidenName?.toLowerCase().includes(element)??false)){
-        return false;
-      }
-    }
-    return true;
-
-  }
-
-  private fillGrid(data: any[]) {
-    if(this.query){
-      this.data = data.filter(x=>this.filterValid(x, this.query)).sort(() => Math.random() - Math.random()).slice(0, 20);
-    }
-    else{
-      this.data = data.sort(() => Math.random() - Math.random()).slice(0, 20);
-
-    }
-   
-    // this.dataSource = new MatTableDataSource(data);
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
-    // this.displayedColumns = ['firstName', 'lastName', 'link', 'gender'];
   }
 
   getTitle(element: any) {
@@ -198,8 +107,6 @@ export class SearchComponent implements OnInit, AfterContentInit {
   }
 
   applyFilter(event: Event) {
-    //const filterValue = (event.target as HTMLInputElement).value;
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
 
+  }
 }

@@ -93,6 +93,32 @@ query Register {
 
   }
 
+  searchPerson(endpoint: string, filter: string, page: number, pagesize: number) {
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+    return fetch({
+      query: `query SearchPerson {
+            data: searchPerson(filter:"${filter}", page: ${page}, pageSize:${pagesize}) {
+              _id
+              firstName
+              lastName
+              maidenName,
+              gender,
+              yearOfBirth,
+              yearOfDeath,
+              isDead,
+              profileId
+              image
+            }
+          }
+          `
+    }).then(res => {
+      return res.data;
+    });
+
+  }
+
   getConnectedUser(endpoint: string) {
     const token = localStorage.getItem('token');
     if (token == null) {

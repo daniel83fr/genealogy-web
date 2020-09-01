@@ -20,15 +20,17 @@
       <h5 class="card-title">Result for {{query}} page {{page}}</h5>
          <div *ngFor="let item of data" class="card" >
           <div class="card-body">
+
+            <img *ngIf="item.image != null" [src]="item.image" style="height:75px;width:75px;">
             <p class="card-text">
-              
               firstName:{{item.firstName}} <br>
               lastName: {{item.lastName}}  <br>
               maidenName: {{item.maidenName}} <br>
               gender: {{item.gender}} <br>
               birth: {{item.yearOfBirth}}  <br>
-              death: {{item.yearOfDeath}}
+              death: {{item.yearOfDeath}} <br>
             </p>
+            
 
             <a class="btn btn-primary btn-sm" [href]="'profile/'+item.profileId" [title]="getTitle(item)" aria-label="view">
               view</a>
