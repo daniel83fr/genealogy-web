@@ -553,25 +553,20 @@ query Register {
     });
 
     return fetch({
-      query: `query GetEvents($date1:String!,$date2:String) {
-        data: getEvents( date1: $date1 ,date2: $date2) {
-          date
-    			person {
-    			  profileId
-    			  firstName
-    			  lastName
-    			}
-          person2 {
-    			  profileId
-    			  firstName
-    			  lastName
-    			}
-          type,
-    			anniversary
+      query: `query GetEvents($date:String!) {
+        data: getEvents( date: $date) {
+          day
+          month
+          year
+          type
+          firstName
+          lastName
+          profileId
+
         }
 }
       `,
-      variables: { date1: new Date().toISOString(), date2: undefined }
+      variables: { date: new Date().toISOString()}
     }).then(res => {
       return res.data.data;
     });
