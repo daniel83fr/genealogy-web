@@ -139,7 +139,7 @@ query Register {
 
     return fetch({
       query: `query me {
-        me{
+        connectedUser{
           id
           login
         }
@@ -582,7 +582,6 @@ query Register {
         audit: getAuditLastEntries(number: 10) {
           timestamp
           type
-          id
           user
           action
         }
