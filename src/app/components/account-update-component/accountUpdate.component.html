@@ -1,0 +1,15 @@
+<form  *ngIf="isConnected()" class="form-signin"  [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()" >
+  <img class="mb-4" src="../../../assets/img/logo.png" alt="" width="72" height="72"> 
+
+  <h2> Update Credentials</h2>
+
+  <input type="email" formControlName="email" id="email" class="form-control" placeholder="Email" required  autocomplete="email" autofocus>
+  <input type="password" formControlName="password" id="password" class="form-control" placeholder="Old Password" autocomplete="old-password" required>
+ 
+  <input type="password" formControlName="password1" id="password1" class="form-control" placeholder="New Password" autocomplete="new-password" required>
+  <input type="password" formControlName="password2" id="password2" class="form-control" placeholder="Confirmation" autocomplete="new-password" required>
+
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+ 
+</form>

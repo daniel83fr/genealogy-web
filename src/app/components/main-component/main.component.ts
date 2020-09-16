@@ -38,6 +38,7 @@ export class MainComponent implements OnInit, AfterContentInit {
   messages = '';
   query: any;
   page: string;
+  registered: boolean;
 
   constructor(
     private state: TransferState,
@@ -51,6 +52,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     private titleService: Title,
     private metaService: Meta) {
     this.date = Date();
+    this.registered = localStorage.getItem("registered") != null;
   }
 
   ngOnInit(): void {

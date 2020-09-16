@@ -1,4 +1,4 @@
-import { LoginComponent } from './components/login-component/login.component';
+import { LoginComponent } from './components/account-login-component/login.component';
 import { AdminComponent } from './components/admin-component/admin.component';
 import { AboutComponent } from './components/about-component/about.component';
 import { EventComponent } from './components/event-component/event.component';
@@ -17,8 +17,16 @@ import { PersonProfileDetailComponent } from './components/person-profile-detail
 import { PersonSearchComponent } from './components/person-search-component/person-search.component';
 import { ErrorComponent } from './components/error-component/error.component';
 import { SearchComponent } from './components/search-component/search.component';
+import { RegisterComponent } from './components/account-register-component/register.component';
+import { AccountUpdateComponent } from './components/account-update-component/accountUpdate.component';
+import { AccountUpdateProfileComponent } from './components/account-update-profile-component/accountUpdateProfile.component';
 
 export default [
+    LoginComponent,
+    RegisterComponent,
+    AccountUpdateComponent,
+    AccountUpdateProfileComponent,
+    
     PersonComponentComponent,
     ErrorComponent,
     MainComponent,
@@ -26,7 +34,7 @@ export default [
     AboutComponent,
     NavComponent,
     HelpComponent,
-    LoginComponent,
+    
     LoginRegisterComponent,
     FooterComponent,
     PersonLinksComponent,

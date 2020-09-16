@@ -52,18 +52,23 @@ query Login {
       .then(res => res.data.login);
   }
 
-  register(endpoint: string, id: string, login: string, email: string, password: string) {
+  register(endpoint: string, email: string, password: string) {
     const fetch = createApolloFetch({
       uri: endpoint,
     });
 
     const encrypted = this.encryptionService.encryptPassword(password);
     return fetch({
-      query: `
-query Register {
-  register(id: "${id}", login: "${login}", email: "${email}" password: "${encrypted}")
+      query: `mutation accountCreate {
+  accountCreate( email: "${email}" password: "${encrypted}"){
+    success
+    message
+  }
 }`}).then(res => {
-        return res.data;
+        return res.data.accountCreate;
+      })
+      .catch(err =>{
+        throw err;
       });
   }
 

@@ -45,7 +45,7 @@ export class LoginRegisterComponent implements OnInit {
     }
 
     if (login && password) {
-      this.authService.register(id, login, email, password)
+      this.authService.register( email, password)
         .then(
           res => {
             this.notif.showSuccess('Registrated');

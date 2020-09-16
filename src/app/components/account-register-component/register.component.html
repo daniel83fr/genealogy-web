@@ -1,0 +1,31 @@
+
+
+<form   class="form-signin"  [formGroup]="registerForm" (ngSubmit)="onSubmit()" >
+  <img class="mb-4" src="../../../assets/img/logo.png" alt="" width="72" height="72"> 
+      <h2> Register</h2>
+
+  <input type="email" formControlName="email" id="email" class="form-control" placeholder="Email" required  autocomplete="email" autofocus>
+  <input type="password" formControlName="password" id="password" class="form-control" placeholder="Password" autocomplete="new-password" required>
+  <input type="password" formControlName="password2" id="password2" class="form-control" placeholder="Confirmation" autocomplete="new-password" required>
+
+
+  
+
+ 
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
+<p>
+  Already have an account, please <a href="/login">login</a>.
+</p>
+</form>
+
+<div *ngIf="!registerForm.errors?.passwordValid && (registerForm.touched || registerForm.dirty)" class="alert alert-danger">
+  Password and confirmation not matching
+</div>
+
+<div *ngIf="registerForm.errors?.passwordTooShort && (registerForm.touched || registerForm.dirty)" class="alert alert-danger">
+  Password requires 6 chars min
+</div>
+
+<div *ngIf="!registerForm.errors?.emailValid && (registerForm.touched || registerForm.dirty)" class="alert alert-danger">
+  Email invalid
+</div>

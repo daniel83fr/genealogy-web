@@ -1,0 +1,14 @@
+<form  *ngIf="isConnected()" class="form-signin"  [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()" >
+  <img class="mb-4" src="../../../assets/img/logo.png" alt="" width="72" height="72"> 
+
+  <h2> Update Profile</h2>
+
+  <input type="email" formControlName="email" id="email" class="form-control" placeholder="Email" required  autocomplete="email" autofocus>
+  <input type="text" formControlName="profileId" id="profileId" class="form-control" placeholder="Profile Id" autocomplete="id" required>
+ 
+  <input type="text" formControlName="profileName" id="profileName" class="form-control" placeholder="Profile Name" autocomplete="profile" required>
+  
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+ 
+</form>

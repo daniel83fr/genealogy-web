@@ -19,9 +19,30 @@
 </nav>
 
 <div class="main-div"
-  style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center;
-   ">
+  style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center;">
 
+  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
+    <!-- <h2 class="card-header"> <bi name="calendar"></bi> Register</h2> -->
+    <div class="card-body">
+      <p class="card-text">
+          <app-register *ngIf="!registered"></app-register>
+       
+          <app-login *ngIf="registered"></app-login>
+       
+
+      </p>
+    </div>
+  </div>
+  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
+    <h2 class="card-header"> <bi name="calendar"></bi> Directory</h2>
+    <div class="card-body">
+      <p class="card-text">
+        A - B - C - D - E - F - G - H - I - J - K - L - M -
+        N - O - P - Q - R - S - T - U - V - W - X - Y - Z - #
+
+      </p>
+    </div>
+  </div>
 
   <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
     <h2 class="card-header"> <bi name="calendar"></bi> Events</h2>
@@ -30,6 +51,8 @@
       <p class="card-text"><app-event></app-event></p>
     </div>
   </div>
+
+
   <br>
 
 
@@ -59,7 +82,7 @@
         </div> 
     </div>
   </div>
-  <br>
+  <!-- <br>
 
   <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
     <h2 class="card-header"> <bi name="camera-fill"></bi> Random Photos</h2>
@@ -72,7 +95,7 @@
         </a>
       </p>
     </div>
-  </div>
+  </div> -->
   
   <br>
 

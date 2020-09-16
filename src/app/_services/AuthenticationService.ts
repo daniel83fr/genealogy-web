@@ -39,8 +39,8 @@ export class AuthenticationService {
       }));
   }
 
-  register(id: string, login: string, email: string, password: string) {
-    return new Promise((resolve, reject) => this.api.register(this.endpoint, id, login, email, password)
+  register(email: string, password: string) {
+    return new Promise((resolve, reject) => this.api.register(this.endpoint, email, password)
       .then((res) => {
         resolve(res);
       })
