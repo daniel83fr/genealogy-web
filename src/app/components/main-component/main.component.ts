@@ -39,6 +39,7 @@ export class MainComponent implements OnInit, AfterContentInit {
   query: any;
   page: string;
   registered: boolean;
+  loggedIn: boolean;
 
   constructor(
     private state: TransferState,
@@ -51,8 +52,9 @@ export class MainComponent implements OnInit, AfterContentInit {
     private cacheService: ClientCacheService,
     private titleService: Title,
     private metaService: Meta) {
-    this.date = Date();
-    this.registered = localStorage.getItem("registered") != null;
+      this.date = Date();
+      this.registered = localStorage.getItem("registered") != null;
+      this.loggedIn = this.auth.isConnected();
   }
 
   ngOnInit(): void {

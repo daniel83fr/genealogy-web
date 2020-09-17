@@ -102,9 +102,15 @@ query Login {
     const fetch = createApolloFetch({
       uri: endpoint,
     });
+
+    let type = 'all';
+    if (filter.length < 2) {
+      type = 'startWith';
+    }
+
     return fetch({
       query: `query SearchPerson {
-            data: searchPerson(filter:"${filter}", page: ${page}, pageSize:${pagesize}) {
+            data: searchPerson(filter:"${filter}", page: ${page}, pageSize:${pagesize}, type:${type}) {
               _id
               firstName
               lastName

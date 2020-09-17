@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { NotificationService } from 'src/app/_services/NotificationService';
+import { Router } from '@angular/router';
 
 export const identityRevealedValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
   const email = control.get('email');
@@ -37,7 +38,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthenticationService,
-    private notif: NotificationService) {
+    private notif: NotificationService,
+    private router: Router) {
     this.registerForm = this.fb.group({
       email: '',
       password: '',
@@ -69,6 +71,13 @@ export class RegisterComponent implements OnInit {
         
     }
   }
+
+  goToLogin()
+  {
+      localStorage.setItem("registered", "true");
+      this.router.navigateByUrl('/login');
+  }
+
   ngOnInit(): void {
   }
 

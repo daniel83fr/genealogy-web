@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { NotificationService } from 'src/app/_services/NotificationService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthenticationService,
-    private notif: NotificationService) {
+    private notif: NotificationService,
+    private router: Router) {
     this.loginForm = this.fb.group({
       login: '',
       password: ''
@@ -35,7 +37,16 @@ export class LoginComponent implements OnInit {
     const password = this.loginForm.controls.password.value;
     if (login && password) {
       this.auth.login(login, password)
-        .catch(
+        .then(res => {
+
+            const connected = this.auth.getConnectedProfile();
+            if(connected == undefined){
+              document.location.href = '/update-profile';
+            } else {
+              document.location.href = `/profile/${connected}`;
+            }
+          }
+        ).catch(
           err => {
             this.notif.showError('Login failed');
           }
@@ -47,6 +58,11 @@ export class LoginComponent implements OnInit {
 
   isConnected() {
     return this.auth.isConnected();
+  }
+
+  goToRegister(){
+    localStorage.removeItem("registered");
+    this.router.navigateByUrl('/register');
   }
 
   ngAfterContentInit() {

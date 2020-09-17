@@ -21,7 +21,7 @@
 <div class="main-div"
   style="display: flex; flex-direction: row;flex-wrap: wrap; flex-shrink: 0;justify-content: center;">
 
-  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
+  <div *ngIf="!loggedIn" class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
     <!-- <h2 class="card-header"> <bi name="calendar"></bi> Register</h2> -->
     <div class="card-body">
       <p class="card-text">
@@ -37,14 +37,40 @@
     <h2 class="card-header"> <bi name="calendar"></bi> Directory</h2>
     <div class="card-body">
       <p class="card-text">
-        A - B - C - D - E - F - G - H - I - J - K - L - M -
-        N - O - P - Q - R - S - T - U - V - W - X - Y - Z - #
+
+        <a href="/search/A">A</a> -
+        <a href="/search/B">B</a> -
+        <a href="/search/C">C</a> -
+        <a href="/search/D">D</a> -
+        <a href="/search/E">E</a> -
+        <a href="/search/F">F</a> -
+        <a href="/search/G">G</a> -
+        <a href="/search/H">H</a> -
+        <a href="/search/I">I</a> -
+        <a href="/search/J">J</a> -
+        <a href="/search/K">K`</a> -
+        <a href="/search/L">L</a> -
+        <a href="/search/M">M</a> -
+        <a href="/search/N">N</a> -
+        <a href="/search/O">O</a> -
+        <a href="/search/P">P</a> -
+        <a href="/search/Q">Q</a> -
+        <a href="/search/R">R</a> -
+        <a href="/search/S">S</a> -
+        <a href="/search/T">T</a> -
+        <a href="/search/U">U</a> -
+        <a href="/search/V">V</a> -
+        <a href="/search/W">W</a> -
+        <a href="/search/X">X</a> -
+        <a href="/search/Y">Y</a> -
+        <a href="/search/Z">Z</a> 
+        
 
       </p>
     </div>
   </div>
 
-  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
+  <div *ngIf="loggedIn" class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
     <h2 class="card-header"> <bi name="calendar"></bi> Events</h2>
     <div class="card-body">
       <h5 class="card-title">TODAY's events</h5>
@@ -99,7 +125,7 @@
   
   <br>
 
-  <div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
+  <div *ngIf="loggedIn" class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
     <h2 class="card-header"> <bi name="receipt"></bi>  Recent Activities</h2>
     <div class="card-body">
       <div class="card-text">
@@ -113,7 +139,7 @@
   <br>
 
 
-<div class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
+<div *ngIf="!loggedIn" class="card" style="width: 800px;padding: 10px;margin-bottom: 5px;">
   Keywords:
   ancestry, genetics, lineage, descent, generation, heredity, history, line, parentage
   blood line, progeniture, clan, folk, group, house, household, people, tribe, ancestors,
