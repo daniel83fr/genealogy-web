@@ -10,6 +10,8 @@ const STATE_KEY_API = makeStateKey('api');
 })
 
 export class AuthenticationService {
+ 
+  
 
   endpoint: string;
 
@@ -49,6 +51,44 @@ export class AuthenticationService {
       }));
   }
 
+  setNickname(email: string, nickname: string) {
+    return new Promise((resolve, reject) => this.api.setNickname(this.endpoint, email, nickname)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(Error(err));
+      }));
+  }
+
+  getProfileId(email: any) {
+    return new Promise((resolve, reject) => this.api.getProfileId(this.endpoint, email)
+    .then((res) => {
+      resolve(res);
+    })
+    .catch((err) => {
+      reject(Error(err));
+    }));
+  }
+  setProfileId(email: string, id:string) {
+    return new Promise((resolve, reject) => this.api.setProfileId(this.endpoint, email, id)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(Error(err));
+      }));
+  }
+  getNickname(email: string) {
+    return new Promise((resolve, reject) => this.api.getNickname(this.endpoint, email)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(Error(err));
+      }));
+  }
+
   logout() {
     localStorage.removeItem('token');
     //this.router.navigateByUrl('login');
@@ -72,6 +112,18 @@ export class AuthenticationService {
   getToken() {
     return localStorage.getItem('token');
   }
+
+  getConnectedUser(){
+
+      return new Promise((resolve, reject) => this.api.getConnectedUser(this.endpoint)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(Error(err));
+      }));
+    }
+  
 
   getConnectedLogin() {
     if (this.isConnected) {

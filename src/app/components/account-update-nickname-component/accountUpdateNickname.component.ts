@@ -4,43 +4,40 @@ import { AuthenticationService } from 'src/app/_services/AuthenticationService';
 import { NotificationService } from 'src/app/_services/NotificationService';
 
 @Component({
-  selector: 'app-account-update-profile',
-  templateUrl: './accountUpdateProfile.component.html',
-  styleUrls: ['./accountUpdateProfile.component.css']
+  selector: 'app-account-update-nickname',
+  templateUrl: './accountUpdateNickname.component.html',
+  styleUrls: ['./accountUpdateNickname.component.css'],
 })
 
-
-export class AccountUpdateProfileComponent implements OnInit {
+export class AccountUpdateNicknameComponent implements OnInit {
   connectedUser: any;
   constructor(
     private fb: FormBuilder,
     private auth: AuthenticationService,
     private notif: NotificationService) {
+    this.changeProfileForm = this.fb.group({
+      profileName: 'todo'
+    });
 
-      this.changeProfileForm = this.fb.group({
-        profileId: 'todo'
+
+    this.auth.getNickname(this.auth.getConnectedLogin())
+      .then((res: any) => {
+
+        this.connectedUser = res;
+        this.changeProfileForm.controls.profileName.setValue(res);
+      })
+      .catch(err => {
+        console.log(err);
       });
-  
-  
-      this.auth.getProfileId(this.auth.getConnectedLogin())
-        .then((res: any) => {
-  
-          this.connectedUser = res;
-          this.changeProfileForm.controls.profileId.setValue(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
   }
 
   changeProfileForm: FormGroup = null;
 
   onSubmit(): void {
-
-    const profileName = this.changeProfileForm.controls.profileId.value;
+    const profileName = this.changeProfileForm.controls.profileName.value;
 
     if (profileName.length > 5) {
-      this.auth.setProfileId(this.auth.getConnectedLogin(), profileName)
+      this.auth.setNickname(this.auth.getConnectedLogin(), profileName)
         .then(res => {
           this.notif.showSuccess('Updated');
         })
@@ -51,13 +48,11 @@ export class AccountUpdateProfileComponent implements OnInit {
         );
     }
   }
+
   ngOnInit(): void {
   }
 
   isConnected() {
     return this.auth.isConnected();
-  }
-
-  ngAfterContentInit() {
   }
 }

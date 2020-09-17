@@ -11,10 +11,11 @@
 
   
 
+
  
   <button class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
 <p>
-  Already have an account, please <a [href]="goToLogin()">login</a>.
+  Already have an account, please <button (click)="goToLogin()" class="btn btn-link">login</button>.
 </p>
 </form>
 

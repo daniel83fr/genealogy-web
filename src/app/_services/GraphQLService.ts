@@ -10,6 +10,40 @@ import { AuthenticationService } from './AuthenticationService';
 })
 export class GraphQLService {
 
+  getNickname(endpoint: string, email: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `query nickname{
+        nickname(email:"${email}")
+       
+     }`}).then((res:any) => {
+        return res.data.nickname;
+      })
+      .catch(err =>{
+        throw err;
+      });
+  }
+
+  getProfileId(endpoint: string, email: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `query profile{
+        profile(email:"${email}")
+       
+     }`}).then((res:any) => {
+        return res.data.profile;
+      })
+      .catch(err =>{
+        throw err;
+      });
+  }
+
   addPhoto(endpoint: string, link: any, deletehash: any, persons: any[]) {
     const token = localStorage.getItem('token');
 
@@ -50,6 +84,46 @@ query Login {
   }
 }`})
       .then(res => res.data.login);
+  }
+
+  setNickname(endpoint: string, email: string, nickname: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `mutation nicknameUpdate{
+        nicknameUpdate(email:"${email}", nickname:"${nickname}"){
+           success
+           message
+        }
+       
+     }`}).then(res => {
+        return res.data.nicknameUpdate;
+      })
+      .catch(err =>{
+        throw err;
+      });
+  }
+
+  setProfileId(endpoint: string, email: string, id: string) {
+    const fetch = createApolloFetch({
+      uri: endpoint,
+    });
+
+    return fetch({
+      query: `mutation attachedProfileUpdate{
+        attachedProfileUpdate(email:"${email}", profile_id:"${id}"){
+           success
+           message
+        }
+       
+     }`}).then(res => {
+        return res.data.attachedProfileUpdate;
+      })
+      .catch(err =>{
+        throw err;
+      });
   }
 
   register(endpoint: string, email: string, password: string) {
@@ -110,7 +184,7 @@ query Login {
 
     return fetch({
       query: `query SearchPerson {
-            data: searchPerson(filter:"${filter}", page: ${page}, pageSize:${pagesize}, type:${type}) {
+            data: searchPerson(filter:"${filter}", page: ${page}, pageSize:${pagesize}, type:"${type}") {
               _id
               firstName
               lastName
@@ -139,20 +213,21 @@ query Login {
       uri: endpoint
     });
 
-    fetch.use(({ request, options }, next) => {
+    // fetch.use(({ request, options }, next) => {
 
-      if (!options.headers) {
-        options.headers = {};
-      }
-      options.headers['authorization'] = `Bearer ${token}`;
-      next();
-    });
+    //   if (!options.headers) {
+    //     options.headers = {};
+    //   }
+    //   options.headers['authorization'] = `Bearer ${token}`;
+    //   next();
+    // });
 
     return fetch({
       query: `query me {
         connectedUser{
-          id
-          login
+          email
+          profileId
+          nickname
         }
       }
       `

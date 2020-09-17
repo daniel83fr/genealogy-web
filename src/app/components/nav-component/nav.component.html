@@ -23,6 +23,7 @@
     <a class="dropdown-item" href="/admin" aria-label="admin" >Admin</a>
     <a class="dropdown-item" href="/update-account" aria-label="change credentials" >Change credentials</a>
     <a class="dropdown-item" href="/update-profile" aria-label="change profile" >Change profile</a>
+    <a class="dropdown-item" href="/update-nickname" aria-label="change nickname" >Change nickname</a>
     <button class="dropdown-item" type="button" (click)="logout()" aria-label="logout">Logout</button>
   </div>
   <span  *ngIf="environnement!='production'" class="badge badge-primary" aria-label="env">{{environnement}}</span>

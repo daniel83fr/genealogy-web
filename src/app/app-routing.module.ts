@@ -11,6 +11,7 @@ import { RegisterComponent } from './components/account-register-component/regis
 import { AccountUpdateComponent } from './components/account-update-component/accountUpdate.component';
 import { LoginComponent } from './components/account-login-component/login.component';
 import { AccountUpdateProfileComponent } from './components/account-update-profile-component/accountUpdateProfile.component';
+import { AccountUpdateNicknameComponent } from './components/account-update-nickname-component/accountUpdateNickname.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,9 @@ const routes: Routes = [
   },
   {
     path: 'update-profile',      component: AccountUpdateProfileComponent
+  },
+  {
+    path: 'update-nickname',      component: AccountUpdateNicknameComponent
   },
   { path: 'person/:profile',
       redirectTo: 'profile/:profile',

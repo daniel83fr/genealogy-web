@@ -20,13 +20,15 @@ import { SearchComponent } from './components/search-component/search.component'
 import { RegisterComponent } from './components/account-register-component/register.component';
 import { AccountUpdateComponent } from './components/account-update-component/accountUpdate.component';
 import { AccountUpdateProfileComponent } from './components/account-update-profile-component/accountUpdateProfile.component';
+import { AccountUpdateNicknameComponent } from './components/account-update-nickname-component/accountUpdateNickname.component';
 
 export default [
     LoginComponent,
     RegisterComponent,
     AccountUpdateComponent,
     AccountUpdateProfileComponent,
-    
+    AccountUpdateNicknameComponent,
+
     PersonComponentComponent,
     ErrorComponent,
     MainComponent,

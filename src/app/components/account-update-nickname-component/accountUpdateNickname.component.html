@@ -1,14 +1,12 @@
 <form  *ngIf="isConnected()" class="form-signin"  [formGroup]="changeProfileForm" (ngSubmit)="onSubmit()" >
   <img class="mb-4" src="../../../assets/img/logo.png" alt="" width="72" height="72"> 
 
-  <h2> Update Profile</h2>
+  <h2> Update Nickname</h2>
 
-  <input type="text" formControlName="profileId" id="profileId" class="form-control" placeholder="Profile Id" autocomplete="id" required>
- 
+  <input type="text" formControlName="profileName" id="profileName" class="form-control" placeholder="Profile Name" autocomplete="profile" required>
   
 
   <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
  
 </form>
-
-
+{{ connectedUser }}
