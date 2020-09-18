@@ -39,12 +39,17 @@ export class LoginComponent implements OnInit {
       this.auth.login(login, password)
         .then(res => {
 
-            const connected = this.auth.getConnectedProfile();
-            if(connected == undefined){
+          this.auth.getNickname(this.auth.getConnectedLogin())
+            .then(res2 => {
+              if (res2 == undefined || res2 == null) {
+                document.location.href = '/update-profile';
+              } else {
+                document.location.href = `/profile/${res2}`;
+              }
+            })
+            .catch(err => {
               document.location.href = '/update-profile';
-            } else {
-              document.location.href = `/profile/${connected}`;
-            }
+            });
           }
         ).catch(
           err => {
@@ -60,7 +65,7 @@ export class LoginComponent implements OnInit {
     return this.auth.isConnected();
   }
 
-  goToRegister(){
+  goToRegister() {
     localStorage.removeItem("registered");
     this.router.navigateByUrl('/register');
   }

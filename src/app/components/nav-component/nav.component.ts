@@ -18,7 +18,6 @@ export class NavComponent implements OnInit, AfterContentInit {
   query='';
 
   constructor(
-    private graphQLService: GraphQLService,
     public auth: AuthenticationService,
     private router: Router) {
   }
@@ -28,6 +27,7 @@ export class NavComponent implements OnInit, AfterContentInit {
 
   logout() {
     this.auth.logout();
+    this.router.navigateByUrl('/' );
   }
 
   isConnected() {
@@ -40,7 +40,15 @@ export class NavComponent implements OnInit, AfterContentInit {
 
   getConnectedProfile() {
 
-    this.router.navigateByUrl('/profile/' + this.getConnectedLogin());
+    this.auth.getNickname(this.getConnectedLogin())
+    .then(res=>{
+      if(!res || res == undefined || res == ''){
+        this.router.navigateByUrl('/update-profile' );
+      } else{
+        this.router.navigateByUrl('/profile/' + res );
+      }
+    })
+    
   }
 
   ngAfterContentInit() {
